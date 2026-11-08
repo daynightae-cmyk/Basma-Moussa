@@ -1,0 +1,588 @@
+/* ————————————————————————————————————————————————————————————
+   Cinematic surfaces: the home premiere, its scenes and navigation.
+   Loaded after app/globals.css so the scene system owns these rules.
+   ———————————————————————————————————————————————————————————— */
+
+.cine-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: min(92svh, 940px);
+  background: var(--navy-950);
+  --light-x: 64%;
+  --light-y: 34%;
+  --scene-shift: 1;
+}
+
+.cine-hero__stage {
+  position: absolute;
+  inset: 0;
+}
+
+/* ——— Scene layer ——— */
+
+.cine-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.02);
+  transition:
+    opacity 0.85s var(--ease-out),
+    transform 1.4s var(--ease-door),
+    visibility 0.85s linear;
+}
+
+.cine-scene.is-active {
+  z-index: 2;
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.cine-scene.is-past {
+  transform: scale(1.015) translateX(calc(-3% * var(--scene-shift)));
+}
+
+.cine-scene.is-next {
+  transform: scale(1.015) translateX(calc(3% * var(--scene-shift)));
+}
+
+.cine-scene.is-reverse {
+  --scene-shift: -1;
+}
+
+.cine-scene__media {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.cine-scene__media img {
+  object-fit: cover;
+  transform: scale(1.08);
+  filter: saturate(0.96) contrast(1.03);
+  transition: transform 12s linear;
+}
+
+.cine-scene.is-active .cine-scene__media img {
+  transform: scale(1);
+}
+
+.cine-scene__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to left,
+      rgba(7, 11, 24, 0.96) 0%,
+      rgba(7, 11, 24, 0.82) 26%,
+      rgba(7, 11, 24, 0.36) 56%,
+      rgba(7, 11, 24, 0.04) 82%
+    ),
+    linear-gradient(to top, rgba(7, 11, 24, 0.94) 0%, transparent 46%);
+}
+
+.cine-scene--studio-wide .cine-scene__veil,
+.cine-scene--sculpture .cine-scene__veil {
+  background:
+    linear-gradient(
+      to left,
+      rgba(7, 11, 24, 0.92) 0%,
+      rgba(7, 11, 24, 0.7) 30%,
+      rgba(7, 11, 24, 0.22) 62%,
+      rgba(7, 11, 24, 0.02) 88%
+    ),
+    linear-gradient(to top, rgba(7, 11, 24, 0.9) 0%, transparent 52%);
+}
+
+.cine-scene--city-portrait .cine-scene__veil {
+  background:
+    linear-gradient(
+      to left,
+      rgba(7, 11, 24, 0.94) 0%,
+      rgba(7, 11, 24, 0.78) 24%,
+      rgba(7, 11, 24, 0.4) 54%,
+      rgba(9, 16, 34, 0.08) 84%
+    ),
+    linear-gradient(
+      to top,
+      rgba(7, 11, 24, 0.95) 0%,
+      rgba(30, 20, 30, 0.35) 48%,
+      transparent 72%
+    );
+}
+
+.cine-scene__light {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(
+    620px circle at var(--light-x) var(--light-y),
+    rgba(215, 171, 98, 0.16),
+    transparent 62%
+  );
+  transition: background 0.4s linear;
+}
+
+.cine-scene__frame {
+  position: absolute;
+  inset: 16px;
+  pointer-events: none;
+  border: 1px solid rgba(242, 215, 160, 0.1);
+}
+
+.cine-scene__frame::before,
+.cine-scene__frame::after {
+  content: "";
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(242, 215, 160, 0.32);
+}
+
+.cine-scene__frame::before {
+  inset-block-start: -1px;
+  inset-inline-start: -1px;
+  border-inline-end: 0;
+  border-block-end: 0;
+}
+
+.cine-scene__frame::after {
+  inset-block-end: -1px;
+  inset-inline-end: -1px;
+  border-inline-start: 0;
+  border-block-start: 0;
+}
+
+/* ——— Scene copy ——— */
+
+.cine-scene__copy {
+  position: absolute;
+  z-index: 3;
+  inset-block-start: 50%;
+  inset-inline-start: clamp(1.25rem, 5vw, 4rem);
+  width: min(560px, 46vw);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.05rem;
+  transform: translateY(-50%);
+  text-shadow: 0 2px 26px rgba(0, 0, 0, 0.45);
+}
+
+/* The portrait scene keeps the copy physically on the right so the face
+   stays clear in both writing directions. */
+.cine-scene--portrait-left .cine-scene__copy {
+  inset-inline-start: auto;
+  inset-inline-end: clamp(1.25rem, 5vw, 4rem);
+  width: min(600px, 44vw);
+  align-items: flex-end;
+  text-align: end;
+}
+
+.cine-scene--sculpture .cine-scene__copy {
+  inset-inline-start: clamp(1.25rem, 5vw, 4rem);
+  inset-block-start: 58%;
+  width: min(660px, 52vw);
+}
+
+.cine-scene--city-portrait .cine-scene__copy {
+  inset-inline-start: clamp(1.25rem, 5vw, 4rem);
+  width: min(520px, 42vw);
+}
+
+.cine-scene__chapter {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  color: var(--gold-500);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.cine-scene__chapter > span:first-child {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 400;
+  line-height: 0.8;
+  letter-spacing: 0.02em;
+  color: var(--gold-300);
+}
+
+html[lang="ar"] .cine-scene__chapter {
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  font-weight: 600;
+  text-transform: none;
+}
+
+html[lang="ar"] .cine-scene__chapter > span:first-child {
+  font-size: 1.55rem;
+  letter-spacing: 0;
+}
+
+.cine-scene__chapter .line {
+  width: 2.4rem;
+  height: 1px;
+  align-self: center;
+  background: linear-gradient(90deg, var(--gold-600), transparent);
+}
+
+.cine-scene__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 5.4vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+html[lang="ar"] .cine-scene__title {
+  font-size: clamp(2.2rem, 5vw, 4.1rem);
+  font-weight: 600;
+  line-height: 1.32;
+  letter-spacing: 0;
+}
+
+.cine-scene__copy .lead {
+  max-width: 44ch;
+  color: #cfd2dd;
+}
+
+html[lang="ar"] .cine-scene__copy .lead {
+  max-width: 42ch;
+}
+
+.cine-scene__stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin-block-start: 0.4rem;
+  padding-block-start: 0.85rem;
+  border-block-start: 1px solid rgba(242, 215, 160, 0.18);
+  color: var(--muted);
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+}
+
+.cine-scene__stat .value {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--gold-300);
+}
+
+.cine-scene--portrait-left .cine-scene__stat {
+  justify-content: flex-end;
+}
+
+/* ——— Scene entrance choreography ——— */
+
+@media (prefers-reduced-motion: no-preference) {
+  .cine-scene.is-active .cine-scene__copy > * {
+    animation: scene-rise 0.9s var(--ease-out) both;
+  }
+
+  .cine-scene.is-active .cine-scene__copy > *:nth-child(1) {
+    animation-delay: 0.08s;
+  }
+  .cine-scene.is-active .cine-scene__copy > *:nth-child(2) {
+    animation-delay: 0.16s;
+  }
+  .cine-scene.is-active .cine-scene__copy > *:nth-child(3) {
+    animation-delay: 0.24s;
+  }
+  .cine-scene.is-active .cine-scene__copy > *:nth-child(4) {
+    animation-delay: 0.32s;
+  }
+  .cine-scene.is-active .cine-scene__copy > *:nth-child(5) {
+    animation-delay: 0.4s;
+  }
+  .cine-scene.is-active .cine-scene__copy > *:nth-child(6) {
+    animation-delay: 0.48s;
+  }
+}
+
+@keyframes scene-rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ——— Navigation ——— */
+
+.cine-nav {
+  position: absolute;
+  z-index: 5;
+  inset-inline: clamp(1.25rem, 5vw, 4rem);
+  inset-block-end: clamp(1.4rem, 4vh, 2.6rem);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  pointer-events: none;
+}
+
+.cine-nav > * {
+  pointer-events: auto;
+}
+
+.cine-nav__rail {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem;
+  border: 1px solid rgba(242, 215, 160, 0.14);
+  border-radius: 999px;
+  background: rgba(7, 11, 24, 0.42);
+  backdrop-filter: blur(10px);
+}
+
+.cine-nav__dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 0.35rem 0.85rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition:
+    color 0.3s ease,
+    background 0.3s ease;
+}
+
+.cine-nav__dot:hover {
+  color: var(--ivory);
+}
+
+.cine-nav__dot.is-active {
+  color: var(--navy-950);
+  background: linear-gradient(120deg, var(--gold-300), var(--gold-500));
+}
+
+.cine-nav__dot-index {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+.cine-nav__dot-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+html[lang="ar"] .cine-nav__dot-label {
+  font-weight: 600;
+}
+
+.cine-nav__controls {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.cine-nav__arrow,
+.cine-nav__pause {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(242, 215, 160, 0.22);
+  border-radius: 50%;
+  background: rgba(7, 11, 24, 0.46);
+  color: var(--ivory);
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+}
+
+.cine-nav__arrow:hover:not(:disabled),
+.cine-nav__pause:hover {
+  border-color: var(--gold-300);
+  background: rgba(215, 171, 98, 0.16);
+  color: var(--gold-300);
+}
+
+.cine-nav__arrow:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.cine-nav__progress {
+  position: relative;
+  width: clamp(80px, 14vw, 190px);
+  height: 2px;
+  overflow: hidden;
+  background: rgba(242, 215, 160, 0.18);
+}
+
+.cine-nav__progress-fill {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--gold-600), var(--gold-300));
+}
+
+html[dir="rtl"] .cine-nav__progress-fill {
+  transform-origin: right center;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cine-nav__progress-fill {
+    animation: scene-progress 9s linear both;
+  }
+
+  .cine-nav__progress-fill.is-paused {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes scene-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ——— Golden particle field ——— */
+
+.golden-particle {
+  fill: rgba(242, 215, 160, 0.55);
+  animation-name: particle-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+@keyframes particle-drift {
+  from {
+    opacity: 0.12;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0.7;
+    transform: translateY(var(--drift, 8px));
+  }
+}
+
+/* ——— Premiere wrapper ——— */
+
+.home-hero--premiere {
+  display: block;
+  min-height: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.home-hero--premiere::before {
+  display: none;
+}
+
+.home-hero__caption--premiere {
+  position: absolute;
+  z-index: 4;
+  inset-block-start: calc(var(--header-height) + 0.9rem);
+  inset-block-end: auto;
+  inset-inline-start: clamp(1.25rem, 5vw, 4rem);
+  inset-inline-end: auto;
+  padding: 0;
+  pointer-events: none;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 899px) {
+  .home-hero__caption--premiere {
+    inset-block-start: calc(var(--header-height) + 0.6rem);
+    font-size: 0.64rem;
+  }
+}
+
+/* ——— Responsive ——— */
+
+@media (max-width: 899px) {
+  .cine-hero {
+    min-height: 92svh;
+  }
+
+  .cine-scene__copy,
+  .cine-scene--portrait-left .cine-scene__copy,
+  .cine-scene--sculpture .cine-scene__copy,
+  .cine-scene--city-portrait .cine-scene__copy {
+    inset-block-start: auto;
+    inset-block-end: 7.5rem;
+    inset-inline: clamp(1.25rem, 5vw, 2rem);
+    width: auto;
+    max-width: 34rem;
+    transform: none;
+    align-items: flex-start;
+    text-align: start;
+  }
+
+  .cine-scene--portrait-left .cine-scene__copy {
+    align-items: flex-start;
+    text-align: start;
+  }
+
+  .cine-scene--portrait-left .cine-scene__stat {
+    justify-content: flex-start;
+  }
+
+  .cine-scene__title {
+    font-size: clamp(2rem, 8.4vw, 2.9rem);
+  }
+
+  html[lang="ar"] .cine-scene__title {
+    font-size: clamp(1.9rem, 7.8vw, 2.6rem);
+  }
+
+  .cine-nav {
+    inset-block-end: clamp(1rem, 3vh, 1.8rem);
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .cine-nav__rail {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .cine-nav__dot-label {
+    display: none;
+  }
+
+  .cine-nav__progress {
+    width: 70px;
+  }
+}
+
+@media (max-width: 420px) {
+  .cine-scene__copy .lead {
+    font-size: 0.95rem;
+  }
+
+  .cine-nav__dot {
+    padding: 0.3rem 0.6rem;
+  }
+}

@@ -1,182 +1,198 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { BrandLockup } from "@/components/brand/BrandLockup";
-import { ArrowIcon } from "@/components/ui/icons";
-import { getDictionary } from "@/lib/i18n/dictionary";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
+
 import { otherLocale, type Locale } from "@/lib/i18n/config";
-import { localizedPath, pathWithoutLocale, switchLocalePath } from "@/lib/i18n/paths";
-import { whatsappHref } from "@/lib/site";
-import { ScrollProgress } from "./ScrollProgress";
+import { localizedPath, switchLocalePath } from "@/lib/i18n/paths";
+import type { Dictionary } from "@/lib/i18n/dictionary";
+import { BRAND } from "@/lib/site";
 
-const NAV_ITEMS = [
-  { key: "media", href: "/media", matches: ["/media", "/programs"] },
-  { key: "legal", href: "/legal-lens", matches: ["/legal-lens"] },
-  { key: "soundroom", href: "/soundroom", matches: ["/soundroom"] },
-  { key: "stories", href: "/stories", matches: ["/stories"] },
-  { key: "about", href: "/about", matches: ["/about"] },
-] as const;
+const NAV_ROUTES = [
+  { key: "about", path: "/about", label: (d: Dictionary) => d.nav.about },
+  { key: "media", path: "/media", label: (d: Dictionary) => d.nav.media },
+  { key: "soundroom", path: "/soundroom", label: (d: Dictionary) => d.nav.soundroom },
+  { key: "legal", path: "/legal-lens", label: (d: Dictionary) => d.nav.legal },
+  { key: "stories", path: "/stories", label: (d: Dictionary) => d.nav.stories },
+  { key: "studio", path: "/studio", label: (d: Dictionary) => d.nav.studio },
+  { key: "contact", path: "/contact", label: (d: Dictionary) => d.nav.contact },
+];
 
-const MOBILE_ITEMS = [
-  { key: "media", href: "/media" },
-  { key: "legal", href: "/legal-lens" },
-  { key: "soundroom", href: "/soundroom" },
-  { key: "stories", href: "/stories" },
-  { key: "studio", href: "/studio" },
-  { key: "about", href: "/about" },
-  { key: "contact", href: "/contact" },
-] as const;
+interface HeaderProps {
+  locale: Locale;
+  dict: Dictionary;
+}
 
-export function Header({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
-  const pathname = usePathname() ?? localizedPath(locale);
-  const path = pathWithoutLocale(pathname);
-  const [open, setOpen] = useState(false);
-  const firstLinkRef = useRef<HTMLAnchorElement>(null);
+export function Header({ locale, dict }: HeaderProps) {
+  const isAr = locale === "ar";
+  const pathname = usePathname();
+  const router = useRouter();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
-  const other = otherLocale[locale];
 
-  useEffect(() => {
-    // A route change is external state. Closing the sheet here also covers
-    // language switches and browser history, not only menu-link clicks.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setOpen(false);
-  }, [pathname]);
+  const closeMenu = useCallback(() => {
+    setMenuOpen(false);
+    document.body.style.overflow = "";
+    toggleRef.current?.focus();
+  }, []);
 
+  // Focus management for the mobile panel.
   useEffect(() => {
-    if (!open) return;
-    const previousOverflow = document.body.style.overflow;
+    if (!menuOpen) return;
     document.body.style.overflow = "hidden";
-    firstLinkRef.current?.focus();
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setOpen(false);
-        toggleRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", onKeyDown);
+    const firstFocusable = menuRef.current?.querySelector<HTMLElement>('a[href], button');
+    firstFocusable?.focus();
     return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = "";
     };
-  }, [open]);
+  }, [menuOpen]);
 
-  const isActive = (matches: readonly string[]) =>
-    matches.some((match) => path === match || path.startsWith(`${match}/`));
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Escape") closeMenu();
+    },
+    [closeMenu]
+  );
+
+  const toggleMenu = useCallback(() => setMenuOpen((open) => !open), []);
+
+  const switchLanguage = useCallback(() => {
+    const target = otherLocale(locale);
+    router.push(switchLocalePath(pathname, target));
+  }, [locale, pathname, router]);
+
+  const brandLink = localizedPath(locale);
 
   return (
-    <>
-      <header className="site-header">
-        <div className="shell site-header__inner">
-          <BrandLockup locale={locale} priority />
-
-          <nav className="site-nav" aria-label={dict.common.mainNavigation}>
-            {NAV_ITEMS.map((item) => {
-              const href = localizedPath(locale, item.href);
-              const active = isActive(item.matches);
-              return (
-                <Link
-                  key={item.key}
-                  href={href}
-                  className="site-nav__link"
-                  aria-current={active ? "page" : undefined}
-                >
-                  {dict.nav[item.key]}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <div className="header-actions">
-            <Link
-              className="lang-switch"
-              href={switchLocalePath(pathname, other)}
-              hrefLang={other}
-              lang={other}
-              aria-label={`${dict.common.switchLanguage}: ${dict.common.switchLanguageShort}`}
-            >
-              {dict.common.switchLanguageShort}
-            </Link>
-
-            <Link
-              className="btn btn--gold header-cta"
-              href={localizedPath(locale, "/contact")}
-            >
-              {dict.nav.contact}
-              <ArrowIcon className="arrow" />
-            </Link>
-
-            <button
-              ref={toggleRef}
-              type="button"
-              className="menu-toggle"
-              aria-expanded={open}
-              aria-controls="mobile-navigation"
-              aria-label={open ? dict.common.closeMenu : dict.common.openMenu}
-              onClick={() => setOpen((value) => !value)}
-            >
-              <span className="menu-toggle__lines" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </span>
-            </button>
+    <header className="header" role="banner">
+      <div className="header__inner shell">
+        <Link
+          href={brandLink}
+          className="header__brand"
+          aria-label={`${BRAND.nameAr} — ${dict.common.home}`}
+          onClick={closeMenu}
+        >
+          <Image
+            src="/brand/basma-icon-circle.png"
+            alt=""
+            width={44}
+            height={44}
+            className="header__brand-icon"
+            priority
+          />
+          <div className="header__brand-text">
+            <span className="header__brand-name wordmark-ar">{BRAND.nameAr}</span>
+            <span className="header__brand-name wordmark-en">{BRAND.name}</span>
+            <span className="header__brand-sub">
+              {isAr ? BRAND.productAr : BRAND.product}
+            </span>
           </div>
-        </div>
-        <ScrollProgress />
-      </header>
+        </Link>
 
-      <div
-        id="mobile-navigation"
-        className="mobile-panel"
-        hidden={!open}
-        aria-label={dict.common.menu}
-      >
-        <nav className="mobile-panel__nav" aria-label={dict.common.mainNavigation}>
-          {MOBILE_ITEMS.map((item, index) => {
-            const href = localizedPath(locale, item.href);
-            const active = path === item.href || path.startsWith(`${item.href}/`);
+        <nav className="header__nav" aria-label={dict.common.mainNavigation}>
+          {NAV_ROUTES.map((route) => {
+            const active =
+              pathname === localizedPath(locale, route.path) ||
+              (route.key !== "about" &&
+                pathname.startsWith(localizedPath(locale, route.path)));
             return (
               <Link
-                key={item.key}
-                ref={index === 0 ? firstLinkRef : undefined}
-                href={href}
-                className="mobile-panel__link"
+                key={route.key}
+                href={localizedPath(locale, route.path)}
+                className={`nav-link ${active ? "active" : ""}`}
                 aria-current={active ? "page" : undefined}
+                onClick={closeMenu}
               >
-                <span>{dict.nav[item.key]}</span>
-                <span className="index" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
+                {route.label(dict)}
               </Link>
             );
           })}
         </nav>
 
-        <div className="mobile-panel__footer">
-          <Link
-            className="btn btn--gold"
-            href={localizedPath(locale, "/contact")}
-            onClick={() => setOpen(false)}
+        <div className="header__actions">
+          <button
+            className="header__lang"
+            aria-label={dict.common.switchLanguage}
+            title={dict.common.language}
+            onClick={switchLanguage}
+            onClickCapture={closeMenu}
           >
-            {dict.nav.contact}
-            <ArrowIcon className="arrow" />
-          </Link>
-          <a
-            className="btn btn--ghost"
-            href={whatsappHref(locale)}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setOpen(false)}
+            {isAr ? dict.common.switchLanguageShort : "EN"}
+          </button>
+          <button
+            ref={toggleRef}
+            className="header__menu-toggle"
+            aria-expanded={menuOpen}
+            aria-controls="bm-mobile-menu"
+            onClick={toggleMenu}
           >
-            WhatsApp{" "}
-            <span className="sr-only">({dict.common.opensInNewTab})</span>
-          </a>
+            <span className="menu-toggle__bar" />
+            <span className="menu-toggle__bar" />
+            <span className="menu-toggle__bar" />
+            <span className="sr-only">{menuOpen ? dict.common.close : dict.common.openMenu}</span>
+          </button>
         </div>
       </div>
-    </>
+
+      {menuOpen && (
+        <div
+          ref={menuRef}
+          id="bm-mobile-menu"
+          className="mobile-menu"
+          role="panel"
+          aria-label={dict.common.menu}
+          onKeyDown={handleKeyDown}
+        >
+          <div className="mobile-menu__inner shell">
+            <button className="mobile-menu__close" onClick={closeMenu} aria-label={dict.common.close}>
+              {dict.common.close}
+            </button>
+            <ul className="mobile-menu__list">
+              {NAV_ROUTES.map((route) => {
+                const active =
+                  pathname === localizedPath(locale, route.path) ||
+                  (route.key !== "about" &&
+                    pathname.startsWith(localizedPath(locale, route.path)));
+                return (
+                  <li key={route.key}>
+                    <Link
+                      href={localizedPath(locale, route.path)}
+                      className={`mobile-menu__link ${active ? "active" : ""}`}
+                      aria-current={active ? "page" : undefined}
+                      onClick={closeMenu}
+                    >
+                      {route.label(dict)}
+                    </Link>
+                  </li>
+                );
+              })}
+              <li>
+                <Link
+                  href={localizedPath(locale, "/privacy")}
+                  className="mobile-menu__link"
+                  onClick={closeMenu}
+                >
+                  {dict.nav.privacy}
+                </Link>
+              </li>
+              <li className="mobile-menu__lang">
+                <button className="mobile-menu__lang-btn" onClick={switchLanguage}>
+                  {dict.common.language}:{" "}
+                  <span>{isAr ? "English" : "العربية"}</span>
+                </button>
+              </li>
+            </ul>
+            <div className="mobile-menu__contact">
+              <a className="btn btn-gold" href="#contact" onClick={closeMenu}>
+                {dict.nav.contact}
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </header>
   );
 }

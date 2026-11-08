@@ -19,10 +19,9 @@ export const openGraphLocale: Record<Locale, string> = {
   en: "en_AE",
 };
 
-export const otherLocale: Record<Locale, Locale> = {
-  ar: "en",
-  en: "ar",
-};
+export function otherLocale(locale: Locale): Locale {
+  return locale === "ar" ? "en" : "ar";
+}
 
 export const localeDisplayName: Record<Locale, string> = {
   ar: "العربية",

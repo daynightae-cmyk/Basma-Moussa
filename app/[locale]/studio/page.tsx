@@ -1,176 +1,97 @@
+import { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { PageHero } from "@/components/navigation/PageHero";
-import { StatusBadge } from "@/components/editorial/StatusBadge";
-import { WhatsAppCta } from "@/components/contact/WhatsAppCta";
-import { ArrowIcon } from "@/components/ui/icons";
+
+import { STUDIO_CONTENT } from "@/lib/content/pages/studio";
 import { getAsset } from "@/lib/content/assets";
-import { studioPageContent } from "@/lib/content/pages/studio";
-import { getDictionary } from "@/lib/i18n/dictionary";
-import { isLocale } from "@/lib/i18n/config";
+import { buildPageMeta } from "@/lib/seo";
 import { localizedPath } from "@/lib/i18n/paths";
-import { buildPageMetadata } from "@/lib/seo";
+import { getDictionary } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/config";
+import { BrandThreadSplash } from "@/components/brand/splash";
+import { SectionHeading } from "@/components/editorial/section-heading";
+import { MediaFrame } from "@/components/editorial/media-frame";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
-}) {
-  const { locale: raw } = await params;
-  if (!isLocale(raw)) return {};
-  const locale = raw;
-  const copy = studioPageContent[locale];
-  return buildPageMetadata({
-    locale,
-    path: "/studio",
-    title: copy.hero.title,
-    description: copy.hero.lead,
-    image: "/brand/og-media.jpg",
-    imageAlt: copy.hero.caption,
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const l = locale as Locale;
+  const dict = getDictionary(l);
+  const c = STUDIO_CONTENT[l];
+  return buildPageMeta({
+    locale: l,
+    title: `${c.title} · ${dict.nav.studio}`,
+    description: c.lead,
+    imageAlt: getAsset("bm-09").alt[l],
   });
 }
 
-export default async function StudioPage({
-  params,
-}: {
+interface StudioPageProps {
   params: Promise<{ locale: string }>;
-}) {
-  const { locale: raw } = await params;
-  if (!isLocale(raw)) notFound();
-  const locale = raw;
-  const dict = getDictionary(locale);
-  const copy = studioPageContent[locale];
-  const hero = getAsset("bm-09");
+}
+
+export default async function Studio({ params }: StudioPageProps) {
+  const { locale } = await params;
+  const l: Locale = locale as Locale;
+  const dict = getDictionary(l);
+  const c = STUDIO_CONTENT[l];
 
   return (
     <>
-      <PageHero
-        locale={locale}
-        eyebrow={copy.hero.eyebrow}
-        title={copy.hero.title}
-        lead={copy.hero.lead}
-        asset={hero}
-        caption={copy.hero.caption}
-        variant="split"
-        priority
-        testId="studio-hero"
-        chips={
-          <>
-            <StatusBadge tone="illustrative">
-              {dict.common.illustrative}
-            </StatusBadge>
-            <StatusBadge tone="concept">{dict.status.concept}</StatusBadge>
-          </>
-        }
-        actions={
-          <>
-            <Link className="btn btn--gold" href={localizedPath(locale, "/media")}>
-              {dict.nav.media}
-              <ArrowIcon className="arrow" />
-            </Link>
-            <WhatsAppCta
-              locale={locale}
-              label={copy.cta.action}
-              newTabLabel={dict.common.opensInNewTab}
-              variant="ghost"
-            />
-          </>
-        }
-      />
-
-      <section className="section" aria-labelledby="disclosure-title">
+      <BrandThreadSplash locale={l} dict={dict} />
+      <section className="chapter studio-hero" aria-labelledby="studio-title">
         <div className="shell">
-          <div className="callout">
-            <strong>{copy.disclosure.title}</strong>
-            {copy.disclosure.body}
+          <div className="studio-hero__grid grid-uneven">
+            <div className="studio-hero__text reveal">
+              <SectionHeading
+                eyebrow={c.eyebrow}
+                title={c.title}
+                lead={c.lead}
+              />
+              <p className="media-caption">{c.caption[l]}</p>
+            </div>
+            <MediaFrame
+              src={getAsset("bm-09").src}
+              alt={getAsset("bm-09").alt[l]}
+              width={getAsset("bm-09").width}
+              height={getAsset("bm-09").height}
+              sizes="(max-width: 768px) 100vw, 48vw"
+              className="studio-hero__frame"
+            />
           </div>
         </div>
       </section>
 
-      <section className="section section--tight" aria-labelledby="method-title">
-        <div className="shell">
-          <div className="section-head">
-            <p className="eyebrow">{copy.method.eyebrow}</p>
-            <h2 id="method-title">{copy.method.title}</h2>
-            <p className="lead">{copy.method.lead}</p>
-          </div>
-          <div className="method">
-            {copy.method.steps.map((step) => (
-              <article className="method__step" key={step.number}>
-                <span className="method__number" aria-hidden="true">
-                  {step.number}
-                </span>
-                <h3>{step.title}</h3>
-                <p>{step.body}</p>
-                <p className="media-caption">
-                  <span className="dot" aria-hidden="true" />
-                  {step.gate}
-                </p>
-              </article>
+      <section className="chapter process">
+        <div className="shell strips__grid">
+          <SectionHeading eyebrow={{ ar: "العملية", en: "The process" }} title={{ ar: "", en: "" }} lead="" />
+          <div className="grid-uneven strips__grid">
+            {c.steps.map((step, i) => (
+              <div key={i} className="panel process-step reveal-delay">
+                <span className="process__label">{step.label[l]}</span>
+                <h4 className="process__title">{step.title[l]}</h4>
+                <p className="process__body">{step.body[l]}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section" aria-labelledby="library-title">
-        <div className="shell">
-          <div className="split split--media-wide">
-            <div className="split__copy">
-              <p className="eyebrow">{copy.library.eyebrow}</p>
-              <h2 id="library-title">{copy.library.title}</h2>
-              <p className="lead">{copy.library.body}</p>
-              <div className="panel panel--flat" style={{ padding: "1.2rem 1.4rem" }}>
-                <div className="metric">
-                  <span className="metric__value" aria-hidden="true">
-                    {copy.library.metric}
-                  </span>
-                  <span className="metric__label">{copy.library.metricLabel}</span>
-                </div>
-                <p className="media-caption" style={{ marginBlockStart: "0.6rem" }}>
-                  <span className="dot" aria-hidden="true" />
-                  {copy.library.note}
-                </p>
-              </div>
-              <Link className="text-link" href={localizedPath(locale, "/media")}>
-                {dict.nav.media}
-                <ArrowIcon className="arrow" />
-              </Link>
-            </div>
-            <div className="empty-state">
-              <span className="empty-state__label">{copy.library.eyebrow}</span>
-              <h3>{dict.status.notPublished}</h3>
-              <p>{copy.hero.caption}</p>
-              <StatusBadge tone="illustrative">
-                {dict.common.illustrative}
-              </StatusBadge>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--hairline" aria-labelledby="studio-cta-title">
-        <div className="shell">
-          <div className="panel panel--gold">
-            <div
-              className="section-head section-head--split"
-              style={{ marginBlockEnd: 0 }}
-            >
-              <div>
-                <p className="eyebrow">{copy.hero.eyebrow}</p>
-                <h2 id="studio-cta-title" className="compact">
-                  {copy.cta.title}
-                </h2>
-                <p className="lead">{copy.cta.body}</p>
-              </div>
-              <WhatsAppCta
-                locale={locale}
-                label={copy.cta.action}
-                newTabLabel={dict.common.opensInNewTab}
-              />
-            </div>
-          </div>
+      <section className="chapter chapter--tight library">
+        <div className="shell panel reveal">
+          <p className="eyebrow eyebrow-gold">{c.libraryTitle}</p>
+          <p className="lead">{c.libraryBody[l]}</p>
+          <Link href={localizedPath(l, "/media")} className="btn btn-ghost">
+            {dict.common.explore} · {dict.nav.media}
+            <svg className="icon-arrow" viewBox="0 0 24 24" style={{ marginInlineStart: "0.5rem" }}>
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </section>
     </>
   );
 }
+

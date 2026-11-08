@@ -1,171 +1,123 @@
-import { notFound } from "next/navigation";
-import { PageHero } from "@/components/navigation/PageHero";
-import { StatusBadge } from "@/components/editorial/StatusBadge";
-import { WhatsAppCta } from "@/components/contact/WhatsAppCta";
+import { Metadata } from "next";
+import Link from "next/link";
+
+import { STORIES_CONTENT } from "@/lib/content/pages/stories";
 import { getAsset } from "@/lib/content/assets";
-import { storiesPageContent } from "@/lib/content/pages/stories";
+import { buildPageMeta } from "@/lib/seo";
+import { localizedPath } from "@/lib/i18n/paths";
 import { getDictionary } from "@/lib/i18n/dictionary";
-import { isLocale } from "@/lib/i18n/config";
-import { buildPageMetadata } from "@/lib/seo";
+import type { Locale } from "@/lib/i18n/config";
+import { BrandThreadSplash } from "@/components/brand/splash";
+import { SectionHeading } from "@/components/editorial/section-heading";
+import { MediaFrame } from "@/components/editorial/media-frame";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
-}) {
-  const { locale: raw } = await params;
-  if (!isLocale(raw)) return {};
-  const locale = raw;
-  const copy = storiesPageContent[locale];
-  return buildPageMetadata({
-    locale,
-    path: "/stories",
-    title: copy.hero.title,
-    description: copy.hero.lead,
-    image: "/brand/og-stories.jpg",
-    imageAlt: copy.hero.caption,
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const l = locale as Locale;
+  const dict = getDictionary(l);
+  const c = STORIES_CONTENT[l];
+  return buildPageMeta({
+    locale: l,
+    title: `${c.title} · ${dict.nav.stories}`,
+    description: c.statusLine,
+    imageAlt: getAsset("bm-13").alt[l],
   });
 }
 
-export default async function StoriesPage({
-  params,
-}: {
+interface StoriesPageProps {
   params: Promise<{ locale: string }>;
-}) {
-  const { locale: raw } = await params;
-  if (!isLocale(raw)) notFound();
-  const locale = raw;
-  const dict = getDictionary(locale);
-  const copy = storiesPageContent[locale];
-  const hero = getAsset("bm-13");
+}
+
+export default async function Stories({ params }: StoriesPageProps) {
+  const { locale } = await params;
+  const l: Locale = locale as Locale;
+  const dict = getDictionary(l);
+  const c = STORIES_CONTENT[l];
 
   return (
     <>
-      <PageHero
-        locale={locale}
-        eyebrow={copy.hero.eyebrow}
-        title={copy.hero.title}
-        lead={copy.hero.lead}
-        asset={hero}
-        caption={copy.hero.caption}
-        variant="wide"
-        priority
-        testId="stories-hero"
-        chips={
-          <>
-            <StatusBadge tone="concept">{dict.status.concept}</StatusBadge>
-            <StatusBadge tone="unavailable">{dict.status.notPublished}</StatusBadge>
-          </>
-        }
-        actions={
-          <WhatsAppCta
-            locale={locale}
-            label={copy.cta.action}
-            newTabLabel={dict.common.opensInNewTab}
-          />
-        }
-      />
-
-      <section className="section" aria-labelledby="archive-status-title">
+      <BrandThreadSplash locale={l} dict={dict} />
+      <section className="chapter stories-hero" aria-labelledby="stories-title">
         <div className="shell">
-          <div className="section-head">
-            <p className="eyebrow">{copy.status.eyebrow}</p>
-            <h2 id="archive-status-title">{copy.status.title}</h2>
-            <p className="lead">{copy.status.body}</p>
-          </div>
-
-          <div className="panel panel--gold">
-            <div className="status-grid" style={{ marginBlockStart: 0 }}>
-              <div className="metric">
-                <span className="metric__value" aria-hidden="true">
-                  {copy.status.metric}
-                </span>
-                <span className="metric__label">{copy.status.metricLabel}</span>
-              </div>
-              <div className="metric">
-                <span className="metric__value" aria-hidden="true">
-                  {copy.status.metricSecondary}
-                </span>
-                <span className="metric__label">
-                  {copy.status.metricSecondaryLabel}
-                </span>
-              </div>
-            </div>
-            <p className="media-caption" style={{ marginBlockStart: "1rem" }}>
-              <span className="dot" aria-hidden="true" />
-              {copy.status.note}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--hairline" aria-labelledby="lanes-title">
-        <div className="shell">
-          <div className="section-head">
-            <p className="eyebrow">{copy.lanes.eyebrow}</p>
-            <h2 id="lanes-title">{copy.lanes.title}</h2>
-            <p className="lead">{copy.lanes.lead}</p>
-          </div>
-          <div className="four-grid">
-            {copy.lanes.items.map((lane, index) => (
-              <article className="pillar" key={lane.title}>
-                <span className="pillar__index" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3>{lane.title}</h3>
-                <p>{lane.body}</p>
-                <StatusBadge tone="concept">{dict.status.concept}</StatusBadge>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section" aria-labelledby="policy-title">
-        <div className="shell">
-          <div className="section-head section-head--split">
-            <div>
-              <p className="eyebrow">{copy.policy.eyebrow}</p>
-              <h2 id="policy-title">{copy.policy.title}</h2>
-            </div>
-            <p className="section-head__aside">{copy.policy.note}</p>
-          </div>
-          <div className="method method--stacked">
-            {copy.policy.items.map((item, index) => (
-              <article className="method__step" key={item}>
-                <span className="method__number" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3>{item}</h3>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--hairline" aria-labelledby="stories-cta-title">
-        <div className="shell">
-          <div className="panel panel--gold">
-            <div
-              className="section-head section-head--split"
-              style={{ marginBlockEnd: 0 }}
-            >
-              <div>
-                <p className="eyebrow">{copy.hero.eyebrow}</p>
-                <h2 id="stories-cta-title" className="compact">
-                  {copy.cta.title}
-                </h2>
-                <p className="lead">{copy.cta.body}</p>
-              </div>
-              <WhatsAppCta
-                locale={locale}
-                label={copy.cta.action}
-                newTabLabel={dict.common.opensInNewTab}
+          <div className="stories-hero__grid grid-uneven">
+            <MediaFrame
+              src={getAsset("bm-13").src}
+              alt={getAsset("bm-13").alt[l]}
+              width={getAsset("bm-13").width}
+              height={getAsset("bm-13").height}
+              sizes="(max-width: 768px) 100vw, 56vw"
+              className="stories-hero__frame"
+            />
+            <div className="stories-hero__text reveal">
+              <SectionHeading
+                eyebrow={c.eyebrow}
+                title={c.title}
+                lead={c.lead}
               />
+              <div className="stories-hero__meta">
+                <span className="badge badge--concept">{dict.status.conceptShort}</span>
+                <span>{c.statusLine}</span>
+              </div>
+              <p className="media-caption">{c.caption[l]}</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="chapter chapter--tight archive-note">
+        <div className="shell panel reveal">
+          <p className="eyebrow eyebrow-gold">{dict.nav.stories}</p>
+          <p className="lead">{c.archiveNote}</p>
+        </div>
+      </section>
+
+      <section className="chapter lanes">
+        <div className="shell strips__grid">
+          <SectionHeading
+            eyebrow={{ ar: "مسارات الأرشيف", en: "Archive lanes" }}
+            title={{ ar: "ما سيُروى هنا", en: "What will be told here" }}
+            lead=""
+          />
+          <div className="grid-uneven strips__grid">
+            {c.lanes.map((lane, i) => (
+              <div key={i} className="panel lane-card reveal-delay">
+                <h4 className="lane-card__title">{lane.title[l]}</h4>
+                <p className="lane-card__body">{lane.body[l]}</p>
+                <span className="badge badge--concept lane-card__status">{String(lane.status[l])}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="chapter chapter--tight policy">
+        <div className="shell strips__grid">
+          <SectionHeading eyebrow={{ ar: "سياسة النشر", en: "Publication policy" }} title={{ ar: "", en: "" }} lead="" />
+          <ul className="editorial-list">
+            {c.policy.map((item, i) => (
+              <li key={i} className="reveal-delay">
+                <strong>{item.title[l]}</strong> — {item.body[l]}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="chapter chapter--tight">
+        <div className="shell text-center reveal">
+          <Link href={localizedPath(l, "/media")} className="btn btn-ghost">
+            {dict.common.backToUniverse}
+            <svg className="icon-arrow" viewBox="0 0 24 24" style={{ marginInlineStart: "0.5rem" }}>
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </section>
     </>
   );
 }
+

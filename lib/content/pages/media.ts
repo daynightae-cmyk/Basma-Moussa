@@ -1,45 +1,52 @@
-import type { LocalizedPair } from "../types";
-
-const ar = {
-  hero: {
+export const MEDIA_CONTENT: Record<"ar" | "en", {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  statusLine: string;
+  searchLabel: string;
+  searchPlaceholder: string;
+  filterLabel: string;
+  filterAll: string;
+  resetLabel: string;
+  resultsOne: string;
+  resultsMany: string;
+  noResultsTitle: string;
+  noResultsBody: string;
+  deeperTitle: string;
+  deeperLead: string;
+}> = {
+  ar: {
     eyebrow: "عالم الإعلام",
-    title: "خريطة عوالم، لا قائمة برامج.",
-    lead: "أربعة عوالم مفاهيمية، لكل منها باب ولغة بصرية خاصة. ابحث أو صفِّ حسب النوع — ثم افتح الباب.",
-    note: "لا حلقات منشورة. كل بطاقة تحمل حالتها الحقيقية.",
+    title: "ابحث في العوالم",
+    lead: "مفاهيم برامج، وتصاميم، وحالات صادقة. ابحث، فلترة، وادخل الباب.",
+    statusLine: "كل ما تراه هنا مفهوم قيد التطوير — غير منشور.",
+    searchLabel: "ابحث في العوالم",
+    searchPlaceholder: "مثال: حوارات، قانون، صوت، مدينة",
+    filterLabel: "تصفية حسب النوع",
+    filterAll: "الكل",
+    resetLabel: "إعادة الضبط",
+    resultsOne: "نتيجة واحدة",
+    resultsMany: "{count} نتائج",
+    noResultsTitle: "لا نتائج",
+    noResultsBody: "جرب كلمة مفتاحية أخرى، أو أعد ضبط الفلتر.",
+    deeperTitle: "طرق أخرى إلى الكون",
+    deeperLead: "أرشيف القصص، الاستوديو، الشخصية، والتواصل.",
   },
-  catalog: {
-    eyebrow: "الفهرس",
-    title: "اختر عالمك.",
-    lead: "ابحث بالعنوان أو الموضوع، وصفِّ العوالم حسب النوع. كل نتيجة رابط حقيقي يمكن مشاركته والعودة منه.",
-  },
-  secondary: {
-    eyebrow: "مسارات أعمق",
-    title: "أكثر من بوابة.",
-    lead: "أرشيف، استوديو، حكاية شخصية، ودعوة للتعاون — طرق أخرى إلى العالم نفسه.",
-  },
-  statusNote:
-    "كل العوالم هنا مفاهيم قيد التطوير. لا نعرض حلقات أو ضيوفًا أو أرقام مشاهدة لم تُقس فعليًا.",
-} as const;
-
-const en: LocalizedPair<typeof ar>["en"] = {
-  hero: {
+  en: {
     eyebrow: "Media Universe",
-    title: "A map of worlds, not a list of shows.",
-    lead: "Four conceptual worlds, each with its own door and visual language. Search or filter by kind — then open the door.",
-    note: "No published episodes. Every card carries its true status.",
+    title: "Search the worlds",
+    lead: "Program concepts, formats, and honest statuses. Search, filter, and step through the door.",
+    statusLine: "Everything here is a concept in development — nothing published yet.",
+    searchLabel: "Search the worlds",
+    searchPlaceholder: "Try: conversation, legal, audio, city",
+    filterLabel: "Filter by kind",
+    filterAll: "All worlds",
+    resetLabel: "Reset",
+    resultsOne: "One result",
+    resultsMany: "{count} results",
+    noResultsTitle: "No matching worlds",
+    noResultsBody: "Try a broader word or reset the filters. Everything shown here is a genuine concept in development, never a published episode.",
+    deeperTitle: "More ways into the universe",
+    deeperLead: "Story archive, studio, about, and collaboration.",
   },
-  catalog: {
-    eyebrow: "The index",
-    title: "Choose your world.",
-    lead: "Search by title or theme, and filter the worlds by kind. Every result is a real, shareable link you can return from.",
-  },
-  secondary: {
-    eyebrow: "Deeper paths",
-    title: "More than a gateway.",
-    lead: "An archive, a studio, a personal story and an invitation to collaborate — other ways into the same world.",
-  },
-  statusNote:
-    "Every world here is a concept in development. We show no episodes, guests, or viewer numbers that were not actually measured.",
 };
-
-export const mediaPageContent: LocalizedPair<typeof ar> = { ar, en };

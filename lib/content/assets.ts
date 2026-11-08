@@ -1,50 +1,52 @@
-import rawAssets from "@/content/media-assets.json";
-import blurPlaceholders from "@/content/image-placeholders.json";
-import { mediaAssetsFileSchema } from "./schemas";
-import type { FocalPoint, MediaAsset } from "./types";
+import {
+  validateMediaAssets,
+  type AssetRecord,
+} from "@/lib/content/schemas";
+import mediaAssetsJson from "@/content/media-assets.json";
 
-const FOCAL_POINTS: Record<string, FocalPoint> = {
-  "bm-01": { x: 50, y: 55 },
-  "bm-02": { x: 50, y: 32 },
-  "bm-03": { x: 50, y: 45 },
-  "bm-04": { x: 48, y: 55 },
-  "bm-05": { x: 50, y: 30 },
-  "bm-06": { x: 50, y: 50 },
-  "bm-07": { x: 55, y: 50 },
-  "bm-08": { x: 55, y: 45 },
-  "bm-09": { x: 55, y: 50 },
-  "bm-10": { x: 50, y: 32 },
-  "bm-11": { x: 45, y: 55 },
-  "bm-12": { x: 62, y: 50 },
-  "bm-13": { x: 50, y: 50 },
-  "bm-14": { x: 32, y: 45 },
+const validated = validateMediaAssets(mediaAssetsJson);
+
+const focalPoints: Record<string, { x: number; y: number }> = {
+  "bm-01": { x: 48, y: 42 }, // voice identity: waveform/lotus centered
+  "bm-02": { x: 50, y: 34 }, // about portrait
+  "bm-03": { x: 50, y: 46 }, // legal dialogue
+  "bm-04": { x: 50, y: 52 }, // legal lens
+  "bm-05": { x: 50, y: 28 }, // professional portrait
+  "bm-06": { x: 50, y: 50 }, // approved logo
+  "bm-07": { x: 52, y: 48 }, // legal research detail
+  "bm-08": { x: 52, y: 46 }, // contact atmosphere
+  "bm-09": { x: 55, y: 48 }, // media universe studio
+  "bm-10": { x: 50, y: 32 }, // alternate portrait
+  "bm-11": { x: 48, y: 56 }, // Sharjah waterfront
+  "bm-12": { x: 50, y: 50 }, // interview studio
+  "bm-13": { x: 50, y: 50 }, // documentary archive
+  "bm-14": { x: 52, y: 46 }, // home hero: face left, text-safe right
 };
 
-const parsed = mediaAssetsFileSchema.parse(rawAssets);
+export const ASSETS: AssetRecord[] = validated.assets.map((asset) => ({
+  ...asset,
+  focalPoint: focalPoints[asset.id] ?? { x: 50, y: 50 },
+}));
 
-export const assets: MediaAsset[] = parsed.assets.map((asset) => {
-  const blurDataURL = (blurPlaceholders as Record<string, string>)[asset.id];
-  if (!blurDataURL) {
-    throw new Error(`Missing blur placeholder for asset: ${asset.id}`);
-  }
-  return {
-    ...asset,
-    focalPoint: FOCAL_POINTS[asset.id] ?? { x: 50, y: 50 },
-    blurDataURL,
-  };
-});
-
-const assetIndex = new Map(assets.map((asset) => [asset.id, asset]));
-
-export const sourceAuditDate = parsed.sourceAuditDate;
-
-export function getAsset(id: string): MediaAsset {
-  const asset = assetIndex.get(id);
-  if (!asset) {
-    throw new Error(`Unknown media asset: ${id}`);
-  }
+export function getAsset(id: string): AssetRecord {
+  const asset = ASSETS.find((item) => item.id === id);
+  if (!asset) throw new Error(`Unknown media asset: ${id}`);
   return asset;
 }
 
-export const BRAND_LOGO = getAsset("bm-06");
-export const HOME_HERO = getAsset("bm-14");
+export function getAssetBySrc(src: string): AssetRecord {
+  const asset = ASSETS.find((item) => item.src === src);
+  if (!asset) throw new Error(`Unknown media asset src: ${src}`);
+  return asset;
+}
+
+export function assetsForPage(page: string): AssetRecord[] {
+  return ASSETS.filter((asset) => asset.pages.includes(page));
+}
+
+export function isIllustrative(id: string): boolean {
+  return getAsset(id).provenance === "user-supplied-ai-concept";
+}
+
+export const BRAND_LOGO_ID = "bm-06";
+export const BRAND_ICON_ID = "icon-circle";

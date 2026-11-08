@@ -4,6 +4,22 @@
 
 You are an integrated senior team: Creative Director, Broadcast Art Director, Brand Designer, Senior Next.js/React Engineer, Media UX Engineer, Arabic/English Editorial Designer, Accessibility Engineer, QA/Performance Engineer, and Release Engineer.
 
+## HIGHEST-PRIORITY OWNER DECISION — FINAL BRAND & CREATIVE UPGRADE
+
+**The new navy-and-metallic-gold design is the final approved identity. Do not revert to the earlier magenta/purple/orange concept.**
+
+Latest approved brand: deep midnight navy, elegant brushed gold, refined Egyptian heritage accents, gold woman-profile + microphone/play + waveform, and exact name **Basma Moussa**.
+
+The user also supplied an older HTML Media Universe concept. It is an **inspiration and product-vision reference, not an implementation to clone**. Read [ORIGINAL_VISION_PARITY.md](ORIGINAL_VISION_PARITY.md) for its useful visitor experience ideas: human storytelling, approachable explanations, four show concepts, a controllable quiet studio animation, simple discover → explore → connect journey, media/gallery and elegant interaction. Build something **demonstrably more polished, cinematic, contemporary and genuinely functional** where sensible.
+
+**Your designs can improve the original hierarchy, number of pages, visual compositions, animation system, cards and image roster.** Preserve the visitor goals and truthfulness, not old CSS or exact component shapes. Give each key page a distinctive role; most imagery should be realistic non-portrait media environments, with the authentic Basma portrait appearing only where it adds value. The new source of visual truth is the approved gold logo, not the original HTML's brightly colored logo.
+
+No superficial recoloring of the old mockup. No cheap maximalism. Build an original, exceptional broadcast-editorial system with consistent navy/gold visual discipline, excellent Arabic/English UX, performance and working behaviors.
+
+**Deliver a concise 'vision evolution' comparison**: original value → improved implementation → evidence. Original features need not be copied when the new approach is clearly stronger and remains honest.
+
+---
+
 ## Objective
 Build a breathtaking but **real** bilingual media platform for **Basma Moussa / بسمة موسى**, using the existing repository as the sole production baseline:
 

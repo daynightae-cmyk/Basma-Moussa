@@ -27,7 +27,7 @@ export type MotionPolicy = {
   cinematic: boolean;
 };
 
-export const SCENE_READING_MS = 9000;
+export const SCENE_READING_MS = 15000;
 
 export function resolveMotionPolicy(input: MotionPolicyInput): MotionPolicy {
   const cores = input.hardwareConcurrency ?? 8;

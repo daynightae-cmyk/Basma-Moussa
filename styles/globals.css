@@ -2106,6 +2106,270 @@ html[lang="ar"] .process__label {
   text-align: center;
 }
 
+/* ==========================================================================
+   Cinematic experience tokens — T01 (Basma Moussa Media Universe)
+   Broadcast-grade motion system. All durations/easings derive from these
+   tokens so every scene feels like one authored universe, not separate pages.
+   ========================================================================== */
+
+:root {
+  /* Easing curves */
+  --ease-cinema: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-door: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-thread: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-gold: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Durations (ms) */
+  --dur-fast: 220ms;
+  --dur-base: 450ms;
+  --dur-slow: 750ms;
+  --dur-cinema: 1200ms;
+  --dur-logo: 2400ms;
+
+  /* Z-layers (broadcast stacking) */
+  --z-base: 10;
+  --z-header: 60;
+  --z-mobile-menu: 55;
+  --z-splash: 90;
+  --z-door: 100;
+  --z-grain: 5;
+}
+
+/* Logical motion helpers */
+.motion-reduce {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* ==========================================================================
+   Cinematic scene director — T01
+   ========================================================================== */
+.cine-director {
+  position: relative;
+  isolation: isolate;
+}
+.cine-scene-wrap {
+  position: relative;
+  will-change: opacity, transform;
+  transition: opacity 450ms var(--ease-cinema), transform 450ms var(--ease-cinema);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cine-scene-wrap { transition: none !important; }
+}
+.cine-scene--pending {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+}
+.cine-scene--active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Golden particle field — T01 (atmospheric only, never audio telemetry)
+   ========================================================================== */
+.golden-field {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.golden-thread {
+  position: absolute;
+  width: 1px;
+  height: clamp(60px, 12vw, 220px);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(215, 171, 98, 0.45),
+    transparent
+  );
+  filter: blur(0.6px);
+  opacity: 0;
+  border-radius: 2px;
+}
+.golden-thread--0 { animation: thread-drift 20s var(--ease-thread) infinite; }
+.golden-thread--1 { animation: thread-drift 26s var(--ease-thread) infinite reverse; }
+.golden-thread--2 { animation: thread-drift 18s var(--ease-thread) infinite; }
+.golden-thread--3 { animation: thread-drift 24s var(--ease-thread) infinite reverse; }
+
+@keyframes thread-drift {
+  0% { transform: translateY(0) scaleY(0.35); opacity: 0; }
+  20% { opacity: 0.55; }
+  80% { opacity: 0.55; transform: translateY(-110%) scaleY(1.15); }
+  100% { transform: translateY(-130%) scaleY(0.25); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .golden-thread { animation: none; opacity: 0.18; transform: none; }
+  .cine-scene-wrap { transition: none !important; }
+}
+
+/* ==========================================================================
+   Cinematic Hero Slider — T03
+   ========================================================================== */
+.cine-slider {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 520px;
+  max-height: 86vh;
+  overflow: hidden;
+  border-radius: 24px;
+  background: #070b18;
+  outline: none;
+}
+@media (max-width: 768px) {
+  .cine-slider { aspect-ratio: 4 / 5; min-height: 560px; border-radius: 18px; }
+}
+.cine-slider__stage { position: absolute; inset: 0; }
+.cine-slide {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transform: scale(1.06);
+  transition: opacity 900ms var(--ease-cinema), transform 1600ms var(--ease-cinema);
+  will-change: opacity, transform;
+}
+.cine-slide--active { opacity: 1; transform: scale(1); }
+.cine-slide--inactive { pointer-events: none; }
+.cine-slide__bg { position: absolute; inset: 0; overflow: hidden; }
+.cine-slide__img {
+  width: 100%; height: 100%; object-fit: cover;
+  transform: scale(1.08);
+  transition: transform 6000ms var(--ease-cinema);
+}
+.cine-slide--active .cine-slide__img { transform: scale(1); }
+.cine-slide__veil {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(100deg, rgba(7,11,24,0.86) 0%, rgba(7,11,24,0.55) 45%, rgba(7,11,24,0.25) 75%, rgba(7,11,24,0.55) 100%),
+    radial-gradient(ellipse at 20% 30%, rgba(215,171,98,0.18), transparent 60%);
+}
+html[lang="en"] .cine-slide__veil {
+  background:
+    linear-gradient(260deg, rgba(7,11,24,0.86) 0%, rgba(7,11,24,0.55) 45%, rgba(7,11,24,0.25) 75%, rgba(7,11,24,0.55) 100%),
+    radial-gradient(ellipse at 80% 30%, rgba(215,171,98,0.18), transparent 60%);
+}
+.cine-slide__sweep {
+  position: absolute; inset: 0;
+  background: linear-gradient(115deg, transparent 40%, rgba(242,215,160,0.16) 50%, transparent 60%);
+  transform: translateX(-100%);
+  opacity: 0;
+}
+.cine-slide--active .cine-slide__sweep {
+  animation: cine-sweep 1.6s var(--ease-cinema) 0.2s forwards;
+}
+@keyframes cine-sweep {
+  0% { transform: translateX(-100%); opacity: 0; }
+  40% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+.cine-slide__content {
+  position: absolute;
+  inset-inline-start: clamp(1.5rem, 6vw, 5rem);
+  inset-block-end: clamp(2rem, 6vw, 5rem);
+  max-width: min(640px, 88%);
+  color: #fbf7ef;
+  z-index: 3;
+}
+.cine-slide__eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #f2d7a0;
+  opacity: 0;
+  transform: translateY(12px);
+}
+.cine-slide--active .cine-slide__eyebrow {
+  animation: cine-rise 700ms var(--ease-cinema) 0.25s forwards;
+}
+.cine-slide__title {
+  margin: 0 0 0.85rem;
+  font-size: clamp(1.9rem, 4.2vw, 3.4rem);
+  line-height: 1.12;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateY(18px);
+  clip-path: inset(0 0 100% 0);
+}
+.cine-slide--active .cine-slide__title {
+  animation: cine-title 900ms var(--ease-cinema) 0.4s forwards;
+}
+.cine-slide__lead {
+  margin: 0 0 1.25rem;
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  line-height: 1.7;
+  color: rgba(251,247,239,0.86);
+  opacity: 0;
+  transform: translateY(14px);
+}
+.cine-slide--active .cine-slide__lead {
+  animation: cine-rise 800ms var(--ease-cinema) 0.7s forwards;
+}
+.cine-slide__cta-row {
+  display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+  opacity: 0;
+  transform: translateY(12px);
+}
+.cine-slide--active .cine-slide__cta-row {
+  animation: cine-rise 700ms var(--ease-cinema) 0.95s forwards;
+}
+.cine-slide__counter {
+  font-size: 0.8rem; letter-spacing: 0.12em;
+  color: rgba(242,215,160,0.7);
+}
+@keyframes cine-rise {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes cine-title {
+  to { opacity: 1; transform: translateY(0); clip-path: inset(0 0 0% 0); }
+}
+.cine-slider__chrome {
+  position: absolute; inset-inline: 0; bottom: 1rem;
+  display: flex; align-items: center; justify-content: center; gap: 1rem;
+  z-index: 5; padding: 0 1.25rem;
+}
+.cine-slider__nav {
+  width: 44px; height: 44px; border-radius: 999px;
+  border: 1px solid rgba(242,215,160,0.4);
+  background: rgba(7,11,24,0.55);
+  color: #f2d7a0; cursor: pointer;
+  display: grid; place-items: center;
+  backdrop-filter: blur(6px);
+  transition: background 200ms var(--ease-cinema), transform 200ms var(--ease-cinema);
+}
+.cine-slider__nav:hover { background: rgba(215,171,98,0.25); transform: scale(1.06); }
+.cine-slider__nav svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.cine-slider__progress { display: flex; gap: 0.5rem; align-items: center; }
+.cine-slider__dot {
+  width: 34px; height: 4px; border-radius: 2px;
+  background: rgba(242,215,160,0.25); border: 0; cursor: pointer; padding: 0;
+  transition: background 300ms var(--ease-cinema), width 300ms var(--ease-cinema);
+}
+.cine-slider__dot--active { background: #d7ab62; width: 52px; }
+.cine-slider__pause {
+  position: absolute; top: 1rem; inset-inline-end: 1rem; z-index: 5;
+  width: 40px; height: 40px; border-radius: 999px;
+  border: 1px solid rgba(242,215,160,0.3);
+  background: rgba(7,11,24,0.5); color: #f2d7a0; cursor: pointer;
+  font-size: 0.7rem; backdrop-filter: blur(6px);
+}
+.cine-slider__reduced-note {
+  position: absolute; bottom: 4.5rem; inset-inline-start: 1.5rem; z-index: 5;
+  font-size: 0.75rem; color: rgba(251,247,239,0.6);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cine-slide, .cine-slide__img, .cine-slide__eyebrow, .cine-slide__title, .cine-slide__lead, .cine-slide__cta-row {
+    transition: none !important; animation: none !important; opacity: 1 !important; transform: none !important; clip-path: none !important;
+  }
+  .cine-slide--inactive { display: none; }
+}
+
 /* Icon arrow */
 .icon-arrow {
   width: 16px;

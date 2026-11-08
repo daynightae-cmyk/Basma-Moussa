@@ -16,6 +16,9 @@ import { ProvenanceCaption } from "@/components/editorial/provenance-caption";
 import { PortalLink } from "@/components/navigation/portal-link";
 import { WorldHero } from "@/components/home/world-hero";
 import { PORTAL_WORLDS } from "@/lib/content/worlds";
+import { CinematicHeroSlider } from "@/components/cinematic/CinematicHeroSlider";
+import { GoldenParticleField } from "@/components/cinematic/GoldenParticleField";
+import { CinematicSceneDirector } from "@/components/cinematic/CinematicSceneDirector";
 import { whatsappHref } from "@/lib/site";
 
 export async function generateMetadata({
@@ -68,7 +71,7 @@ export default async function Home({
             width={asset.width}
             height={asset.height}
             sizes="(max-width: 768px) 100vw, 48vw"
-            loading="lazy"
+            loading={world.id === "beyond-the-frame" ? "eager" : "lazy"}
             className="portal-card__img"
             priority={world.id === "beyond-the-frame"}
           />
@@ -84,12 +87,12 @@ export default async function Home({
             <p className="portal-card__kicker">{world.kicker[l]}</p>
             <h3 className="portal-card__title">{world.title[l]}</h3>
             <p className="portal-card__teaser">{world.teaser[l]}</p>
-            <a className="portal-card__cta" href={localizedPath(l, world.href)}>
+            <span className="portal-card__cta">
               {dict.common.enterWorld}
               <svg className="icon-arrow" viewBox="0 0 24 24">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
-            </a>
+            </span>
           </>
         }
       />
@@ -103,45 +106,73 @@ export default async function Home({
 
       <section className="chapter--tight hero" aria-labelledby="hero-title">
         <div className="shell">
-          <div className="hero-wrap">
-            <MediaFrame
-              src={getAsset("bm-14").src}
-              alt={getAsset("bm-14").alt[l]}
-              width={getAsset("bm-14").width}
-              height={getAsset("bm-14").height}
-              sizes="(max-width: 768px) 100vw, 80vw"
-              priority
-              className="hero__frame"
-            />
-            <div className="hero__body reveal">
-              <p className="eyebrow eyebrow-gold">{c.eyebrow}</p>
-              <h1 id="hero-title" className="display display-xl wordmark-ar">
-                {c.title}
-              </h1>
-              <p className="lead reveal-delay">{c.lead}</p>
-              <div className="hero__meta reveal-delay">
-                <StatusBadge status="concept" dict={dict} />
-                <span className="hero__status-text">{c.statusLine}</span>
-              </div>
-              <p className="media-caption reveal-delay">{c.heroCaption}</p>
-              <div className="hero__ctas reveal-delay">
-                <Link href={localizedPath(l, "/media")} className="btn btn-gold">
-                  {c.primaryCta}
-                </Link>
-                <a
-                  href={whatsappHref(l)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-ghost"
-                >
-                  {c.secondaryCta}
-                </a>
-              </div>
+          <GoldenParticleField count={12} opacity={0.05} />
+          <CinematicHeroSlider
+            locale={l}
+            ariaLabel={c.title}
+            scenes={[
+              {
+                id: "first-voice",
+                assetId: "bm-14",
+                eyebrow: { ar: c.eyebrow, en: c.eyebrow },
+                title: { ar: c.title, en: c.title },
+                lead: { ar: c.lead, en: c.lead },
+                ctaLabel: { ar: c.primaryCta, en: c.primaryCta },
+                ctaHref: "/media",
+                camera: "push",
+              },
+              {
+                id: "beyond-frame",
+                assetId: "bm-12",
+                eyebrow: { ar: "عالم ٠١", en: "World 01" },
+                title: { ar: "ما وراء الإطار", en: "Beyond the Frame" },
+                lead: {
+                  ar: "استوديو حوار فاخر، كاميرا تتحرك، وقصة إنسانية في كل لقطة.",
+                  en: "A luxury conversation studio, a moving camera, a human story in every frame.",
+                },
+                ctaLabel: { ar: "ادخل الاستوديو", en: "Enter the studio" },
+                ctaHref: "/programs/beyond-the-frame",
+                camera: "drift",
+              },
+              {
+                id: "golden-frequency",
+                assetId: "bm-08",
+                eyebrow: { ar: "عالم ٠٤", en: "World 04" },
+                title: { ar: "التردد الذهبي", en: "The Golden Frequency" },
+                lead: {
+                  ar: "فضاء صوتي رقمي، موجات ذهبية، وصوت ينتظر أن يُسمع.",
+                  en: "A digital audio space, golden waves, a voice waiting to be heard.",
+                },
+                ctaLabel: { ar: "ادخل Soundroom", en: "Enter Soundroom" },
+                ctaHref: "/soundroom",
+                camera: "breathe",
+              },
+            ]}
+          />
+          <div className="hero__body reveal" style={{ marginTop: "1.5rem" }}>
+            <div className="hero__meta reveal-delay">
+              <StatusBadge status="concept" dict={dict} />
+              <span className="hero__status-text">{c.statusLine}</span>
+            </div>
+            <p className="media-caption reveal-delay">{c.heroCaption}</p>
+            <div className="hero__ctas reveal-delay">
+              <Link href={localizedPath(l, "/media")} className="btn btn-gold">
+                {c.primaryCta}
+              </Link>
+              <a
+                href={whatsappHref(l)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-ghost"
+              >
+                {c.secondaryCta}
+              </a>
             </div>
           </div>
         </div>
       </section>
 
+      <CinematicSceneDirector scrollReveal ariaLabel="Home journey">
       <section className="chapter" id="intro">
         <div className="shell grid-uneven">
           <div className="intro__text reveal">
@@ -281,6 +312,7 @@ export default async function Home({
           </div>
         </div>
       </section>
+      </CinematicSceneDirector>
     </>
   );
 }

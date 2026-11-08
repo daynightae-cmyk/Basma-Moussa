@@ -140,12 +140,12 @@ export function MediaContent({ locale }: MediaContentProps) {
                       <p className="portal-card__kicker">{world.kicker[locale]}</p>
                       <h3 className="portal-card__title">{world.title[locale]}</h3>
                       <p className="portal-card__teaser">{world.teaser[locale]}</p>
-                      <a className="portal-card__cta" href={localizedPath(locale, world.href)}>
+                      <span className="portal-card__cta">
                         {dict.common.enterWorld}
                         <svg className="icon-arrow" viewBox="0 0 24 24">
                           <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                      </a>
+                      </span>
                     </>
                   }
                 />

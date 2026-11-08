@@ -1,5 +1,35 @@
 # Project Status
 
+## Cinematic application milestone — 2026-11-08
+
+The bilingual application now exists as a working Next.js 16 codebase on `feat/basma-app-foundation-20261108`.
+
+Verified locally on Windows with Node 22 / npm:
+- Production build succeeds (33 static routes, both locales).
+- `tsc --noEmit` and ESLint pass.
+- 43 Vitest + Testing Library unit/component tests pass.
+- 28 Playwright browser tests pass against `next start` on port 3100:
+  - splash first visit, skip, session persistence, `?replay=1`, `?no-intro=1`, reduced motion;
+  - locale switch and RTL/LTR direction;
+  - mobile menu open, initial focus, Escape, close on navigation;
+  - portal door overlay, route arrival, back navigation, secondary-world doors, deep links;
+  - media search/filter/empty/reset; soundroom honesty; legal official sources; contact honesty;
+  - real HTTP 404s, redirects, localized noindex, canonical/hreflang/OG, JSON-LD, sitemap, robots;
+  - axe WCAG A/AA scans on 11 routes in each locale with zero reported violations;
+  - 390px horizontal-overflow checks across 12 routes and verified contact-image loading;
+  - measured LCP/CLS budget on the cinematic home.
+- The 14 owner-supplied media assets are committed with provenance, illustrative status, `publishedClaimAllowed: false`, focal points and blur placeholders.
+- A new `.github/workflows/app-quality.yml` workflow runs lint, typecheck, unit tests, production build and Playwright in CI. Its first remote run starts with the pull request.
+
+Explicitly not verified yet:
+- Public deployment or a production domain.
+- First CI run and merge of the pull request.
+- Real audio/video playback, a CMS/database, or an official data API.
+- Published episodes, guests, audience figures or legal credentials.
+- Final owner approval of the expanded visual treatment on physical devices.
+
+All cinematic imagery remains illustrative/brand concept material, not documentation of a broadcast or professional event.
+
 ## GitHub foundation milestone — 2026-11-08
 - Target: `daynightae-cmyk/Basma-Moussa` (**public**).
 - Before foundation: empty repository; no branches, no commits, no open pull requests; `main` was the declared default but had not existed as a Git ref.
@@ -13,14 +43,14 @@
 - [x] Vision and art direction recorded
 - [x] Privacy/editorial guardrails documented
 - [x] Asset paths and acceptance criteria specified
-- [ ] Application source code
-- [ ] Install / lint / typecheck / tests
-- [ ] Interactive browser runtime
-- [ ] Media assets in version control
-- [ ] CI configured and verified
+- [x] Application source code (Next.js 16, React 19, TypeScript)
+- [x] Install / lint / typecheck / tests
+- [x] Interactive browser runtime
+- [x] Media assets in version control
+- [x] CI configured in the repository (first remote run pending)
 - [ ] Public deployment / smoke verification
 
-The checked boxes above refer to repository/documentation work only. **Do not infer a published website.**
+The checked boxes above refer to repository and local verification work only. **Do not infer a published website.**
 
 ## Cinematic media asset & DeepSeek execution package — 2026-11-08
 

@@ -1,0 +1,45 @@
+# Dependencies / build artifacts
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+playwright-report/
+test-results/
+.turbo/
+.vercel/
+*.tsbuildinfo
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+
+# Private verification documents — never publish in this PUBLIC repository
+private/
+_private/
+confidential/
+credentials-private/
+**/passport-*.pdf
+**/visa-*.pdf
+**/id-scan-*.pdf
+**/raw-cv-private.pdf
+
+# Original bulk master images not intentionally published
+asset-originals/
+unapproved-media/

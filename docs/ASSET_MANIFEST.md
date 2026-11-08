@@ -23,11 +23,19 @@
 | M05 | `public/media/05-soundroom.webp` | Podcast studio and microphone | 1600×1200 4:3 | Clean central media subject |
 | M06 | `public/media/06-legal-lens.webp` | Books/justice/editorial visual | 1920×1080 16:9 | Quiet negative space for legal copy |
 | M07 | `public/media/07-city-voices.webp` | UAE field journalism concept | 1200×1600 3:4 | Respect documentary vs illustrative label |
-| M08 | `public/media/08-documentary-archive.webp` | Research desk/history/storytelling | 1920×1080 16:9 | No fake readable document content |
-| M09 | `public/media/09-behind-the-scenes.webp` | Camera/production process | 1920×1080 16:9 | Gear and craft, no fabricated studio claims |
+| M08 | `public/media/08-voice-identity.webp` | Abstract gold-on-navy voice / soundwave visual, no face needed | 2560×1080 panoramic | Empty space for UI overlays |
+| M09 | `public/media/09-uae-stories.webp` | Authentic/licensed contemporary UAE media-context architecture; no face needed | 1920×1080 16:9 | Real location imagery, safe for text overlays |
 | M10 | `public/media/10-contact-portrait.webp` | Contact editorial portrait | 1200×1600 3:4 | Warm expression, safe crop |
 
 **Additional derivatives:** output AVIF/WebP responsive variants at 480, 768, 1280, 1920 sizes where beneficial, but preserve original master off the public web bundle. Use `next/image` with explicit aspect and `sizes`. Check EXIF stripping and privacy before publish.
+
+## Art direction & evolution
+
+The original HTML proposed a distinct set of ten visuals. The new design **may adjust the number, composition and allocation of media assets** if a stronger site experience results. Cover the key themes (home/basma, media studio, podcast, legal lens, UAE, human story, sound identity, contact) without repeating her face in every image.
+
+The **new navy/metallic-gold palette and approved Egyptian-accent logo are authoritative**. Do not reinstate old magenta/violet/orange branding from the historical mockup.
+
+Documentary archive and behind-the-scenes images are worthwhile additions if they serve real sections. Assets listed here are a planning manifest, not files verified to exist.
 
 ## Asset quality gates
 - Compare generated woman's face against the approved real portrait; reject significant deviation.

@@ -1,12 +1,22 @@
-# Original Media Universe Vision — Fidelity Contract
+# Original Media Universe Vision — Creative Evolution & Experience Continuity
 **Source reviewed:** user-provided `Basma_Moussa_Media_Universe.html` (November 2026), a **self-contained interactive Arabic presentation**. This source is a storyboard/vision demo, **not a published application or evidence of actual produced shows**.
+
+## Final approved direction — decisive creative freedom
+
+**OWNER DECISION (2026-11-08): The current deep-navy and metallic-gold Egyptian-accent identity is final.** The old magenta/violet/orange color palette and colorful logo are **retired from the implementation direction**. The older HTML is a **source of useful narrative and interaction ideas, not a pixel-perfect template or binding layout**.
+
+**Creative freedom:** If the new design genuinely improves upon an old interaction, layout, section hierarchy or media experience, **implement the stronger solution**. Preserve the *purpose* (human storytelling, media discovery, legal insight, clarity, authentic contact), not the exact old markup, geometry, hover animation, number of sections or filenames. No forced fidelity at the expense of elegance, accessibility, speed or actual product functionality.
+
+Before a significant redesign, compare what user benefit the original delivered and show what the superior new implementation delivers. An enhancement needs working behavior, reviewed visual output and clear navigation—not a claim that 'new = better'. Do not remove unique valuable functionality without an equivalent or a documented reason.
+
+**Only strict locks:** exact brand spelling **Basma Moussa**; the current approved navy × gold brand and Egyptian detail; honest status of proposed programs; recognizable authentic subject; usable Arabic/English experience; safely working functions and contact actions.
 
 ## Authority & migration
 This document protects the **experience, narrative, information hierarchy, and interaction language** of the original vision. It does **not** override the user's **later approved navy/metallic-gold logo** with a subtle Egyptian heritage signature.
 
 **Priority when sources conflict:**
-1. Latest explicitly approved Basma Moussa logo and named identity (gold on navy; Egyptian motif, circular favicon).
-2. Original HTML **experience and storytelling** detailed below.
+1. Latest explicitly approved Basma Moussa logo and named identity (**locked** gold on navy; Egyptian motif, circular favicon).
+2. Original HTML **creative intent, visitor goals and useful interactions** below; improve freely rather than clone.
 3. Current technical architecture, truthful content requirements, accessibility, security and verification.
 4. Extra proposed features, only if they do not dilute 1–3.
 
@@ -19,7 +29,7 @@ This document protects the **experience, narrative, information hierarchy, and i
 | UI style | Cinematic, soft-glass, fluid, emotionally inviting | **Preserve expressive layering, depth, clarity and nuanced motion** but adapt materials to polished navy/gold |
 | Content | Human story + media programs + legal perspective + UAE identity | **Preserve**, while distinguishing proposals from published work |
 
-## Original section-by-section parity checklist
+## Original section-by-section inspiration checklist (retain value, not exact page structure)
 
 | Original HTML section | Explicit original content | Requirement for new application |
 |---|---|---|
@@ -62,7 +72,7 @@ The original HTML has:
 - Print/PDF-specific layout considerations.
 - A real WhatsApp action.
 
-**Build decisions:**
+**Recommended design upgrades rather than cloning:**
 - Preserve simple working controls (theme, nav, motion preference) and meaningful feedback.
 - Preserve the optional editorial light mode **if it can be properly designed end-to-end**; otherwise report omission, do not pretend it exists.
 - Build an AR/EN interface (the original was **Arabic only**, with AR/EN as a proposal).
@@ -73,14 +83,14 @@ The original HTML has:
 ## Honesty constraints
 The original itself states these program cards are **concepts**, and the studio interface is a **visual-only preview**. Never turn them into fake episodes, fake live status, fabricated guests, false professional credentials or claims of a registered media broadcaster. Authentic contact action must be confirmed approved for publication.
 
-## Definition of vision parity
-1. Every essential HTML experience above has an explicit mapping in app source or a justified documented replacement.
+## Definition of vision continuity and improvement
+1. Every **valuable visitor goal** above has a clear, observable implementation or a better justified replacement; exact old layout and section count are not mandatory.
 2. New identity uses latest approved logo, **not** the old bright logo.
 3. The hero emphasizes **story / voice / vision**, not generic agency metrics.
 4. All four media concepts are easy to find and visually distinct.
 5. A nontechnical visitor can explain **who Basma is, what she is building, how to explore, and how to contact her** within a short journey.
 6. Studio motion is genuinely controllable; actual audio/video playback is truthful.
-7. Ten core visual roles are mapped by content model and named asset paths; documentary extras don't displace them.
+7. Maintain a diverse useful media-asset library covering cinematic presence, legal insight, interviews/podcasts, human story, UAE context, brand soundwaves and collaboration. The *exact count and order of scenes can improve* when supported by new page designs; label concepts and confirm final assets before publishing.
 8. Both desktop and mobile design are reviewed, AR/EN tested, no unaudited fake completion.
 
 **Implementation note:** The original uploaded HTML is an archival product-vision reference, not a source file already in the GitHub repository. Avoid committing its embedded photographs, outdated branding or 1.9MB base64 presentation without separate approval.

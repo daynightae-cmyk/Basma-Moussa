@@ -1,0 +1,46 @@
+/* Basma Moussa | Full-viewport editorial chapters.
+   Dedicated selectors prevent overlap with existing media portal/sliders. */
+.story-stage{position:relative;isolation:isolate;background:#070b18;color:#fbf7ef;width:100%;max-width:100%;overflow:clip}
+.story-stage__pin{position:relative}
+.story-stage__sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#070b18}
+.story-stage__track{display:flex;flex-direction:row;direction:ltr;height:100%;transform:translate3d(0,0,0);will-change:transform}
+.story-panel{position:relative;isolation:isolate;flex:0 0 100vw;width:100vw;max-width:100vw;height:100vh;height:100svh;overflow:hidden;background:#070b18}
+html[dir="rtl"] .story-panel{direction:rtl}
+html[dir="ltr"] .story-panel{direction:ltr}
+.story-panel__media{position:absolute;inset:0;overflow:hidden}
+.story-panel__img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.87) contrast(1.07)}
+.story-panel__veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(7,11,24,.94) 0%,rgba(7,11,24,.65) 36%,rgba(7,11,24,.08) 82%),linear-gradient(0deg,rgba(7,11,24,.8),transparent 40%);pointer-events:none}
+html[dir="rtl"] .story-panel__veil{background:linear-gradient(270deg,rgba(7,11,24,.94) 0%,rgba(7,11,24,.65) 36%,rgba(7,11,24,.08) 82%),linear-gradient(0deg,rgba(7,11,24,.8),transparent 40%)}
+.story-panel--frequency .story-panel__veil{background:linear-gradient(90deg,rgba(7,11,24,.75),rgba(7,11,24,.12)),linear-gradient(0deg,rgba(7,11,24,.75),transparent 75%)}
+.story-panel__copy{position:absolute;z-index:3;inset-inline-start:clamp(1.5rem,7vw,10rem);top:50%;transform:translateY(-45%);width:min(43rem,46vw);max-width:calc(100% - 3rem);text-align:start}
+.story-panel__kicker{color:#f2d7a0;text-transform:uppercase;letter-spacing:.2em;font-size:.75rem;font-weight:700;margin:0 0 1rem}
+.story-panel__title{font-family:var(--font-alexandria),Georgia,serif;font-size:clamp(2.3rem,5.8vw,6.5rem);font-weight:600;line-height:1.18;letter-spacing:-.035em;color:#fbf7ef;text-wrap:balance;margin:0 0 1.2rem}
+html[dir="ltr"] .story-panel__title{font-family:var(--font-marcellus),Georgia,serif}
+.story-panel__lead{color:#eadcc9;font-size:clamp(1rem,1.4vw,1.25rem);max-width:32rem;line-height:1.8;margin:0 0 1.8rem;text-wrap:pretty}
+.story-panel__cta{position:relative;z-index:5}
+.story-stage__chrome{position:absolute;z-index:10;inset-inline:clamp(.5rem,4vw,4rem);bottom:clamp(1.5rem,4.5vh,4rem);display:flex;align-items:center;gap:clamp(.5rem,1.6vw,1.6rem);padding:.65rem 1rem;border:1px solid rgba(215,171,98,.25);border-radius:999px;background:rgba(7,11,24,.63);backdrop-filter:blur(14px);box-shadow:0 12px 30px rgba(0,0,0,.2);max-width:calc(100vw - 2rem)}
+.story-stage__nav{width:2.75rem;height:2.75rem;flex-shrink:0;border:1px solid rgba(215,171,98,.46);border-radius:50%;background:rgba(215,171,98,.09);color:#f2d7a0;display:grid;place-items:center;cursor:pointer}
+.story-stage__nav:disabled{opacity:.3;cursor:not-allowed}
+.story-stage__nav:hover:not(:disabled),.story-stage__nav:focus-visible{background:#d7ab62;color:#070b18;outline:2px solid #f2d7a0;outline-offset:2px}
+.story-stage__nav svg{width:1.3rem;height:1.3rem;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.story-stage__meter{height:2px;background:rgba(242,215,160,.23);flex:1;min-width:1rem;max-width:15rem;overflow:hidden}
+.story-stage__meter-fill{height:100%;width:100%;background:linear-gradient(90deg,#d7ab62,#f2d7a0);transform-origin:left;transition:transform .1s linear}
+.story-stage__dots{display:flex;gap:.6rem;align-items:center}
+.story-stage__dot{width:.6rem;height:.6rem;border:1px solid #d7ab62;background:transparent;border-radius:50%;padding:0;cursor:pointer;flex-shrink:0}
+.story-stage__dot.is-active{background:#f2d7a0;box-shadow:0 0 0 4px rgba(242,215,160,.14)}
+.story-stage__dot:focus-visible{outline:2px solid #f2d7a0;outline-offset:4px}
+.story-stage__progress-label{font-size:.75rem;letter-spacing:.12em;color:#f2d7a0;white-space:nowrap;font-variant-numeric:tabular-nums}
+.story-stage--mobile .story-stage__mobile-chrome{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 1.25rem;background:#0b1124}
+.story-stage__mobile-scroller{direction:ltr;display:flex;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#d7ab62 transparent;max-width:100vw}
+.story-stage__mobile-scroller .story-panel{scroll-snap-align:start;scroll-snap-stop:always;flex:0 0 100%;height:min(80svh,800px);min-height:36rem}
+.story-stage--mobile .story-panel__copy{width:calc(100% - 3rem);inset-inline-start:1.5rem;top:auto;bottom:clamp(2rem,8vh,6rem);transform:none}
+.story-stage--mobile .story-panel__title{font-size:clamp(2.2rem,8vw,4.5rem)}
+.story-stage--mobile .story-panel__veil{background:linear-gradient(0deg,rgba(7,11,24,.98) 2%,rgba(7,11,24,.74) 46%,rgba(7,11,24,.04) 100%)}
+.story-stage--mobile .story-panel__lead{font-size:1rem;line-height:1.6}
+.story-stage--reduced .story-stage__stack{display:grid;gap:1px}
+.story-stage--reduced .story-panel{width:100%;max-width:100%;height:auto;min-height:clamp(32rem,65vh,44rem)}
+.story-stage--reduced .story-panel__copy{width:min(40rem,80%);top:50%;transform:translateY(-50%)}
+.story-stage--reduced .story-panel__img{filter:none}
+@media (max-width:899px){.story-stage__chrome{display:none}.story-panel__title{font-size:clamp(2.3rem,7.5vw,4.5rem)}.story-panel__copy{width:min(38rem,85vw)}}
+@media (max-width:520px){.story-stage--reduced .story-panel__copy{inset-inline-start:1.5rem;width:calc(100% - 3rem);top:auto;bottom:2rem;transform:none}.story-stage--reduced .story-panel__veil{background:linear-gradient(0deg,#070b18,rgba(7,11,24,.7) 55%,transparent)}.story-panel__kicker{letter-spacing:.12em}.story-stage--mobile .story-panel__copy{bottom:2.4rem}.story-stage__dot{min-width:.75rem;min-height:.75rem}}
+@media (prefers-reduced-motion:reduce){.story-stage *{animation:none!important;transition:none!important;scroll-behavior:auto!important}.story-stage__track{transform:none!important;will-change:auto!important}}

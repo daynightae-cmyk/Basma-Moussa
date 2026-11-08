@@ -3,6 +3,9 @@ import { test, expect, type Page } from "@playwright/test";
 const BASE = process.env.BASE_URL ?? "http://127.0.0.1:3100";
 
 async function openUniverse(page: Page, locale: "ar" | "en") {
+  // This suite exercises portals, not the intro. Set session state before hydration
+  // so a delayed splash mount cannot appear after the initial visibility check.
+  await page.addInitScript(() => sessionStorage.setItem("bm-splash-seen", "1"));
   await page.goto(`${BASE}/${locale}/media`);
   await expect(page.getByTestId("world-discovery")).toBeVisible();
   const skip = page.getByRole("button", { name: /تخطّي المقدمة|Skip intro/ });

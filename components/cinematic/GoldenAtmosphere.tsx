@@ -13,8 +13,8 @@ export function GoldenAtmosphere({ className = "", enabled = true }: GoldenAtmos
   const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const policy = resolveMotionPolicy({
     reducedMotion: reduced,
-    hardwareConcurrency: navigator.hardwareConcurrency,
-    saveData: (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData,
+    hardwareConcurrency: typeof navigator !== "undefined" ? navigator.hardwareConcurrency : undefined,
+    saveData: typeof navigator !== "undefined" ? (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData : undefined,
     viewportWidth: typeof window !== "undefined" ? window.innerWidth : 1440,
   });
 

@@ -17,6 +17,8 @@ import { WorldHero } from "@/components/home/world-hero";
 import { PORTAL_WORLDS } from "@/lib/content/worlds";
 import { whatsappHref } from "@/lib/site";
 import { CinematicHeroSlider } from "@/components/cinematic/CinematicHeroSlider";
+import { HorizontalStoryStage } from "@/components/cinematic/HorizontalStoryStage";
+import { HOME_STORY_PANELS } from "@/lib/experience/scene-data";
 
 export async function generateMetadata({
   params,
@@ -126,6 +128,13 @@ export default async function Home({
           </div>
         </div>
       </section>
+
+      {/* Five connected full-viewport chapters, vertical scroll drives horizontal camera travel. */}
+      <HorizontalStoryStage
+        locale={l}
+        panels={HOME_STORY_PANELS}
+        ariaLabel={l === "ar" ? "رحلة بصرية عبر عوالم بسمة موسى" : "A cinematic journey through Basma Moussa media worlds"}
+      />
 
       <section className="chapter chapter--tight worlds" id="worlds">
         <div className="shell">

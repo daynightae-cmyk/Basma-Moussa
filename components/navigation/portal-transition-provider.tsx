@@ -141,6 +141,28 @@ export function PortalTransitionProvider({ children }: { children: ReactNode }) 
     }
   }, [phase]);
 
+  // Transfer focus after the decorative overlay actually unmounts.
+  // The arriving phase may run while the portal button is still focused.
+  useEffect(() => {
+    if (phase !== "complete") return;
+    const heading = destinationHeading.current;
+    if (!heading?.isConnected) return;
+    const frame = window.requestAnimationFrame(() => {
+      if (!heading.isConnected) return;
+      const focused = document.activeElement;
+      const hasIntentionalDestinationFocus =
+        focused !== document.body &&
+        focused?.isConnected &&
+        focused !== originTrigger.current &&
+        !focused?.hasAttribute("data-portal-skip");
+      if (hasIntentionalDestinationFocus) return;
+      heading.setAttribute("tabindex", "-1");
+      heading.focus({ preventScroll: true });
+      heading.addEventListener("blur", () => heading.removeAttribute("tabindex"), { once: true });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [phase]);
+
   return (
     <Ctx.Provider value={{ machine, openDoor, closeDoor, advance: dispatch }}>
       {children}

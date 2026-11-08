@@ -1,6 +1,8 @@
 /* ————————————————————————————————————————————————————————————
-   Cinematic surfaces: the home premiere, its scenes and navigation.
-   Loaded after app/globals.css so the scene system owns these rules.
+   LEGACY / REFERENCE — cinematic scene language archive.
+   Production styles are integrated into styles/globals.css and wired
+   through components/cinematic/* (CinematicHeroSlider, HorizontalStoryStage).
+   Keep this file for forensic recovery; do not import it as a second system.
    ———————————————————————————————————————————————————————————— */
 
 .cine-hero {

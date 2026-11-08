@@ -1,6 +1,14 @@
 "use client";
 
-import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 
 type DoorState = "idle" | "sealed" | "opening" | "open";
 
@@ -30,13 +38,11 @@ export function PortalTransitionProvider({
   const [image, setImage] = useState("");
   const [label, setLabel] = useState("");
   const [rect, setRect] = useState<DoorOpts["rect"] | null>(null);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const clearTimers = useCallback(() => {
-    if (timer.current) {
-      clearTimeout(timer.current);
-      timer.current = null;
-    }
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
   }, []);
 
   const closeDoor = useCallback(() => {
@@ -57,12 +63,15 @@ export function PortalTransitionProvider({
       setImage(opts.src);
       setLabel(opts.label);
       setState("sealed");
-      timer.current = setTimeout(() => setState("opening"), 30);
-      timer.current = setTimeout(() => setState("open"), 980);
-      timer.current = setTimeout(closeDoor, 1400);
+      timers.current.push(setTimeout(() => setState("opening"), 30));
+      timers.current.push(setTimeout(() => setState("open"), 980));
+      timers.current.push(setTimeout(closeDoor, 1400));
     },
-    [clearTimers, closeDoor]
+    [clearTimers, closeDoor],
   );
+
+  // Cleanup on unmount / route teardown so orphaned timers cannot leak.
+  useEffect(() => () => clearTimers(), [clearTimers]);
 
   return (
     <Ctx.Provider value={{ openDoor, closeDoor, state, image, label, rect }}>

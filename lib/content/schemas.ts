@@ -87,7 +87,9 @@ export const legalOutlineSchema = z.object({
   note: localizedTextSchema,
 });
 
-export type AssetRecord = z.infer<typeof assetRecordSchema>;
+export type AssetRecord = z.infer<typeof assetRecordSchema> & {
+  focalPoint?: { x: number; y: number };
+};
 export type OfficialSourceRecord = z.infer<typeof officialSourceSchema>;
 export type ProgramRecordBase = z.infer<typeof programRecordSchema>;
 export type LegalOutlineRecord = z.infer<typeof legalOutlineSchema>;

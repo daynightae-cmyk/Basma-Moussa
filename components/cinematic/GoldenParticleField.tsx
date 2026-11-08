@@ -40,7 +40,7 @@ export function GoldenParticleField({
 
   return (
     <div
-      className="golden-field"
+      className="golden-field golden-field--local"
       aria-hidden="true"
       aria-label={ariaLabel}
       style={opacity != null ? { opacity } : {}}

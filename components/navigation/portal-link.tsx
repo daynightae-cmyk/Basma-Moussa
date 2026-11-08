@@ -52,10 +52,16 @@ export function PortalLink({
     [href, doorImage, doorLabel, openDoor, router, isExternal]
   );
 
+  // Avoid duplicating `.portal-card` when callers already include it
+  // (nested same-class selectors break layout density).
+  const classes = className?.includes("portal-card")
+    ? className
+    : ["portal-card", className].filter(Boolean).join(" ");
+
   return (
     <Link
       href={href}
-      className={`portal-card ${className ?? ""}`}
+      className={classes}
       onClick={handleClick}
     >
       <div ref={mediaRef} className="portal-card__media" data-testid="portal-media">

@@ -2,27 +2,14 @@
 
 import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+
 /**
- * CinematicSceneDirector
- *
- * Shared scene orchestration layer. Wraps a sequence of scenes and reveals
- * them with staggered, coordinated timing on mount and as they enter the
- * viewport. Keeps one consistent motion policy across the universe so every
- * route feels like part of the same broadcast premiere.
- *
- * Contract:
- * - Staggered entrance (never all-at-once pop-in).
- * - Scroll-progress reveal for below-fold scenes.
- * - Reduced-motion: skips stagger, renders everything fully opaque immediately.
- * - Cleanup: removes observers/timers on unmount or navigation interruption.
- * - No continuous raf loop; CSS handles motion, JS only coordinates state.
+ * Shared scene orchestration — staggered / scroll-reveal wrappers.
+ * CSS owns motion; JS only coordinates visibility state.
  */
 interface CinematicSceneDirectorProps {
-  /** Scenes to orchestrate (rendered as direct children). */
   children: React.ReactNode;
-  /** Base stagger delay between scenes. */
   stagger?: number;
-  /** When true, reveal only when scrolled into view (below-fold scenes). */
   scrollReveal?: boolean;
   ariaLabel?: string;
 }
@@ -34,42 +21,60 @@ export function CinematicSceneDirector({
   ariaLabel,
 }: CinematicSceneDirectorProps) {
   const childArray = React.Children.toArray(children);
-  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const [activeSet, setActiveSet] = useState<Set<number>>(() =>
-    reduced ? new Set(childArray.map((_, i) => i)) : new Set(),
-  );
+  const rootRef = useRef<HTMLElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const [reduced, setReduced] = useState(false);
+  const [activeSet, setActiveSet] = useState<Set<number>>(new Set());
 
-  const reveal = useCallback((index: number) => {
-    setActiveSet((prev) => new Set([...prev, index]));
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReduced(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
   }, []);
 
-  // Mount reveal: staggered, unless reduced motion (then all visible at once).
+  const reveal = useCallback((index: number) => {
+    setActiveSet((prev) => {
+      if (prev.has(index)) return prev;
+      const next = new Set(prev);
+      next.add(index);
+      return next;
+    });
+  }, []);
+
   useEffect(() => {
-    if (reduced) return;
+    if (reduced) {
+      setActiveSet(new Set(childArray.map((_, i) => i)));
+      return;
+    }
+    if (scrollReveal) return;
     const timers: ReturnType<typeof setTimeout>[] = [];
     childArray.forEach((_, i) => {
       timers.push(setTimeout(() => reveal(i), i * stagger));
     });
     return () => {
       timers.forEach(clearTimeout);
-      setActiveSet(new Set());
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [reduced, scrollReveal, stagger, reveal, childArray.length]);
 
-  // Scroll reveal: IntersectionObserver for below-fold scenes.
   useEffect(() => {
-    if (!scrollReveal || reduced) return;
-    const els = document.querySelectorAll("[data-cine-scene]");
+    if (!scrollReveal || reduced) {
+      if (reduced && scrollReveal) {
+        setActiveSet(new Set(childArray.map((_, i) => i)));
+      }
+      return;
+    }
+    const root = rootRef.current;
+    if (!root) return;
+    const els = root.querySelectorAll<HTMLElement>("[data-cine-scene]");
     observerRef.current = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const idx = Number((entry.target as HTMLElement).dataset.cineScene);
-            if (!Number.isNaN(idx)) reveal(idx);
-            observerRef.current?.unobserve(entry.target);
-          }
+          if (!entry.isIntersecting) return;
+          const idx = Number((entry.target as HTMLElement).dataset.cineScene);
+          if (!Number.isNaN(idx)) reveal(idx);
+          observerRef.current?.unobserve(entry.target);
         });
       },
       { threshold: 0.12, rootMargin: "0px 0px -10% 0px" },
@@ -79,19 +84,18 @@ export function CinematicSceneDirector({
       observerRef.current?.disconnect();
       observerRef.current = null;
     };
-  }, [scrollReveal, reveal, reduced]);
-
-  const isActive = (index: number) => activeSet.has(index);
+  }, [scrollReveal, reveal, reduced, childArray.length]);
 
   return (
     <section
+      ref={rootRef}
       className="cine-director"
       aria-label={ariaLabel}
-      aria-live="polite"
     >
       {childArray.map((child, i) => {
-        const cls = isActive(i) ? "cine-scene--active" : "cine-scene--pending";
-        const hidden = !isActive(i) && !reduced;
+        const cls = activeSet.has(i)
+          ? "cine-scene--active"
+          : "cine-scene--pending";
         return (
           <div
             key={i}
@@ -105,5 +109,3 @@ export function CinematicSceneDirector({
     </section>
   );
 }
-
-

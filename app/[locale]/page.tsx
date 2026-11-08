@@ -17,8 +17,13 @@ import { PortalLink } from "@/components/navigation/portal-link";
 import { WorldHero } from "@/components/home/world-hero";
 import { PORTAL_WORLDS } from "@/lib/content/worlds";
 import { CinematicHeroSlider } from "@/components/cinematic/CinematicHeroSlider";
-import { GoldenParticleField } from "@/components/cinematic/GoldenParticleField";
+import { GoldenAtmosphere } from "@/components/cinematic/GoldenAtmosphere";
 import { CinematicSceneDirector } from "@/components/cinematic/CinematicSceneDirector";
+import { HorizontalStoryStage } from "@/components/cinematic/HorizontalStoryStage";
+import {
+  HOME_HERO_SCENES,
+  HOME_JOURNEY_SCENES,
+} from "@/lib/experience/scene-data";
 import { whatsappHref } from "@/lib/site";
 
 export async function generateMetadata({
@@ -52,7 +57,9 @@ export default async function Home({
   const { replay } = await searchParams;
   const c = HOME_CONTENT[l];
   const dict = getDictionary(l);
-  const showReplay = Array.isArray(replay) ? replay.includes("1") : replay === "1";
+  const showReplay = Array.isArray(replay)
+    ? replay.includes("1")
+    : replay === "1";
 
   const worldCard = (world: (typeof PORTAL_WORLDS)[number]) => {
     const asset = getAsset(world.assetId);
@@ -104,216 +111,192 @@ export default async function Home({
       <BrandThreadSplash locale={l} dict={dict} />
       {showReplay && <p className="sr-only">{dict.common.replayIntro}</p>}
 
-      <section className="chapter--tight hero" aria-labelledby="hero-title">
-        <div className="shell">
-          <GoldenParticleField count={12} opacity={0.05} />
-          <CinematicHeroSlider
-            locale={l}
-            ariaLabel={c.title}
-            scenes={[
-              {
-                id: "first-voice",
-                assetId: "bm-14",
-                eyebrow: { ar: c.eyebrow, en: c.eyebrow },
-                title: { ar: c.title, en: c.title },
-                lead: { ar: c.lead, en: c.lead },
-                ctaLabel: { ar: c.primaryCta, en: c.primaryCta },
-                ctaHref: "/media",
-                camera: "push",
-              },
-              {
-                id: "beyond-frame",
-                assetId: "bm-12",
-                eyebrow: { ar: "عالم ٠١", en: "World 01" },
-                title: { ar: "ما وراء الإطار", en: "Beyond the Frame" },
-                lead: {
-                  ar: "استوديو حوار فاخر، كاميرا تتحرك، وقصة إنسانية في كل لقطة.",
-                  en: "A luxury conversation studio, a moving camera, a human story in every frame.",
-                },
-                ctaLabel: { ar: "ادخل الاستوديو", en: "Enter the studio" },
-                ctaHref: "/programs/beyond-the-frame",
-                camera: "drift",
-              },
-              {
-                id: "golden-frequency",
-                assetId: "bm-08",
-                eyebrow: { ar: "عالم ٠٤", en: "World 04" },
-                title: { ar: "التردد الذهبي", en: "The Golden Frequency" },
-                lead: {
-                  ar: "فضاء صوتي رقمي، موجات ذهبية، وصوت ينتظر أن يُسمع.",
-                  en: "A digital audio space, golden waves, a voice waiting to be heard.",
-                },
-                ctaLabel: { ar: "ادخل Soundroom", en: "Enter Soundroom" },
-                ctaHref: "/soundroom",
-                camera: "breathe",
-              },
-            ]}
-          />
-          <div className="hero__body reveal" style={{ marginTop: "1.5rem" }}>
-            <div className="hero__meta reveal-delay">
-              <StatusBadge status="concept" dict={dict} />
-              <span className="hero__status-text">{c.statusLine}</span>
+      <section
+        className="home-hero home-hero--premiere"
+        aria-labelledby="hero-title-proxy"
+      >
+        <h2 id="hero-title-proxy" className="sr-only">
+          {c.title}
+        </h2>
+        <GoldenAtmosphere count={10} opacity={0.055} />
+        <CinematicHeroSlider
+          locale={l}
+          ariaLabel={c.title}
+          caption={c.heroCaption}
+          scenes={HOME_HERO_SCENES}
+        />
+        <div className="home-hero__status shell">
+          <div className="hero__meta">
+            <StatusBadge status="concept" dict={dict} />
+            <span className="hero__status-text">{c.statusLine}</span>
+          </div>
+        </div>
+      </section>
+
+      <HorizontalStoryStage
+        locale={l}
+        scenes={HOME_JOURNEY_SCENES}
+        eyebrow={
+          l === "ar" ? "رحلة سينمائية أفقية" : "Horizontal cinematic journey"
+        }
+        title={
+          l === "ar"
+            ? "خمس مشاهد · عالم إعلامي واحد"
+            : "Five scenes · one media universe"
+        }
+        lead={
+          l === "ar"
+            ? "مرّر عموديًا على سطح المكتب لتتحرك الرحلة أفقيًا عبر لوحات بث كاملة العرض."
+            : "On desktop, vertical scroll drives a full-bleed horizontal broadcast journey."
+        }
+      />
+
+      <CinematicSceneDirector scrollReveal ariaLabel="Home journey">
+        <section className="chapter" id="intro">
+          <div className="shell grid-uneven">
+            <div className="intro__text reveal">
+              <SectionHeading
+                eyebrow={c.introEyebrow}
+                title={c.introTitle}
+                lead={c.introBody}
+              />
             </div>
-            <p className="media-caption reveal-delay">{c.heroCaption}</p>
-            <div className="hero__ctas reveal-delay">
-              <Link href={localizedPath(l, "/media")} className="btn btn-gold">
-                {c.primaryCta}
-              </Link>
+            <div className="intro__pillars">
+              {c.pillars.map((p) => (
+                <div key={p.title} className="panel pillar reveal-delay">
+                  <p className="pillar__title">{p.title}</p>
+                  <p className="pillar__body">{p.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="chapter chapter--tight worlds" id="worlds">
+          <div className="shell">
+            <SectionHeading
+              eyebrow={c.worldsSection.eyebrow}
+              title={c.worldsSection.title}
+              lead={c.worldsSection.lead}
+            />
+            <div className="grid-uneven grid-uneven--worlds">
+              {PORTAL_WORLDS.map(worldCard)}
+            </div>
+            <ProvenanceCaption
+              text={
+                l === "ar"
+                  ? "كل الصور في العوالم تصوّر توضيحي للهوية البصرية، وليست توثيقًا لمساحات حقيقية."
+                  : "All world images illustrate the brand identity — they are not documentation of real places."
+              }
+            />
+          </div>
+        </section>
+
+        <section className="chapter strips">
+          <div className="shell grid-uneven strips__grid">
+            <WorldHero
+              locale={l}
+              asset={getAsset("bm-06")}
+              variant="legal"
+              eyebrow={c.legalSection.eyebrow}
+              title={c.legalSection.title}
+              lead={c.legalSection.lead}
+              href={localizedPath(l, "/legal-lens")}
+            />
+            <WorldHero
+              locale={l}
+              asset={getAsset("bm-13")}
+              variant="stories"
+              eyebrow={c.storiesSection.eyebrow}
+              title={c.storiesSection.title}
+              lead={c.storiesSection.lead}
+              href={localizedPath(l, "/stories")}
+            />
+            <WorldHero
+              locale={l}
+              asset={getAsset("bm-02")}
+              variant="about"
+              eyebrow={c.aboutSection.eyebrow}
+              title={c.aboutSection.title}
+              lead={c.aboutSection.lead}
+              href={localizedPath(l, "/about")}
+            />
+            <WorldHero
+              locale={l}
+              asset={getAsset("bm-09")}
+              variant="studio"
+              eyebrow={c.studioSection.eyebrow}
+              title={c.studioSection.title}
+              lead={c.studioSection.lead}
+              href={localizedPath(l, "/studio")}
+            />
+          </div>
+        </section>
+
+        <section className="chapter chapter--tight journey" id="journey">
+          <div className="shell">
+            <div className="journey__inner grid-uneven">
+              {c.journey.map((step) => (
+                <div key={step.title} className="journey__step reveal-delay">
+                  <span className="journey__label">{step.label}</span>
+                  <h3 className="journey__title">{step.title}</h3>
+                  <p className="journey__body">{step.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section
+          className="chapter chapter--tight contact-strip"
+          id="contact"
+          aria-labelledby="contact-title"
+        >
+          <div className="shell grid-uneven contact-strip__inner">
+            <MediaFrame
+              src={getAsset("bm-10").src}
+              alt={getAsset("bm-10").alt[l]}
+              width={getAsset("bm-10").width}
+              height={getAsset("bm-10").height}
+              sizes="(max-width: 768px) 100vw, 44vw"
+              className="contact-strip__frame"
+            />
+            <div className="contact-strip__body reveal">
+              <SectionHeading
+                eyebrow={c.contact.eyebrow}
+                title={c.contact.title}
+                lead={c.contact.lead}
+              />
               <a
                 href={whatsappHref(l)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-ghost"
+                className="btn btn-gold"
               >
-                {c.secondaryCta}
+                {dict.common.explore} · WhatsApp
+                <svg
+                  className="icon-arrow"
+                  viewBox="0 0 24 24"
+                  style={{ marginInlineStart: "0.5rem" }}
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </a>
+              <p className="media-caption">
+                {dict.common.externalLink} · {dict.common.opensInNewTab}
+              </p>
+              <p className="media-caption contact-strip__note">
+                {dict.common.noForm}
+              </p>
+              <p className="sr-only">
+                <Link href={localizedPath(l, "/contact")}>
+                  {c.secondaryCta}
+                </Link>
+              </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      <CinematicSceneDirector scrollReveal ariaLabel="Home journey">
-      <section className="chapter" id="intro">
-        <div className="shell grid-uneven">
-          <div className="intro__text reveal">
-            <SectionHeading
-              eyebrow={c.introEyebrow}
-              title={c.introTitle}
-              lead={c.introBody}
-            />
-          </div>
-          <div className="intro__pillars">
-            {c.pillars.map((p) => (
-              <div key={p.title} className="panel pillar reveal-delay">
-                <p className="pillar__title">{p.title}</p>
-                <p className="pillar__body">{p.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="chapter chapter--tight worlds" id="worlds">
-        <div className="shell">
-          <SectionHeading
-            eyebrow={c.worldsSection.eyebrow}
-            title={c.worldsSection.title}
-            lead={c.worldsSection.lead}
-          />
-          <div className="grid-uneven grid-uneven--worlds">
-            {PORTAL_WORLDS.map(worldCard)}
-          </div>
-          <ProvenanceCaption
-            text={
-              l === "ar"
-                ? "كل الصور في العوالم تصوّر توضيحي للهوية البصرية، وليست توثيقًا لمساحات حقيقية."
-                : "All world images illustrate the brand identity — they are not documentation of real places."
-            }
-          />
-        </div>
-      </section>
-
-      <section className="chapter strips">
-        <div className="shell grid-uneven strips__grid">
-          <WorldHero
-            locale={l}
-            asset={getAsset("bm-06")}
-            variant="legal"
-            eyebrow={c.legalSection.eyebrow}
-            title={c.legalSection.title}
-            lead={c.legalSection.lead}
-            href={localizedPath(l, "/legal-lens")}
-          />
-          <WorldHero
-            locale={l}
-            asset={getAsset("bm-13")}
-            variant="stories"
-            eyebrow={c.storiesSection.eyebrow}
-            title={c.storiesSection.title}
-            lead={c.storiesSection.lead}
-            href={localizedPath(l, "/stories")}
-          />
-          <WorldHero
-            locale={l}
-            asset={getAsset("bm-02")}
-            variant="about"
-            eyebrow={c.aboutSection.eyebrow}
-            title={c.aboutSection.title}
-            lead={c.aboutSection.lead}
-            href={localizedPath(l, "/about")}
-          />
-          <WorldHero
-            locale={l}
-            asset={getAsset("bm-09")}
-            variant="studio"
-            eyebrow={c.studioSection.eyebrow}
-            title={c.studioSection.title}
-            lead={c.studioSection.lead}
-            href={localizedPath(l, "/studio")}
-          />
-        </div>
-      </section>
-
-      <section className="chapter chapter--tight journey" id="journey">
-        <div className="shell">
-          <div className="journey__inner grid-uneven">
-            {c.journey.map((step) => (
-              <div key={step.title} className="journey__step reveal-delay">
-                <span className="journey__label">{step.label}</span>
-                <h3 className="journey__title">{step.title}</h3>
-                <p className="journey__body">{step.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        className="chapter chapter--tight contact-strip"
-        id="contact"
-        aria-labelledby="contact-title"
-      >
-        <div className="shell grid-uneven contact-strip__inner">
-          <MediaFrame
-            src={getAsset("bm-10").src}
-            alt={getAsset("bm-10").alt[l]}
-            width={getAsset("bm-10").width}
-            height={getAsset("bm-10").height}
-            sizes="(max-width: 768px) 100vw, 44vw"
-            className="contact-strip__frame"
-          />
-          <div className="contact-strip__body reveal">
-            <SectionHeading
-              eyebrow={c.contact.eyebrow}
-              title={c.contact.title}
-              lead={c.contact.lead}
-            />
-            <a
-              href={whatsappHref(l)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-gold"
-            >
-              {dict.common.explore} · WhatsApp
-              <svg
-                className="icon-arrow"
-                viewBox="0 0 24 24"
-                style={{ marginInlineStart: "0.5rem" }}
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-            <p className="media-caption">
-              {dict.common.externalLink} · {dict.common.opensInNewTab}
-            </p>
-            <p className="media-caption contact-strip__note">
-              {dict.common.noForm}
-            </p>
-          </div>
-        </div>
-      </section>
+        </section>
       </CinematicSceneDirector>
     </>
   );
 }
-

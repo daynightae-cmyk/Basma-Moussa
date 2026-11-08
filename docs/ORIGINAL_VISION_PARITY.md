@@ -43,7 +43,7 @@ This document protects the **experience, narrative, information hierarchy, and i
 | `#execution` | Four clear phases: identity → functional UI → approved content → test and publish; approval needs and nonclaims | Preserve straightforward roadmap in public-facing pitch/content only where useful; technical docs remain separate |
 | `#contact` | Warm send-off, actual WhatsApp CTA, the platform grows with real episodes and human stories | Clear genuine contact action, no imaginary forms, always verify public disclosure approval |
 
-## Original ten-scene visual roster (CORE — not optional)
+## Original ten-scene visual roster (creative reference; improve and expand as needed)
 
 The original HTML's plan names **exactly these ten scene purposes**:
 1. **واجهة سينمائية** — authentic Basma hero portrait, cinematic broadcast framing.
@@ -57,9 +57,9 @@ The original HTML's plan names **exactly these ten scene purposes**:
 9. **الإمارات** — authentic/licensed imagery representing UAE urban context; *no face required*.
 10. **صورة التواصل** — warm approved portrait beside CTA.
 
-At least three core visuals need not feature Basma's face (studio, podcast/audio-wave, UAE environment or legal imagery); **do not force portraits into every scene**. Numbering denotes roles, not proof that each original image is completed or available in the coding environment.
+Most visuals need not feature Basma's face (studio, podcast/audio-wave, UAE environment or legal imagery); **do not force portraits into every scene**. Numbering denotes roles, not proof that each original image is completed or available in the coding environment.
 
-**Additional ideas** such as documentary archive and behind-the-scenes are valid *expansion assets*, not replacements for `08-voice-identity` or `09-uae-stories`.
+**Additional ideas** such as documentary archive and behind-the-scenes can be integrated or prioritized when they strengthen the site. Audio identity and the UAE context remain important themes, not mandatory filenames or exact slot numbers.
 
 ## Micro-interaction fidelity — inspectable original behavior
 The original HTML has:

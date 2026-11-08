@@ -1,0 +1,122 @@
+.door-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  pointer-events: none;
+  overflow: hidden;
+  perspective: 1400px;
+}
+.door-scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 11, 24, 0.5);
+  transition: opacity 420ms ease;
+}
+.door-overlay--preparing .door-scrim,
+.door-overlay--opening .door-scrim,
+.door-overlay--arriving .door-scrim { opacity: 0; }
+.door-stage {
+  position: absolute;
+  inset: 0;
+  transform-origin: top left;
+  perspective: 1400px;
+  isolation: isolate;
+}
+.door-overlay--preparing .door-stage { transform: var(--portal-origin); }
+.door-panel {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  background: var(--color-navy-950);
+  will-change: transform, opacity;
+}
+/* Physical halves preserve the image rather than reversing its pixels in RTL. */
+.door-panel--a { clip-path: inset(0 50% 0 0); transform-origin: left center; }
+.door-panel--b { clip-path: inset(0 0 0 50%); transform-origin: right center; }
+.door-overlay--opening .door-panel--a,
+.door-overlay--arriving .door-panel--a { transform: translateX(-55%) rotateY(-18deg); opacity: 0; }
+.door-overlay--opening .door-panel--b,
+.door-overlay--arriving .door-panel--b { transform: translateX(55%) rotateY(18deg); opacity: 0; }
+.door-seam {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(transparent 5%, var(--color-gold-300) 48%, transparent 95%);
+  box-shadow: 0 0 24px 4px rgba(215, 171, 98, 0.3);
+  transform: translateX(-50%);
+  transition: opacity 250ms ease, transform 650ms ease;
+}
+.door-overlay--opening .door-seam,
+.door-overlay--arriving .door-seam { opacity: 0; transform: translateX(-50%) scaleX(18); }
+.door-label {
+  position: absolute;
+  inset-inline: 1rem;
+  bottom: 15%;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  margin-inline: auto;
+  padding: 1rem 2rem;
+  color: var(--color-gold-300);
+  background: rgba(7, 11, 24, 0.88);
+  border-block: 1px solid var(--color-gold-rim);
+  text-align: center;
+  transition: opacity 250ms ease;
+}
+.door-label span { display: block; font-size: 0.75rem; margin-block-end: 0.4rem; }
+.door-label strong { font-size: clamp(1.1rem, 3vw, 2.2rem); font-family: var(--font-display-ar); }
+html[lang="en"] .door-label strong { font-family: var(--font-display-en); }
+.door-overlay--preparing .door-label,
+.door-overlay--opening .door-label,
+.door-overlay--arriving .door-label { opacity: 0; }
+.door-overlay--arriving { opacity: 0; }
+.door-status {
+  position: absolute;
+  bottom: 4rem;
+  inset-inline: 1rem;
+  margin: 0;
+  text-align: center;
+  color: var(--color-ivory);
+  text-shadow: 0 1px 6px var(--color-navy-950);
+}
+.door-skip {
+  pointer-events: auto;
+  position: absolute;
+  top: max(1rem, env(safe-area-inset-top));
+  inset-inline-end: max(1rem, env(safe-area-inset-right));
+  min-height: 44px;
+  padding: 0.7rem 1rem;
+  background: var(--color-navy-950);
+  color: var(--color-gold-300);
+  border: 1px solid var(--color-gold-rim);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.door-skip:focus-visible,
+.portal-recovery a:focus-visible,
+.portal-recovery button:focus-visible { outline: 2px solid var(--color-gold-300); outline-offset: 4px; }
+.portal-recovery {
+  position: fixed;
+  z-index: 70;
+  inset-inline-end: 1rem;
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  max-width: min(25rem, calc(100vw - 2rem));
+  padding: 1rem;
+  border: 1px solid var(--color-gold-rim);
+  background: var(--color-navy-950);
+  color: var(--color-ivory);
+  border-radius: var(--radius-card);
+}
+.portal-recovery p { margin-block: 0 0.6rem; }
+.portal-recovery a,
+.portal-recovery button { display: inline-flex; align-items: center; min-height: 44px; padding: 0.5rem; color: var(--color-gold-300); }
+.portal-recovery button { cursor: pointer; }
+.portal-card:focus-visible .portal-card__rim { opacity: 1; }
+.portal-card:focus-visible .portal-card__media img { transform: scale(1.06); }
+.portal-card:focus-visible .portal-card__shade { opacity: 0.85; }
+@media (prefers-reduced-motion: reduce) {
+  .door-overlay { display: none; }
+  .portal-card:hover .portal-card__media img,
+  .portal-card:focus-visible .portal-card__media img { transform: none; }
+}

@@ -70,7 +70,6 @@ export default async function Home({
             sizes="(max-width: 768px) 100vw, 48vw"
             loading="lazy"
             className="portal-card__img"
-            priority={world.id === "beyond-the-frame"}
           />
         }
         body={
@@ -84,12 +83,12 @@ export default async function Home({
             <p className="portal-card__kicker">{world.kicker[l]}</p>
             <h3 className="portal-card__title">{world.title[l]}</h3>
             <p className="portal-card__teaser">{world.teaser[l]}</p>
-            <a className="portal-card__cta" href={localizedPath(l, world.href)}>
+            <span className="portal-card__cta">
               {dict.common.enterWorld}
-              <svg className="icon-arrow" viewBox="0 0 24 24">
+              <svg className="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
-            </a>
+            </span>
           </>
         }
       />

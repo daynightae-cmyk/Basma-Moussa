@@ -13,6 +13,7 @@ import { StatusBadge } from "@/components/editorial/status-badge";
 import { PortalLink } from "@/components/navigation/portal-link";
 import Image from "next/image";
 import { SectionHeading } from "@/components/editorial/section-heading";
+import { WorldDiscoveryStage } from "@/components/media/world-discovery-stage";
 
 interface MediaContentProps {
   locale: Locale;
@@ -43,6 +44,7 @@ export function MediaContent({ locale }: MediaContentProps) {
   return (
     <>
       <BrandThreadSplash locale={locale} dict={dict} />
+      <WorldDiscoveryStage locale={locale} />
       <section className="chapter" id="media-hero">
         <div className="shell">
           <SectionHeading
@@ -140,12 +142,12 @@ export function MediaContent({ locale }: MediaContentProps) {
                       <p className="portal-card__kicker">{world.kicker[locale]}</p>
                       <h3 className="portal-card__title">{world.title[locale]}</h3>
                       <p className="portal-card__teaser">{world.teaser[locale]}</p>
-                      <a className="portal-card__cta" href={localizedPath(locale, world.href)}>
+                      <span className="portal-card__cta">
                         {dict.common.enterWorld}
-                        <svg className="icon-arrow" viewBox="0 0 24 24">
+                        <svg className="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
                           <path d="M5 12h14M12 5l7 7-7 7" />
                         </svg>
-                      </a>
+                      </span>
                     </>
                   }
                 />

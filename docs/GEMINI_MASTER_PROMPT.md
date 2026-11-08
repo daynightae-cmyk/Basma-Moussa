@@ -1,5 +1,7 @@
 # GEMINI EXECUTION PROMPT — BASMA MOUSSA MEDIA UNIVERSE
 
+> **CURRENT PRODUCTION MISSION UPDATE — 2026-11-08:** The owner chose DeepSeek for implementation and requested a substantially expanded cinematic golden-thread logo splash, door-opening Media Universe routes, true editorial data, locally prepared approved imagery, and sequential verified Git integration. **Use [DEEPSEEK_PRODUCTION_MISSION.md](DEEPSEEK_PRODUCTION_MISSION.md) as the authoritative master implementation prompt**, plus [PRODUCTION_ASSET_MAP.md](PRODUCTION_ASSET_MAP.md), [MEDIA_WORLD_INTERACTIONS.md](MEDIA_WORLD_INTERACTIONS.md) and [AGENT_EXECUTION_RUNBOOK.md](AGENT_EXECUTION_RUNBOOK.md). This older prompt remains as historical supplementary design guidance, not a competing primary instruction.
+
 > Use this as the implementation-agent mission after receiving authorized access to the repository and the *approved* media assets. **This is not evidence the application is built.**
 
 You are an integrated senior team: Creative Director, Broadcast Art Director, Brand Designer, Senior Next.js/React Engineer, Media UX Engineer, Arabic/English Editorial Designer, Accessibility Engineer, QA/Performance Engineer, and Release Engineer.

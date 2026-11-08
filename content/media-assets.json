@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "sourceAuditDate": "2026-11-08",
+  "usage": "Website-ready image asset metadata; no publication approval for factual representations",
+  "assetCount": 14,
+  "assets": [
+    {
+      "id": "bm-01",
+      "sourceRef": "ref-01",
+      "src": "/media/08-voice-identity.webp",
+      "originalUrl": "https://i.postimg.cc/CKxLVgNy/file-00000000335c81f4af82d1fd51f41232.png",
+      "width": 1280,
+      "height": 541,
+      "title": "Golden Frequency",
+      "alt": {
+        "ar": "التردد الذهبي: موجات صوت وفيلم ولوتس على خلفية كحلية",
+        "en": "Abstract gold waveform, film and lotus on navy"
+      },
+      "pages": [
+        "soundroom",
+        "transitions"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-02",
+      "sourceRef": "ref-02",
+      "src": "/media/02-about-portrait.webp",
+      "originalUrl": "https://i.postimg.cc/bvVYyB6B/file-000000004d0081f48fe7ed2603bbde4c.png",
+      "width": 600,
+      "height": 800,
+      "title": "About Basma",
+      "alt": {
+        "ar": "بورتريه تصوري لبسمة موسى في صالة إعلامية",
+        "en": "Illustrative editorial portrait of Basma in a media lounge"
+      },
+      "pages": [
+        "about"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-03",
+      "sourceRef": "ref-03",
+      "src": "/media/legal-dialogue-concept.webp",
+      "originalUrl": "https://i.postimg.cc/50H46STF/file-0000000051b08211969836d64c49991f.png",
+      "width": 1279,
+      "height": 720,
+      "title": "Legal dialogue concept",
+      "alt": {
+        "ar": "مشهد توضيحي لحوار قانوني حول طاولة، ليس لقاءً حقيقيًا",
+        "en": "Illustrative staged legal dialogue, not an actual client meeting"
+      },
+      "pages": [
+        "legal"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-04",
+      "sourceRef": "ref-04",
+      "src": "/media/06-legal-lens.webp",
+      "originalUrl": "https://i.postimg.cc/Ls86MpVt/file-0000000056e8821087749c29916134c6.png",
+      "width": 1279,
+      "height": 720,
+      "title": "Legal Lens",
+      "alt": {
+        "ar": "مكتب بحث قانوني به كتب وميزان العدالة",
+        "en": "Gold-lit legal research desk with books and scales"
+      },
+      "pages": [
+        "legal"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-05",
+      "sourceRef": "ref-05",
+      "src": "/media/legal-professional-portrait.webp",
+      "originalUrl": "https://i.postimg.cc/C1ZhzsXL/file-000000005b34820a98ef719b6c5bf682.png",
+      "width": 640,
+      "height": 800,
+      "title": "Professional portrait",
+      "alt": {
+        "ar": "بورتريه تصوري لبسمة بملابس مهنية كحلية",
+        "en": "Illustrative professional portrait of Basma in navy attire"
+      },
+      "pages": [
+        "about",
+        "legal"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-06",
+      "sourceRef": "ref-06",
+      "src": "/brand/basma-logo-master.png",
+      "originalUrl": "https://i.postimg.cc/MpDK4T1c/file-000000005f888210b5440b54a4a93f43.png",
+      "width": 800,
+      "height": 800,
+      "title": "Approved logo",
+      "alt": {
+        "ar": "شعار بسمة موسى الذهبي الدائري برموز إعلامية ومصرية",
+        "en": "Approved circular Basma Moussa gold media identity mark"
+      },
+      "pages": [
+        "brand"
+      ],
+      "provenance": "user-approved-brand",
+      "editorialStatus": "brand-approved",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-07",
+      "sourceRef": "ref-07",
+      "src": "/media/legal-research-detail.webp",
+      "originalUrl": "https://i.postimg.cc/9M4mrYK4/file-0000000083688211a187b2f65cafb1cc.png",
+      "width": 1279,
+      "height": 720,
+      "title": "Legal research detail",
+      "alt": {
+        "ar": "لقطة يد تدون ملاحظات بحث قانوني على المكتب",
+        "en": "Close-up illustrative legal research writing at a desk"
+      },
+      "pages": [
+        "legal"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-08",
+      "sourceRef": "ref-08",
+      "src": "/media/10-contact-collaboration.webp",
+      "originalUrl": "https://i.postimg.cc/q7vMdTG9/file-00000000842081f4850d26a764e8e2ca.png",
+      "width": 600,
+      "height": 800,
+      "title": "Contact atmosphere",
+      "alt": {
+        "ar": "مساحة تصورية للتعاون بحضور شعار بسمة وإطلالة على المدينة",
+        "en": "Illustrative collaboration lounge with Basma logo and UAE skyline"
+      },
+      "pages": [
+        "contact"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-09",
+      "sourceRef": "ref-09",
+      "src": "/media/03-media-universe.webp",
+      "originalUrl": "https://i.postimg.cc/43xNTg1v/file-00000000a89481f49310c11ffcf435d9.png",
+      "width": 1279,
+      "height": 720,
+      "title": "Media production studio",
+      "alt": {
+        "ar": "مكتب إنتاج إعلامي مع كاميرا وشاشات وشعار بسمة",
+        "en": "Illustrative premium media production environment"
+      },
+      "pages": [
+        "media",
+        "studio"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-10",
+      "sourceRef": "ref-10",
+      "src": "/media/about-editorial-alt.webp",
+      "originalUrl": "https://i.postimg.cc/cJk1xb9G/file-00000000a8ec81f492c9e4d38a0bd923.png",
+      "width": 640,
+      "height": 800,
+      "title": "Alternate portrait",
+      "alt": {
+        "ar": "بورتريه تصوري لبسمة على مكتب قانوني",
+        "en": "Illustrative portrait of Basma seated at a legal desk"
+      },
+      "pages": [
+        "about"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-11",
+      "sourceRef": "ref-11",
+      "src": "/media/07-city-voices.webp",
+      "originalUrl": "https://i.postimg.cc/R0ZVzBTg/file-00000000b81c81f49cb0719ab21a1fee.png",
+      "width": 600,
+      "height": 800,
+      "title": "City Voices",
+      "alt": {
+        "ar": "كورنيش الشارقة مع كاميرا للتغطية الميدانية وقت الغروب",
+        "en": "Illustrative field-reporting equipment at Sharjah waterfront"
+      },
+      "pages": [
+        "city-voices",
+        "uae"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-12",
+      "sourceRef": "ref-12",
+      "src": "/media/04-interview-studio.webp",
+      "originalUrl": "https://i.postimg.cc/tg4CHjzt/file-00000000d6748243aac4175490426c52.png",
+      "width": 1279,
+      "height": 720,
+      "title": "Interview studio",
+      "alt": {
+        "ar": "استوديو حوارات فاخر بكرسيين وشعار بسمة",
+        "en": "Luxury illustrative interview studio with two chairs and brand signage"
+      },
+      "pages": [
+        "programs"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-13",
+      "sourceRef": "ref-13",
+      "src": "/media/11-documentary-archive.webp",
+      "originalUrl": "https://i.postimg.cc/W41bPvnc/file-00000000dbe482109c8435a03a53b156.png",
+      "width": 1279,
+      "height": 720,
+      "title": "Documentary archive",
+      "alt": {
+        "ar": "كتب وأفلام قديمة ومواد بحث في مشهد أرشيف وثائقي",
+        "en": "Cinematic documentary research archive with film reels and books"
+      },
+      "pages": [
+        "stories",
+        "archive"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    },
+    {
+      "id": "bm-14",
+      "sourceRef": "ref-14",
+      "src": "/media/01-home-hero.webp",
+      "originalUrl": "https://i.postimg.cc/k5gXdmyx/file-00000000fdfc81f48b04e89d088d766b.png",
+      "width": 1279,
+      "height": 720,
+      "title": "Cinematic Basma hero",
+      "alt": {
+        "ar": "بسمة موسى في استوديو إعلامي وقانوني مع مساحة للنص",
+        "en": "Illustrative wide cinematic portrait of Basma in media and legal setting"
+      },
+      "pages": [
+        "home"
+      ],
+      "provenance": "user-supplied-ai-concept",
+      "editorialStatus": "illustrative-review-required",
+      "publishedClaimAllowed": false
+    }
+  ]
+}

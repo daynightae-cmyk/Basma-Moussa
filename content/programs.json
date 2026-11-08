@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "programs": [
+    {
+      "slug": "beyond-the-frame",
+      "title": {
+        "ar": "خارج الإطار",
+        "en": "Beyond the Frame"
+      },
+      "description": {
+        "ar": "مساحة لحكايات إنسانية وحوارات ذات معنى.",
+        "en": "A proposed space for human stories and meaningful conversations."
+      },
+      "status": "concept",
+      "episodeIds": [],
+      "heroAssetId": "bm-12"
+    },
+    {
+      "slug": "the-legal-lens",
+      "title": {
+        "ar": "من زاوية القانون",
+        "en": "The Legal Lens"
+      },
+      "description": {
+        "ar": "رؤية إعلامية للتوعية القانونية بلغة بسيطة ومصادر موثوقة.",
+        "en": "A proposed accessible legal-awareness editorial series, grounded in verified sources."
+      },
+      "status": "concept",
+      "episodeIds": [],
+      "heroAssetId": "bm-04"
+    },
+    {
+      "slug": "city-voices",
+      "title": {
+        "ar": "صوت المدينة",
+        "en": "City Voices"
+      },
+      "description": {
+        "ar": "حكايات الناس والمجتمع من الإمارات إلى العالم.",
+        "en": "A proposed documentary storytelling concept about people and communities in the UAE."
+      },
+      "status": "concept",
+      "episodeIds": [],
+      "heroAssetId": "bm-11"
+    },
+    {
+      "slug": "soundroom",
+      "title": {
+        "ar": "مساحة صوت",
+        "en": "Soundroom"
+      },
+      "description": {
+        "ar": "عالم صوتي للحوارات والقصص الإنسانية، قيد التطوير.",
+        "en": "An in-development audio storytelling concept with no published episodes yet."
+      },
+      "status": "concept",
+      "episodeIds": [],
+      "heroAssetId": "bm-01"
+    }
+  ]
+}

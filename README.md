@@ -8,7 +8,14 @@
   <em>A cinematic, bilingual, editorial-first digital media experience.</em>
 </p>
 
-> **Project status — FOUNDATION / NOT YET LAUNCHED.** This repository currently contains the creative direction, product specifications and implementation handoff. No functioning web application, CMS, published episodes, live broadcast, CI evidence or deployment should be inferred from the documentation.
+> **Project status — DESIGN FOUNDATION + 14 SOURCE-VERIFIED WEB IMAGES / NOT YET LAUNCHED.** This repository contains the owner-approved gold-on-navy brand, optimized illustrative media, curated concept data, a cinematic interactive product specification and an agent execution runbook. There is **no verified working application, live broadcast, published episodes, production CMS, end-to-end CI or deployment yet**. Do not equate concept imagery with a real-owned television studio.
+
+**🚀 EXECUTE, DON'T ONLY PLAN:** [DeepSeek full production mission](docs/DEEPSEEK_PRODUCTION_MISSION.md) · [Cinematic doors & golden-thread splash](docs/MEDIA_WORLD_INTERACTIONS.md) · [Image map (14 verified images)](docs/PRODUCTION_ASSET_MAP.md) · [Working in local / GitHub / both](docs/AGENT_EXECUTION_RUNBOOK.md) · [Real content sources](docs/REAL_CONTENT_SOURCES.md).
+
+<p align="center"><img src="public/media/01-home-hero.webp" alt="Illustrative Basma Moussa cinematic media hero, not a photograph of an active TV broadcast" width="90%" /></p>
+<p align="center"><em>Approved visual direction — concept artwork, not a claim of launched programming.</em></p>
+
+<p align="center"><img src="public/media/04-interview-studio.webp" alt="Illustrative interview studio scene" width="46%" /> <img src="public/media/03-media-universe.webp" alt="Illustrative media production world" width="46%" /></p>
 
 ---
 

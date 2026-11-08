@@ -308,18 +308,11 @@ html[lang="ar"] .lead {
 .section {
   padding-block: clamp(4.5rem, 9vw, 8.5rem);
   position: relative;
+  counter-increment: chapter;
 }
 
 main {
   counter-reset: chapter;
-}
-
-.section {
-  counter-increment: chapter;
-}
-
-.section-head {
-  position: relative;
 }
 
 .section-head::before {
@@ -359,6 +352,7 @@ main {
 }
 
 .section-head {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
@@ -743,8 +737,12 @@ html[lang="ar"] .site-nav__link {
   height: 1px;
   background: var(--gold-500);
   transform: scaleX(0);
-  transform-origin: inline-start;
+  transform-origin: left;
   transition: transform 0.3s var(--ease-out);
+}
+
+[dir="rtl"] .site-nav__link::after {
+  transform-origin: right;
 }
 
 .site-nav__link:hover {
@@ -996,6 +994,9 @@ html[lang="ar"] .mobile-panel__link {
 .home-hero__rail-note {
   writing-mode: vertical-rl;
   text-orientation: mixed;
+  color: rgba(234, 220, 201, 0.56);
+  font-size: 0.52rem;
+  letter-spacing: 0.28em;
 }
 
 .home-hero__rail-mark {
@@ -1024,12 +1025,6 @@ html[lang="ar"] .mobile-panel__link {
     rgba(242, 215, 160, 0.16) 78%,
     transparent
   );
-}
-
-.home-hero__rail-note {
-  color: rgba(234, 220, 201, 0.56);
-  font-size: 0.52rem;
-  letter-spacing: 0.28em;
 }
 
 .home-hero__content {

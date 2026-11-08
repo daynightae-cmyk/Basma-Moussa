@@ -13,7 +13,9 @@ type PageMetadataInput = {
 };
 
 function localizedUrl(locale: Locale, path: string): string {
-  const suffix = path === "/" ? "" : path.startsWith("/") ? path : `/${path}`;
+  let suffix = path;
+  if (suffix === "/") suffix = "";
+  else if (!suffix.startsWith("/")) suffix = `/${suffix}`;
   return `${SITE_URL}/${locale}${suffix}`;
 }
 

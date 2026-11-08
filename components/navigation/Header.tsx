@@ -172,7 +172,7 @@ export function Header({ locale }: { locale: Locale }) {
             rel="noopener noreferrer"
             onClick={() => setOpen(false)}
           >
-            WhatsApp
+            WhatsApp{" "}
             <span className="sr-only">({dict.common.opensInNewTab})</span>
           </a>
         </div>

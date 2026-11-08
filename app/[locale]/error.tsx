@@ -2,20 +2,26 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect } from "react";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { defaultLocale, isLocale } from "@/lib/i18n/config";
 import { localizedPath } from "@/lib/i18n/paths";
 
 export default function LocaleError({
+  error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
   const pathname = usePathname() ?? "";
-  const segment = pathname.split("/").filter(Boolean)[0];
+  const segment = pathname.split("/").find(Boolean);
   const locale = isLocale(segment) ? segment : defaultLocale;
   const dict = getDictionary(locale);
+
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
 
   return (
     <div className="shell status-page">

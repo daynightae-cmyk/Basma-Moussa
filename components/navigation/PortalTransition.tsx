@@ -5,6 +5,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useRef,
   useState,
   type CSSProperties,
@@ -76,8 +77,10 @@ export function PortalTransitionProvider({ children }: { children: ReactNode }) 
       } as CSSProperties)
     : undefined;
 
+  const contextValue = useMemo(() => ({ openDoor }), [openDoor]);
+
   return (
-    <PortalTransitionContext.Provider value={{ openDoor }}>
+    <PortalTransitionContext.Provider value={contextValue}>
       {children}
       {door ? (
         <div

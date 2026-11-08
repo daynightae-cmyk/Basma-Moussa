@@ -119,10 +119,11 @@ export function BrandThreadSplash({ locale }: { locale: Locale }) {
       if (replay) {
         params.delete("replay");
         const query = params.toString();
+        const suffix = query ? `?${query}` : "";
         window.history.replaceState(
           null,
           "",
-          `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`,
+          `${window.location.pathname}${suffix}${window.location.hash}`,
         );
       }
     } catch {
@@ -157,10 +158,14 @@ export function BrandThreadSplash({ locale }: { locale: Locale }) {
         dismiss(true);
       }
     };
+    const onPointerClick = () => dismiss(false);
+
     window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("click", onPointerClick);
 
     return () => {
       window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("click", onPointerClick);
       clearTimers();
       document.documentElement.classList.remove("intro-pending");
     };
@@ -169,11 +174,9 @@ export function BrandThreadSplash({ locale }: { locale: Locale }) {
   if (!visible) return null;
 
   return (
-    <div
+    <section
       className={`splash${leaving ? " splash--leaving" : ""}`}
-      role="region"
       aria-label={dict.common.introLabel}
-      onClick={() => dismiss(false)}
     >
       <button
         type="button"
@@ -236,6 +239,6 @@ export function BrandThreadSplash({ locale }: { locale: Locale }) {
       </div>
 
       <p className="splash__hint">{dict.common.introHint}</p>
-    </div>
+    </section>
   );
 }

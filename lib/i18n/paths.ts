@@ -5,7 +5,9 @@ import { isLocale, type Locale } from "./config";
  * `/` stays clean: localizedPath("ar") -> "/ar".
  */
 export function localizedPath(locale: Locale, path = "/"): string {
-  const normalised = path === "/" ? "" : path.startsWith("/") ? path : `/${path}`;
+  let normalised = path;
+  if (normalised === "/") normalised = "";
+  else if (!normalised.startsWith("/")) normalised = `/${normalised}`;
   return `/${locale}${normalised}`;
 }
 

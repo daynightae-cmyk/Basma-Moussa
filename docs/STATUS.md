@@ -19,11 +19,10 @@ Verified locally on Windows with Node 22 / npm:
   - 390px horizontal-overflow checks across 12 routes and verified contact-image loading;
   - measured LCP/CLS budget on the cinematic home.
 - The 14 owner-supplied media assets are committed with provenance, illustrative status, `publishedClaimAllowed: false`, focal points and blur placeholders.
-- A new `.github/workflows/app-quality.yml` workflow runs lint, typecheck, unit tests, production build and Playwright in CI. Its first remote run starts with the pull request.
+- A new `.github/workflows/app-quality.yml` workflow runs lint, typecheck, unit tests, production build and Playwright in CI. It passed on PR #2 and on `main`; SonarCloud’s automatic analysis quality gate also passed.
 
 Explicitly not verified yet:
 - Public deployment or a production domain.
-- First CI run and merge of the pull request.
 - Real audio/video playback, a CMS/database, or an official data API.
 - Published episodes, guests, audience figures or legal credentials.
 - Final owner approval of the expanded visual treatment on physical devices.
@@ -47,7 +46,7 @@ All cinematic imagery remains illustrative/brand concept material, not documenta
 - [x] Install / lint / typecheck / tests
 - [x] Interactive browser runtime
 - [x] Media assets in version control
-- [x] CI configured in the repository (first remote run pending)
+- [x] CI configured and verified on PR #2 and `main`
 - [ ] Public deployment / smoke verification
 
 The checked boxes above refer to repository and local verification work only. **Do not infer a published website.**

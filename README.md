@@ -8,7 +8,7 @@
   <em>A cinematic, bilingual, editorial-first digital media experience.</em>
 </p>
 
-> **Project status — WORKING BILINGUAL APPLICATION / PRE-LAUNCH.** The Next.js 16 application is implemented and verified locally: production build, 43 unit/component tests, and 28 Playwright tests covering the splash, portal doors, real 404s, accessibility (WCAG A/AA), SEO, responsive layouts, image loading, and a measured performance budget. A GitHub Actions quality workflow is committed and runs with the pull request. There is **no public deployment, no published episode, no audio player, no CMS/database, and no claim of a live broadcast**. All cinematic scenes and portraits are owner-supplied illustrative or brand imagery.
+> **Project status — WORKING BILINGUAL APPLICATION / PRE-LAUNCH.** The Next.js 16 application is implemented and verified locally: production build, 43 unit/component tests, and 28 Playwright tests covering the splash, portal doors, real 404s, accessibility (WCAG A/AA), SEO, responsive layouts, image loading, and a measured performance budget. The GitHub Actions `App Quality` workflow passed on the pull request and on `main`; SonarCloud’s quality gate passed. There is **no public deployment, no published episode, no audio player, no CMS/database, and no claim of a live broadcast**. All cinematic scenes and portraits are owner-supplied illustrative or brand imagery.
 
 **Read the product** · [Cinematic doors & golden-thread splash](docs/MEDIA_WORLD_INTERACTIONS.md) · [Creative direction](docs/CREATIVE_DIRECTION.md) · [Editorial guardrails](docs/EDITORIAL_GUARDRAILS.md) · [Real content sources](docs/REAL_CONTENT_SOURCES.md) · [Current status](docs/STATUS.md).
 
@@ -143,7 +143,7 @@ See [Editorial & safety policy](docs/EDITORIAL_GUARDRAILS.md).
 - [x] Implement the splash, portal doors, all internal routes, search/filter, 404s and SEO
 - [x] Add unit/component tests, browser tests, accessibility scans and a performance budget
 - [x] Add the `App Quality` CI workflow
-- [ ] Confirm the first remote CI run and merge the verified pull request
+- [x] Confirm the first remote CI run and merge the verified pull request
 - [ ] Replace illustrative imagery with approved photography where desired
 - [ ] Connect a real CMS/database and audio delivery when content exists
 - [ ] Verify biography, legal credentials and media rights with Basma

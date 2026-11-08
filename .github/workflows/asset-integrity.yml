@@ -1,0 +1,36 @@
+name: Media Asset Integrity (Foundation)
+
+on:
+  pull_request:
+    paths:
+      - "content/**"
+      - "public/**"
+      - "docs/**"
+      - "scripts/verify-media-assets.py"
+      - ".github/workflows/asset-integrity.yml"
+  push:
+    branches: [main]
+    paths:
+      - "content/**"
+      - "public/**"
+      - "docs/**"
+      - "scripts/verify-media-assets.py"
+      - ".github/workflows/asset-integrity.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  verify-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install image validator
+        run: python -m pip install "Pillow==13.0.0"
+      - name: Verify actual approved image inputs and truthful content inventory
+        run: python scripts/verify-media-assets.py

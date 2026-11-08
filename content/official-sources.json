@@ -1,0 +1,38 @@
+{
+  "reviewedDate": "2026-11-08",
+  "meaning": "Official website starting points, NOT proven API endpoints",
+  "sources": [
+    {
+      "id": "uae-legislation",
+      "url": "https://uaelegislation.gov.ae/en",
+      "name": "UAE Legislation",
+      "kind": "official-legal-reference",
+      "verifiedAsWebsiteEntryPoint": true,
+      "apiVerified": false
+    },
+    {
+      "id": "sgmb",
+      "url": "https://sgmb.ae/en",
+      "name": "Sharjah Government Media Bureau",
+      "kind": "official-news-reference",
+      "verifiedAsWebsiteEntryPoint": true,
+      "apiVerified": false
+    },
+    {
+      "id": "uae-open-data",
+      "url": "https://u.ae/en/about-the-uae/digital-uae/data/Open-government-data",
+      "name": "UAE Open Government Data",
+      "kind": "official-data-reference",
+      "verifiedAsWebsiteEntryPoint": true,
+      "apiVerified": false
+    },
+    {
+      "id": "dubai-legal",
+      "url": "https://www.dubai.ae/en/legal-affairs",
+      "name": "Dubai Legal Affairs",
+      "kind": "official-legal-reference",
+      "verifiedAsWebsiteEntryPoint": true,
+      "apiVerified": false
+    }
+  ]
+}

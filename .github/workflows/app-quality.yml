@@ -31,7 +31,7 @@ jobs:
           cache: npm
 
       - name: Install locked dependencies
-        run: npm ci --ignore-scripts
+        run: npm ci
 
       - name: Lint
         run: npm run lint

@@ -13,6 +13,7 @@ import {
   locales,
   type Locale,
 } from "@/lib/i18n/config";
+import { PortalTransitionProvider } from "@/components/navigation/portal-transition-provider";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import { rootMetadata } from "@/lib/seo";
 import "/styles/globals.css";
@@ -33,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return rootMetadata;
 }
 
-export function viewport(): Viewport {
+export function generateViewport(): Viewport {
   return { colorScheme: "dark", width: "device-width", initialScale: 1, themeColor: "#070b18" };
 }
 
@@ -56,12 +57,14 @@ export default async function LocaleLayout({
         <a href="#main" className="skip-link">
           {dict.common.skipToContent}
         </a>
-        <Header locale={locale} dict={dict} />
-        <main id="main" tabIndex={-1}>
-          {children}
-        </main>
-        <Footer locale={locale} dict={dict} />
-        <DoorOverlay />
+        <PortalTransitionProvider>
+          <Header locale={locale} dict={dict} />
+          <main id="main" tabIndex={-1}>
+            {children}
+          </main>
+          <Footer locale={locale} dict={dict} />
+          <DoorOverlay />
+        </PortalTransitionProvider>
       </body>
     </html>
   );

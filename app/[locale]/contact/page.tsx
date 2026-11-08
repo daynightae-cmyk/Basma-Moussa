@@ -44,10 +44,10 @@ export default async function Contact({ params }: ContactPageProps) {
         <div className="shell">
           <div className="contact-hero__grid grid-uneven">
             <MediaFrame
-              src={getAsset("bm-10").src}
-              alt={getAsset("bm-10").alt[l]}
-              width={getAsset("bm-10").width}
-              height={getAsset("bm-10").height}
+              src={getAsset("bm-08").src}
+              alt={getAsset("bm-08").alt[l]}
+              width={getAsset("bm-08").width}
+              height={getAsset("bm-08").height}
               sizes="(max-width: 768px) 100vw, 48vw"
               className="contact-hero__frame"
             />

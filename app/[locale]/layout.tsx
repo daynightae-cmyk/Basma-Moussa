@@ -19,6 +19,7 @@ import { rootMetadata } from "@/lib/seo";
 import "/styles/globals.css";
 import "@/styles/portal-transition.css";
 import "@/styles/world-discovery.css";
+import "@/app/cinematics.css";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", weight: ["400", "600", "700"], display: "swap" });
 const plexAr = IBM_Plex_Sans_Arabic({ subsets: ["arabic"], variable: "--font-plex-ar", weight: ["300", "400", "500", "600", "700"], display: "swap" });

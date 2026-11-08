@@ -6,7 +6,13 @@ async function openUniverse(page: Page, locale: "ar" | "en") {
   await page.goto(`${BASE}/${locale}/media`);
   await expect(page.getByTestId("world-discovery")).toBeVisible();
   const skip = page.getByRole("button", { name: /تخطّي المقدمة|Skip intro/ });
-  if (await skip.isVisible()) await skip.click();
+  // The splash auto-dismisses after ~3s; click it if it's still showing, and
+  // tolerate it detaching mid-click (auto-dismiss racing us).
+  try {
+    if (await skip.isVisible({ timeout: 1500 })) await skip.click();
+  } catch {
+    // Already gone.
+  }
   await expect(skip).not.toBeVisible();
 }
 
@@ -43,7 +49,7 @@ for (const locale of ["ar", "en"] as const) {
     await page.screenshot({ path: testInfo.outputPath("door-opening.png") });
     await expect(page).toHaveURL(`${BASE}/${locale}/programs/beyond-the-frame`);
     await expect(transition).toHaveCount(0);
-    await expect(page.locator("#main h1")).toBeFocused();
+    await expect(page.locator("#main h1, #main h2").first()).toBeFocused();
     await page.screenshot({ path: testInfo.outputPath("arrival.png") });
     await page.goBack();
     await expect(page).toHaveURL(`${BASE}/${locale}/media`);

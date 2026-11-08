@@ -1,4 +1,4 @@
-# BASMA MOUSSA ✦ MEDIA UNIVERSE
+<p align="center"><img src="docs/media-universe-cover.svg" alt="Basma Moussa Media Universe — navy and gold cinematic editorial cover" width="100%" /></p>\n\n# BASMA MOUSSA ✦ MEDIA UNIVERSE
 ### Stories. Vision. Connection. · لكل حكاية صوت... ولكل صوت رؤية
 
 <p align="center">

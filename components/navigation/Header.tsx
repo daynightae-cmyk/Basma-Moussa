@@ -142,7 +142,8 @@ export function Header({ locale, dict }: HeaderProps) {
           ref={menuRef}
           id="bm-mobile-menu"
           className="mobile-menu"
-          role="panel"
+          role="dialog"
+          aria-modal="true"
           aria-label={dict.common.menu}
           onKeyDown={handleKeyDown}
         >

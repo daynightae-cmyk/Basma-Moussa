@@ -1,0 +1,22 @@
+fix(design): implement missing site-chrome CSS, locale 404 catch-all, and align E2E with real UI
+
+- styles/globals.css: header (sticky glass), desktop nav, lang pill, burger,
+  mobile menu overlay, full footer grid, home hero/pillars/journey/contact
+  strip, shared page-hero grids, media search controls, soundroom console
+  waveform, legal source/outline cards, stories/studio/contact/about theme
+  blocks, program formats/quote, prose/error-page - every component page had
+  classes with zero CSS.
+- app/[locale]/[...rest]/page.tsx: render the localized not-found with full
+  chrome instead of Next's bare English 404 (middleware already rewrites
+  unknown top-level paths into /ar).
+- Header.tsx: invalid role "panel" -> role "dialog" aria-modal "true".
+- tests/e2e: selectors follow the real UI (aria-label language switcher,
+  real placeholder/reset/no-results copy, back link goes to /ar/media,
+  soundroom Start->Pause label swap vs aria-pressed), legal count awaited,
+  splash sessionStorage on a loaded origin, mobile menu scoped to its
+  dialog, axe tests run under reduced motion (stable-state contrast;
+  scroll-driven reveal fades are transient), screenshot evidence walks the
+  page and settles reveals before capture.
+- AGENTS.md: keep generated Next.js agent rules in tree.
+
+Local: npm run verify green (lint, typecheck, 8 unit, build); Playwright 39/39.

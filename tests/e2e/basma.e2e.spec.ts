@@ -42,6 +42,32 @@ async function waitForHeading(page: Page, timeout = 15000) {
   );
 }
 
+/** Scroll through the page so scroll-driven `.reveal` sections finish before capture.
+ * Stay at the bottom: with `animation-timeline: view()`, scrolling back to the top
+ * would reset the below-fold elements back to transparent. A fullPage screenshot
+ * captures beyond the viewport, so content above the current view stays opaque. */
+async function settleReveals(page: Page) {
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        let y = 0;
+        const step = 600;
+        const tick = () => {
+          y += step;
+          window.scrollTo(0, y);
+          if (y >= document.body.scrollHeight + step) {
+            window.scrollTo(0, document.body.scrollHeight);
+            resolve();
+            return;
+          }
+          setTimeout(tick, 70);
+        };
+        tick();
+      }),
+  );
+  await page.waitForTimeout(700);
+}
+
 test.describe("locale & root", () => {
   test("root redirects to Arabic home", async ({ page }) => {
     await gotoPage(page, "/");
@@ -79,15 +105,16 @@ test.describe("locale & root", () => {
   test("language switch preserves path and direction", async ({ page }) => {
     await gotoPage(page, "/ar/media");
     await waitForHeading(page);
-    const langBtn = page.getByRole("button", { name: /English/ });
-    await expect(langBtn).toBeVisible();
-    await langBtn.click();
+    // The switch button's accessible name is its aria-label, not its visible text.
+    const arSwitcher = page.getByRole("button", { name: "التبديل إلى الإنجليزية" });
+    await expect(arSwitcher).toBeVisible();
+    await arSwitcher.click();
     await expect(page).toHaveURL(`${BASE}/en/media`);
     await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
     // switch back
-    const arBtn = page.getByRole("button", { name: /العربية/ });
-    await expect(arBtn).toBeVisible();
-    await arBtn.click();
+    const enSwitcher = page.getByRole("button", { name: "Switch to Arabic" });
+    await expect(enSwitcher).toBeVisible();
+    await enSwitcher.click();
     await expect(page).toHaveURL(`${BASE}/ar/media`);
     await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
   });
@@ -100,15 +127,15 @@ test.describe("media worlds & search", () => {
     // four portal cards
     await expect(page.getByTestId("portal-media")).toHaveCount(4);
 
-    await page.getByPlaceholder(/مثال:/).fill("مدينة");
+    await page.getByPlaceholder(/ابحث بعنوان أو موضوع/).fill("مدينة");
     await expect(page.getByTestId("portal-media")).toHaveCount(1);
-    await expect(page.getByRole("heading", { name: /صوت المدينة/ })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "صوت المدينة" })).toBeVisible();
 
-    await page.getByRole("button", { name: /إعادة الضبط/ }).click();
+    await page.getByRole("button", { name: /عرض كل العوالم/ }).click();
     await expect(page.getByTestId("portal-media")).toHaveCount(4);
 
-    await page.getByPlaceholder(/مثال:/).fill("zzznothingzzz");
-    await expect(page.getByRole("heading", { name: /لا نتائج/ })).toBeVisible();
+    await page.getByPlaceholder(/ابحث بعنوان أو موضوع/).fill("zzznothingzzz");
+    await expect(page.getByText(/لا نتائج مطابقة/)).toBeVisible();
   });
 
   test("portal click opens door then navigates; back works", async ({ page }) => {
@@ -120,8 +147,9 @@ test.describe("media worlds & search", () => {
     // door overlay appears then new route
     await expect(page).toHaveURL(`${BASE}/ar/programs/beyond-the-frame`);
     await waitForHeading(page);
+    // "العودة إلى عالم الإعلام" returns to the media worlds page.
     await page.getByRole("link", { name: /العودة إلى عالم الإعلام/ }).click();
-    await expect(page).toHaveURL(`${BASE}/ar`);
+    await expect(page).toHaveURL(`${BASE}/ar/media`);
   });
 });
 
@@ -131,11 +159,13 @@ test.describe("soundroom (no audio)", () => {
     await waitForHeading(page);
     await expect(page.getByText(/No recordings yet/)).toBeVisible();
     await expect(page.locator("audio")).toHaveCount(0);
-    // decorative motion toggle exists and changes aria-pressed
+    // decorative motion toggle: label swaps Start→Pause on click, aria-pressed flips
     const toggle = page.getByRole("button", { name: /Start decorative motion/ });
     await expect(toggle).toBeVisible();
     await toggle.click();
-    await expect(toggle).toHaveAttribute("aria-pressed", "true");
+    const paused = page.getByRole("button", { name: /Pause decorative motion/ });
+    await expect(paused).toBeVisible();
+    await expect(paused).toHaveAttribute("aria-pressed", "true");
   });
 });
 
@@ -143,15 +173,16 @@ test.describe("legal lens", () => {
   test("source links open externally to official domains", async ({ page }) => {
     await gotoPage(page, "/ar/legal-lens");
     const links = page.locator('a[target="_blank"]');
-    await expect(links.count()).toBeGreaterThan(0);
+    const count = await links.count();
+    await expect(count).toBeGreaterThan(0);
     for (const link of await links.all()) {
       const href = await link.getAttribute("href");
       expect(href).toMatch(/^https:\/\//);
       const rel = await link.getAttribute("rel");
       expect(rel).toContain("noopener");
     }
-    await expect(page.getByText(/إخلاء مسؤولية/i)).toBeVisible();
-    await expect(page.getByText(/مخطط تحريري/i)).toBeVisible();
+    await expect(page.getByText(/إخلاء مسؤولية/i).first()).toBeVisible();
+    await expect(page.getByText(/مخطط تحريري/i).first()).toBeVisible();
   });
 });
 
@@ -172,17 +203,24 @@ test.describe("mobile", () => {
   test("mobile menu opens, closes with Escape, and navigates", async ({ page }) => {
     await gotoPage(page, "/ar");
     await page.getByRole("button", { name: /فتح القائمة/ }).click();
-    await expect(page.getByRole("link", { name: /عن بسمة/ })).toBeVisible();
+    // The mobile menu is a dialog region; footer also exposes an identical link.
+    const menu = page.getByRole("dialog", { name: /القائمة/ });
+    await expect(menu).toBeVisible();
+    const aboutLink = menu.getByRole("link", { name: /عن بسمة/ });
+    await expect(aboutLink).toBeVisible();
     await page.keyboard.press("Escape");
-    await expect(page.getByRole("link", { name: /عن بسمة/ })).not.toBeVisible();
+    await expect(page.getByRole("dialog", { name: /القائمة/ })).not.toBeVisible();
   });
 });
 
 test.describe("splash & reduced motion", () => {
   test("splash shows on first visit and skips instantly", async ({ page }) => {
-    // fresh context -> no sessionStorage -> splash shows
-    await page.evaluate(() => sessionStorage.clear());
+    // Fresh state -> no sessionStorage flag -> splash shows.
+    // Load first (sessionStorage is blocked on the opaque about:blank origin),
+    // then clear storage and reload so the splash mounts again.
     await page.goto(`${BASE}/ar`, { waitUntil: "domcontentloaded" });
+    await page.evaluate(() => sessionStorage.clear());
+    await page.reload({ waitUntil: "domcontentloaded" });
     await page.waitForLoadState("networkidle");
     const skip = page.getByRole("button", { name: /تخطّي المقدمة/ });
     await expect(skip).toBeVisible({ timeout: 8000 });
@@ -211,6 +249,12 @@ test.describe("errors", () => {
 });
 
 test.describe("accessibility", () => {
+  // Run axe under stable, reduced-motion state: the scroll-driven `.reveal`
+  // animation blends text opacity at capture time, producing false contrast
+  // failures for content mid-fade. Reduced motion is the fully supported
+  // a11y experience of this site and renders all content fully opaque.
+  test.use({ reducedMotion: "reduce" });
+
   test("home page passes axe critical/serious checks (AR)", async ({ page }) => {
     await gotoPage(page, "/ar");
     const results = await new AxeBuilder({ page })
@@ -248,6 +292,7 @@ test.describe("visual evidence screenshots", () => {
         await page.setViewportSize({ width: w, height: 900 });
         await gotoPage(page, `/${locale}`);
         await expect(page.locator("html")).toHaveAttribute("dir", dir);
+        await settleReveals(page);
         await page.screenshot({
           path: `qa/evidence/screenshots/home-${locale}-${w}px.png`,
           fullPage: true,
@@ -257,6 +302,7 @@ test.describe("visual evidence screenshots", () => {
       test(`${locale} media ${w}px`, async ({ page }: { page: Page }) => {
         await page.setViewportSize({ width: w, height: 900 });
         await gotoPage(page, `/${locale}/media`);
+        await settleReveals(page);
         await page.screenshot({
           path: `qa/evidence/screenshots/media-${locale}-${w}px.png`,
           fullPage: true,

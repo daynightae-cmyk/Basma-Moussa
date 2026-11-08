@@ -79,7 +79,7 @@ test.describe("locale & root", () => {
   test("Arabic home renders hero, nav, skip link", async ({ page }) => {
     await gotoPage(page, "/ar");
     await expect(
-      page.getByRole("heading", { name: /لكل حكاية صوت/ })
+      page.getByRole("heading", { name: /ليست مجرد صفحة/ })
     ).toBeVisible();
     // Nav link inside the main nav (exact match to avoid brand/logo duplicates)
     await expect(
@@ -98,7 +98,7 @@ test.describe("locale & root", () => {
     await expect(page.locator("html")).toHaveAttribute("dir", "ltr");
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(
-      page.getByRole("heading", { name: /Where Stories Find Their Voice/ })
+      page.getByRole("heading", { name: /Not just a page/ })
     ).toBeVisible();
   });
 
@@ -226,7 +226,7 @@ test.describe("splash & reduced motion", () => {
     await expect(skip).toBeVisible({ timeout: 8000 });
     await expect(page.getByRole("region", { name: /مقدمة الهوية/ })).toBeVisible();
     await skip.click();
-    await expect(page.getByRole("heading", { name: /لكل حكاية صوت/ })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /ليست مجرد صفحة/ })).toBeVisible();
     await expect(skip).not.toBeVisible();
   });
 
@@ -236,7 +236,7 @@ test.describe("splash & reduced motion", () => {
     await expect(
       page.getByRole("button", { name: /تخطّي المقدمة/ })
     ).not.toBeVisible();
-    await expect(page.getByRole("heading", { name: /لكل حكاية صوت/ })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /ليست مجرد صفحة/ })).toBeVisible();
   });
 });
 

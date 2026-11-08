@@ -61,6 +61,7 @@
 
 .cine-scene__media img {
   object-fit: cover;
+  object-position: var(--obj-pos, 50% 50%);
   transform: scale(1.08);
   filter: saturate(0.96) contrast(1.03);
   transition: transform 12s linear;
@@ -518,6 +519,40 @@ html[dir="rtl"] .cine-nav__progress-fill {
   }
 }
 
+/* ——— Replay Intro control ——— */
+
+.replay-intro {
+  position: absolute;
+  z-index: 40;
+  inset-block-start: calc(var(--header-height) + 0.9rem);
+  inset-inline-end: clamp(1.25rem, 5vw, 4rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid rgba(242, 215, 160, 0.35);
+  border-radius: 999px;
+  background: rgba(7, 11, 24, 0.5);
+  color: var(--ivory);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  transition: border-color 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.replay-intro:hover {
+  border-color: var(--gold-500);
+  color: var(--gold-300);
+  background: rgba(215, 171, 98, 0.12);
+}
+
+html[dir="rtl"] .replay-intro {
+  inset-inline-end: auto;
+  inset-inline-start: clamp(1.25rem, 5vw, 4rem);
+}
+
 /* ——— Responsive ——— */
 
 @media (max-width: 899px) {
@@ -575,6 +610,12 @@ html[dir="rtl"] .cine-nav__progress-fill {
   .cine-nav__progress {
     width: 70px;
   }
+
+  /* Distinct mobile focal points per scene (override desktop objectPosition) */
+  .cine-scene--portrait-left .cine-scene__img { --obj-pos: 50% 30%; }
+  .cine-scene--studio-wide .cine-scene__img { --obj-pos: 50% 50%; }
+  .cine-scene--sculpture .cine-scene__img { --obj-pos: 50% 50%; }
+  .cine-scene--city-portrait .cine-scene__img { --obj-pos: 50% 55%; }
 }
 
 @media (max-width: 420px) {

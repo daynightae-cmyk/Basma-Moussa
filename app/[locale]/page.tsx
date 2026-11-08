@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 
 import { HOME_CONTENT } from "@/lib/content/pages/home";
 import { getAsset } from "@/lib/content/assets";
@@ -9,14 +8,17 @@ import { localizedPath } from "@/lib/i18n/paths";
 import { getDictionary } from "@/lib/i18n/dictionary";
 import type { Locale } from "@/lib/i18n/config";
 import { BrandThreadSplash } from "@/components/brand/splash";
-import { StatusBadge } from "@/components/editorial/status-badge";
 import { MediaFrame } from "@/components/editorial/media-frame";
 import { SectionHeading } from "@/components/editorial/section-heading";
 import { ProvenanceCaption } from "@/components/editorial/provenance-caption";
 import { PortalLink } from "@/components/navigation/portal-link";
+import { ReplayIntroButton } from "@/components/brand/replay-intro-button";
 import { WorldHero } from "@/components/home/world-hero";
 import { PORTAL_WORLDS } from "@/lib/content/worlds";
 import { whatsappHref } from "@/lib/site";
+import { CinematicHeroSlider } from "@/components/cinematic/CinematicHeroSlider";
+import { HorizontalStoryStage } from "@/components/cinematic/HorizontalStoryStage";
+import { HOME_STORY_PANELS } from "@/lib/experience/scene-data";
 
 export async function generateMetadata({
   params,
@@ -52,95 +54,59 @@ export default async function Home({
   const showReplay = Array.isArray(replay) ? replay.includes("1") : replay === "1";
 
   const worldCard = (world: (typeof PORTAL_WORLDS)[number]) => {
-    const asset = getAsset(world.assetId);
-    const isLarge = world.variant === "wide";
-    return (
-      <PortalLink
-        key={world.id}
-        href={localizedPath(l, world.href)}
-        doorImage={asset.src}
-        doorLabel={world.title[l]}
-        className={`portal-card world-card ${isLarge ? "world--large" : ""}`}
-        media={
-          <Image
-            src={asset.src}
-            alt={asset.alt[l]}
-            width={asset.width}
-            height={asset.height}
-            sizes="(max-width: 768px) 100vw, 48vw"
-            loading="lazy"
-            className="portal-card__img"
-            priority={world.id === "beyond-the-frame"}
-          />
-        }
-        body={
-          <>
-            <div className="portal-card__meta">
-              <StatusBadge status={world.status} dict={dict} />
-              <span className="portal-card__provenance">
-                {dict.common.illustrativeShort}
+      const asset = getAsset(world.assetId);
+      const isLarge = world.variant === "wide";
+      return (
+        <PortalLink
+          key={world.id}
+          href={localizedPath(l, world.href)}
+          doorImage={asset.src}
+          doorLabel={world.title[l]}
+          className={`portal-card world-card ${isLarge ? "world--large" : ""}`}
+          media={
+            <Image
+              src={asset.src}
+              alt={asset.alt[l]}
+              width={asset.width}
+              height={asset.height}
+              sizes="(max-width: 768px) 100vw, 48vw"
+              loading="lazy"
+              className="portal-card__img"
+            />
+          }
+          body={
+            <>
+              <div className="portal-card__meta">
+                <span className="portal-card__status status--concept">
+                  {dict.common.concept}
+                </span>
+                <span className="portal-card__provenance">
+                  {dict.common.illustrativeShort}
+                </span>
+              </div>
+              <p className="portal-card__kicker">{world.kicker[l]}</p>
+              <h3 className="portal-card__title">{world.title[l]}</h3>
+              <p className="portal-card__teaser">{world.teaser[l]}</p>
+              <span className="portal-card__cta">
+                {dict.common.enterWorld}
+                <svg className="icon-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
               </span>
-            </div>
-            <p className="portal-card__kicker">{world.kicker[l]}</p>
-            <h3 className="portal-card__title">{world.title[l]}</h3>
-            <p className="portal-card__teaser">{world.teaser[l]}</p>
-            <a className="portal-card__cta" href={localizedPath(l, world.href)}>
-              {dict.common.enterWorld}
-              <svg className="icon-arrow" viewBox="0 0 24 24">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </a>
-          </>
-        }
-      />
-    );
-  };
+            </>
+          }
+        />
+      );
+    };
 
   return (
     <>
       <BrandThreadSplash locale={l} dict={dict} />
+      <ReplayIntroButton dict={dict} />
       {showReplay && <p className="sr-only">{dict.common.replayIntro}</p>}
 
-      <section className="chapter--tight hero" aria-labelledby="hero-title">
-        <div className="shell">
-          <div className="hero-wrap">
-            <MediaFrame
-              src={getAsset("bm-14").src}
-              alt={getAsset("bm-14").alt[l]}
-              width={getAsset("bm-14").width}
-              height={getAsset("bm-14").height}
-              sizes="(max-width: 768px) 100vw, 80vw"
-              priority
-              className="hero__frame"
-            />
-            <div className="hero__body reveal">
-              <p className="eyebrow eyebrow-gold">{c.eyebrow}</p>
-              <h1 id="hero-title" className="display display-xl wordmark-ar">
-                {c.title}
-              </h1>
-              <p className="lead reveal-delay">{c.lead}</p>
-              <div className="hero__meta reveal-delay">
-                <StatusBadge status="concept" dict={dict} />
-                <span className="hero__status-text">{c.statusLine}</span>
-              </div>
-              <p className="media-caption reveal-delay">{c.heroCaption}</p>
-              <div className="hero__ctas reveal-delay">
-                <Link href={localizedPath(l, "/media")} className="btn btn-gold">
-                  {c.primaryCta}
-                </Link>
-                <a
-                  href={whatsappHref(l)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-ghost"
-                >
-                  {c.secondaryCta}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Cinematic Hero Slider - replaces static hero */}
+      <CinematicHeroSlider locale={l} dict={dict} />
 
       <section className="chapter" id="intro">
         <div className="shell grid-uneven">
@@ -149,6 +115,7 @@ export default async function Home({
               eyebrow={c.introEyebrow}
               title={c.introTitle}
               lead={c.introBody}
+              titleTag="h1"
             />
           </div>
           <div className="intro__pillars">
@@ -161,6 +128,13 @@ export default async function Home({
           </div>
         </div>
       </section>
+
+      {/* Five connected full-viewport chapters, vertical scroll drives horizontal camera travel. */}
+      <HorizontalStoryStage
+        locale={l}
+        panels={HOME_STORY_PANELS}
+        ariaLabel={l === "ar" ? "رحلة بصرية عبر عوالم بسمة موسى" : "A cinematic journey through Basma Moussa media worlds"}
+      />
 
       <section className="chapter chapter--tight worlds" id="worlds">
         <div className="shell">
@@ -284,4 +258,3 @@ export default async function Home({
     </>
   );
 }
-

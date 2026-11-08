@@ -44,3 +44,4 @@ credentials-private/
 # Original bulk master images not intentionally published
 asset-originals/
 unapproved-media/
+.dyad/

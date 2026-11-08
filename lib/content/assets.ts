@@ -23,12 +23,12 @@ const focalPoints: Record<string, { x: number; y: number }> = {
   "bm-14": { x: 52, y: 46 }, // home hero: face left, text-safe right
 };
 
-export const ASSETS: AssetRecord[] = validated.assets.map((asset) => ({
+export const ASSETS = validated.assets.map((asset) => ({
   ...asset,
   focalPoint: focalPoints[asset.id] ?? { x: 50, y: 50 },
 }));
 
-export function getAsset(id: string): AssetRecord {
+export function getAsset(id: string): (typeof ASSETS)[number] {
   const asset = ASSETS.find((item) => item.id === id);
   if (!asset) throw new Error(`Unknown media asset: ${id}`);
   return asset;

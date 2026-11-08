@@ -1,0 +1,59 @@
+.discovery { padding-block: clamp(2rem, 5vw, 5rem); overflow: clip; }
+.discovery__header { display: grid; grid-template-columns: 1.3fr 1fr; align-items: end; gap: 2rem; margin-block-end: 2.5rem; }
+.discovery__header h1 { font-family: var(--font-display-ar); font-size: clamp(2rem, 4vw, 3.8rem); line-height: 1.3; max-width: 16ch; margin-block: 0.8rem 0; }
+html[lang="en"] .discovery__header h1 { font-family: var(--font-display-en); max-width: 18ch; }
+.discovery__header > p { max-width: 45ch; color: var(--color-muted); line-height: 1.85; margin: 0; }
+.discovery__screen { position: relative; perspective: 1200px; padding: 0.75rem; touch-action: pan-y; }
+.discovery__frame { position: absolute; inset: 0.5rem; border: 1px solid var(--color-gold-rim); border-radius: 1rem; pointer-events: none; }
+.discovery__frame--one { transform: rotate(-1.4deg); opacity: 0.6; }
+.discovery__frame--two { transform: rotate(1deg); opacity: 0.3; }
+.discovery__portal.portal-card { display: block; min-height: 540px; border-radius: 0.8rem; isolation: isolate; background: var(--color-navy-900); }
+.discovery__portal .portal-card__media { position: absolute; inset: 0; padding: 0; }
+.discovery__portal .portal-card__media img { filter: none; animation: discovery-image-in 700ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.discovery__portal .portal-card__shade { pointer-events: none; background: linear-gradient(0deg, rgba(7, 11, 24, 0.95), rgba(7, 11, 24, 0.1) 80%), linear-gradient(90deg, rgba(7, 11, 24, 0.5), transparent 70%); }
+.discovery__portal .portal-card__body { position: relative; z-index: 1; min-height: 540px; justify-content: end; align-items: start; padding: clamp(1.5rem, 4vw, 4rem); gap: 0.8rem; max-width: 42rem; }
+.discovery__chapter { color: var(--color-gold-300); font-size: 0.75rem; letter-spacing: 0.1em; margin: 0; }
+html[lang="ar"] .discovery__chapter { letter-spacing: 0; }
+.discovery__portal h2 { font-family: var(--font-display-ar); font-size: clamp(1.8rem, 4vw, 3.5rem); line-height: 1.3; margin: 0; }
+html[lang="en"] .discovery__portal h2 { font-family: var(--font-display-en); }
+.discovery__teaser { font-size: clamp(0.95rem, 1.3vw, 1.1rem); line-height: 1.8; max-width: 45ch; margin: 0; color: var(--color-ivory); }
+.discovery__enter { display: inline-flex; align-items: center; gap: 1rem; min-height: 44px; margin-block-start: 0.5rem; border-block-end: 1px solid var(--color-gold-500); color: var(--color-gold-300); }
+.discovery__portal small { color: var(--color-muted); }
+.discovery__screen[data-world="legal"] .portal-card__media { inset-inline-start: 35%; clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%); }
+.discovery__screen[data-world="legal"] .portal-card__shade { background: linear-gradient(90deg, var(--color-navy-950) 35%, rgba(7, 11, 24, 0.2)); }
+html[dir="rtl"] .discovery__screen[data-world="legal"] .portal-card__shade { background: linear-gradient(-90deg, var(--color-navy-950) 35%, rgba(7, 11, 24, 0.2)); }
+.discovery__screen[data-world="legal"] .portal-card__body { max-width: 55%; }
+.discovery__screen[data-world="documentary"] .portal-card__body { max-width: 100%; padding-block-start: 18rem; }
+.discovery__screen[data-world="documentary"] .discovery__chapter { border-inline-start: 2px solid var(--color-gold-500); padding-inline-start: 0.7rem; }
+.discovery__screen[data-world="audio"] .portal-card__media { inset-inline-start: 30%; clip-path: ellipse(52% 70% at 60% 50%); }
+.discovery__screen[data-world="audio"] .portal-card__body { max-width: 60%; }
+.discovery__screen[data-world="audio"] .portal-card__shade { background: linear-gradient(0deg, var(--color-navy-950), transparent 85%); }
+.discovery__navigation { display: flex; gap: 1rem; justify-content: space-between; align-items: center; margin-block-start: 1.5rem; }
+.discovery__choices { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; flex: 1; }
+.discovery__choice { min-height: 62px; text-align: start; padding: 0.75rem 1rem; border-block-start: 1px solid var(--color-outline); color: var(--color-muted); cursor: pointer; font-size: 0.85rem; transition: border-color 200ms, color 200ms, background 200ms; }
+.discovery__choice span { display: block; font-size: 0.65rem; margin-block-end: 0.4rem; color: var(--color-gold-500); }
+.discovery__choice--active { border-color: var(--color-gold-300); color: var(--color-ivory); background: linear-gradient(rgba(215, 171, 98, 0.1), transparent); }
+.discovery__arrows { display: flex; gap: 0.5rem; }
+.discovery__arrows button { width: 48px; height: 48px; border: 1px solid var(--color-gold-rim); border-radius: 50%; color: var(--color-gold-300); cursor: pointer; font-size: 1.2rem; }
+.discovery__choice:focus-visible,
+.discovery__arrows button:focus-visible { outline: 2px solid var(--color-gold-300); outline-offset: 3px; }
+.discovery__hint { color: var(--color-muted); font-size: 0.75rem; margin-block-start: 1rem; }
+@keyframes discovery-image-in { from { opacity: 0.6; transform: scale(1.04); } to { opacity: 1; transform: none; } }
+@media (max-width: 767px) {
+  .discovery__header { grid-template-columns: 1fr; gap: 1.2rem; margin-block-end: 1.5rem; }
+  .discovery__header h1 { font-size: clamp(1.8rem, 7vw, 2.7rem); }
+  .discovery__portal.portal-card { min-height: 0; }
+  .discovery__screen .discovery__portal .portal-card__media { position: relative; inset: auto; width: 100%; height: 250px; clip-path: none; }
+  .discovery__screen .discovery__portal .portal-card__body { min-height: 0; max-width: none; padding: 1.5rem; }
+  .discovery__screen .discovery__portal .portal-card__shade { display: none; }
+  .discovery__portal h2 { font-size: 1.9rem; }
+  .discovery__navigation { flex-wrap: wrap; }
+  .discovery__choices { grid-template-columns: repeat(2, 1fr); flex-basis: 100%; }
+  .discovery__choice { padding-inline: 0.6rem; }
+  .discovery__arrows { margin-inline-start: auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .discovery__portal .portal-card__media img { animation: none; }
+  .discovery__portal:hover .portal-card__media img,
+  .discovery__portal:focus-visible .portal-card__media img { transform: none; }
+}

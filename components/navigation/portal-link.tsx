@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import clsx from "clsx";
 import { useCallback, useRef } from "react";
 
 import { usePortalDoor } from "@/components/navigation/portal-transition-provider";
@@ -13,6 +13,7 @@ interface PortalLinkProps {
   media: React.ReactElement;
   body: React.ReactNode;
   className?: string;
+  mediaTestId?: string;
 }
 
 export function PortalLink({
@@ -22,46 +23,44 @@ export function PortalLink({
   media,
   body,
   className,
+  mediaTestId = "portal-media",
 }: PortalLinkProps) {
-  const router = useRouter();
   const { openDoor } = usePortalDoor();
   const mediaRef = useRef<HTMLDivElement>(null);
-  const isExternal = String(href).startsWith("http");
 
   const handleClick = useCallback(
-    (e: React.MouseEvent) => {
-      if (isExternal) return;
+    (e: React.MouseEvent<HTMLAnchorElement>) => {
       if (
-        e.button !== 0 ||
-        e.metaKey ||
-        e.ctrlKey ||
-        e.shiftKey ||
-        e.altKey ||
-        (e.currentTarget as HTMLAnchorElement).target === "_blank"
-      ) {
-        return;
-      }
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        return;
-      }
-      e.preventDefault();
+        e.defaultPrevented || !href.startsWith("/") || href.startsWith("//") ||
+        e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey ||
+        e.currentTarget.target === "_blank"
+      ) return;
       const rect = mediaRef.current?.getBoundingClientRect();
-      openDoor({ src: doorImage, label: doorLabel, rect });
-      router.push(href as string);
+      const image = mediaRef.current?.querySelector("img");
+      openDoor({
+        href,
+        src: doorImage,
+        label: doorLabel,
+        rect: rect ? { top: rect.top, left: rect.left, width: rect.width, height: rect.height } : undefined,
+        objectPosition: image ? getComputedStyle(image).objectPosition : "50% 50%",
+        trigger: e.currentTarget,
+      });
+      // Let Next Link handle navigation, prefetching and browser history normally.
     },
-    [href, doorImage, doorLabel, openDoor, router, isExternal]
+    [href, doorImage, doorLabel, openDoor]
   );
 
   return (
     <Link
       href={href}
-      className={`portal-card ${className ?? ""}`}
+      className={clsx("portal-card", className)}
       onClick={handleClick}
     >
-      <div ref={mediaRef} className="portal-card__media" data-testid="portal-media">
+      <div ref={mediaRef} className="portal-card__media" data-testid={mediaTestId}>
         {media}
       </div>
       <div className="portal-card__shade" aria-hidden="true" />
+      <div className="portal-card__rim" aria-hidden="true" />
       <div className="portal-card__body">{body}</div>
     </Link>
   );

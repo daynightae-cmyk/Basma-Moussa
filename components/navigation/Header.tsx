@@ -113,6 +113,14 @@ export function Header({ locale, dict }: HeaderProps) {
         </nav>
 
         <div className="header__actions">
+          <Link
+            href={localizedPath(locale, "/ai-studio")}
+            className="header__ai-link"
+            aria-current={pathname === localizedPath(locale, "/ai-studio") ? "page" : undefined}
+            onClick={closeMenu}
+          >
+            {isAr ? "الاستوديو الذكي" : "AI Studio"}
+          </Link>
           <button
             className="header__lang"
             aria-label={dict.common.switchLanguage}
@@ -170,6 +178,12 @@ export function Header({ locale, dict }: HeaderProps) {
                   </li>
                 );
               })}
+              <li>
+                <Link href={localizedPath(locale, "/ai-studio")}
+                  className="mobile-menu__link" onClick={closeMenu}>
+                  {isAr ? "الاستوديو الذكي" : "AI Studio"}
+                </Link>
+              </li>
               <li>
                 <Link
                   href={localizedPath(locale, "/privacy")}

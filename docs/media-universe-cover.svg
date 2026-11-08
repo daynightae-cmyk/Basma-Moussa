@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="420" viewBox="0 0 1400 420" role="img" aria-labelledby="title desc">
+<title id="title">Basma Moussa — Media Universe</title>
+<desc id="desc">A cinematic midnight navy and brushed gold editorial banner with a subtle Egyptian-inspired lotus, a microphone soundwave, and elegant typography.</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#060A16"/><stop offset=".62" stop-color="#0D152A"/><stop offset="1" stop-color="#16172B"/></linearGradient>
+  <linearGradient id="gold" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#92642A"/><stop offset=".28" stop-color="#F5D89B"/><stop offset=".58" stop-color="#C4964F"/><stop offset=".88" stop-color="#FBE5B7"/><stop offset="1" stop-color="#B58237"/></linearGradient>
+  <radialGradient id="glow"><stop stop-color="#CDA462" stop-opacity=".26"/><stop offset="1" stop-color="#CDA462" stop-opacity="0"/></radialGradient>
+  <pattern id="dots" width="19" height="19" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r=".7" fill="#E6BA79" opacity=".14"/></pattern>
+  <filter id="soft"><feGaussianBlur stdDeviation="12"/></filter>
+</defs>
+<rect width="1400" height="420" fill="url(#bg)"/><rect width="1400" height="420" fill="url(#dots)"/>
+<ellipse cx="430" cy="220" rx="395" ry="300" fill="url(#glow)"/>
+<path d="M0 352 C250 282 410 422 700 346 S1180 300 1400 328" fill="none" stroke="url(#gold)" stroke-width="1.5" opacity=".45"/>
+<path d="M0 376 C220 307 430 449 700 376 S1130 339 1400 349" fill="none" stroke="#D9B47E" stroke-width="1" opacity=".2"/>
+<!-- Unbounded sweeping line, an editorial motif not a substitute for the approved brand logo -->
+<path d="M165 247 C139 174 185 97 265 85 C320 77 359 96 380 140 C394 173 391 195 408 224" fill="none" stroke="url(#gold)" stroke-width="4" stroke-linecap="round"/>
+<path d="M133 265 C100 190 135 117 204 83" fill="none" stroke="#D4AA66" stroke-opacity=".37" stroke-width="2"/>
+<!-- Minimalist media capsule and continuous soundwave -->
+<rect x="315" y="169" width="59" height="97" rx="28" fill="#0B1020" stroke="url(#gold)" stroke-width="3"/>
+<path d="M330 189h29 M330 201h29 M330 213h29 M330 225h29" stroke="#E8C78E" stroke-opacity=".85" stroke-width="2" stroke-linecap="round"/>
+<path d="M329 274 Q345 286 361 274" fill="none" stroke="url(#gold)" stroke-width="3"/>
+<path d="M344 283v18h31l19-11 14 22 18-65 19 74 15-38 15 10 14-4" fill="none" stroke="url(#gold)" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+<!-- Single subtle Egyptian lotus/papyrus base -->
+<g transform="translate(278 325)" fill="none" stroke="url(#gold)" stroke-width="2.1" stroke-linecap="round" opacity=".85">
+<path d="M0 20Q-23-4-22-20Q-4-12 0 20 M0 20Q23-4 22-20Q4-12 0 20 M0 22Q-10-8 0-30Q10-8 0 22 M0 22V32 M-34 32H34"/>
+</g>
+<path d="M610 87v251" stroke="url(#gold)" stroke-width="1" opacity=".35"/>
+<text x="665" y="168" fill="url(#gold)" font-family="Georgia,Times New Roman,serif" font-size="77" letter-spacing="-1.5">Basma Moussa</text>
+<text x="673" y="228" fill="#F5E2BE" font-family="Arial,Helvetica,sans-serif" font-size="25" letter-spacing="11.5">MEDIA UNIVERSE</text>
+<path d="M671 257h580" stroke="url(#gold)" opacity=".7" stroke-width="1.4"/>
+<text x="674" y="291" fill="#C4C7D3" font-family="Arial,Helvetica,sans-serif" font-size="18" letter-spacing="2.6">WHERE STORIES FIND THEIR VOICE</text>
+<text x="673" y="335" fill="#9FA6B9" font-family="Arial,Helvetica,sans-serif" font-size="16" letter-spacing="2.4">UAE   ·   ARABIC / ENGLISH   ·   MEDIA × LEGAL PERSPECTIVE</text>
+<path d="M0 0h1400v420H0z" fill="none" stroke="#B58C52" stroke-opacity=".25" stroke-width="2"/>
+</svg>

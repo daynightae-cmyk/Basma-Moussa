@@ -1,4 +1,6 @@
-<p align="center"><img src="docs/media-universe-cover.svg" alt="Basma Moussa Media Universe — navy and gold cinematic editorial cover" width="100%" /></p>\n\n# BASMA MOUSSA ✦ MEDIA UNIVERSE
+<p align="center"><img src="docs/media-universe-cover.svg" alt="Basma Moussa Media Universe — navy and gold cinematic editorial cover" width="100%" /></p>
+
+# BASMA MOUSSA ✦ MEDIA UNIVERSE
 ### Stories. Vision. Connection. · لكل حكاية صوت... ولكل صوت رؤية
 
 <p align="center">
@@ -41,7 +43,7 @@ Every section needs a purpose beyond visual spectacle. Delight must never come a
 
 ## ✧ Approved creative direction
 
-- **Core palette:** midnight navy / near-black with brushed metallic gold and restrained warm highlights.
+- **Final approved core palette:** midnight navy / near-black with brushed metallic gold and restrained warm highlights. The earlier magenta/violet/orange visual draft is superseded.
 - **Signature symbol:** gold feminine profile → microphone + play emblem → soundwave.
 - **Egyptian heritage touch:** tasteful pyramidal/lotus/papyrus-inspired micro-detail integrated into the existing mark, **not** a crowded tourist collage or off-brand red-white-black color intrusion.
 - **Primary logo direction:** circular, edge-free icon variant for favicon/avatar; full horizontal wordmark for large placements.
@@ -49,7 +51,7 @@ Every section needs a purpose beyond visual spectacle. Delight must never come a
 - **Arabic:** بسمة موسى. **English:** Basma Moussa.
 - **RTL / LTR:** both languages designed intentionally, not mechanically flipped.
 
-Detailed rules: [Creative direction](docs/CREATIVE_DIRECTION.md) · [Asset manifest](docs/ASSET_MANIFEST.md).
+Detailed rules: [Creative direction](docs/CREATIVE_DIRECTION.md) · [Vision evolution from original HTML](docs/ORIGINAL_VISION_PARITY.md) · [Asset manifest](docs/ASSET_MANIFEST.md).
 
 ## 🗺️ Experience architecture
 
@@ -85,7 +87,7 @@ The implementation agent should **inspect the existing repository before adding 
 
 ## 📐 Visual asset plan
 
-Ten distinct hero/editorial images are planned for: cinematic home, about, media/newsroom, interviews, podcast, legal insight, UAE field reporting, documentaries/archive, production behind-the-scenes, and collaboration/contact.
+A diverse set of editorial assets is planned for cinematic home, authentic Basma portrait, studio and interviews, podcast, legal insight, UAE context, abstract sound identity and collaboration. The exact number and ordering can evolve if it improves the experience; approved media is not yet uploaded.
 
 Real photographs and AI concept images must be distinguishable in captions and metadata. The image references exist in the project conversation but **are not automatically present in this repository**.
 

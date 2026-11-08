@@ -32,6 +32,13 @@ jobs:
 
       - name: Install locked dependencies
         run: npm ci
+      - name: Diagnose environment
+        run: |
+          node --version
+          npm --version
+          npx tsc --version
+          npx next --version
+          npm ls typescript next zod sharp 2>&1 | head -30
 
       - name: Lint
         run: npm run lint

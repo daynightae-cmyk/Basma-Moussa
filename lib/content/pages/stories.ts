@@ -1,119 +1,111 @@
-import type { LocalizedPair } from "../types";
+import type { LocalizedText } from "@/lib/content/types";
 
-const ar = {
-  hero: {
-    eyebrow: "أرشيف الذاكرة",
-    title: "قصص تُروى عندما تجهز، لا قبل ذلك.",
-    lead: "أرشيف وثائقي قيد الإعداد: حكايات إنسانية، ملاحظات ميدانية، وذاكرة مدن. كل قصة تحتاج وقتها وموافقتها ومصدرها.",
-    caption: "مشهد أرشيف بحثي — صورة توضيحية.",
-  },
-  status: {
-    eyebrow: "حالة الأرشيف",
-    title: "أرشيف صادق، لا أرشيف ممتلئ.",
-    body: "يفضّل هذا الأرشيف أن يظهر فارغًا على أن يمتلئ بقصص لم تُروَ أو لم تُتحقق. عندما تدخل أول قصة، ستدخل باسم صاحبها ومصدرها وتاريخ مراجعتها.",
-    metric: "0",
-    metricLabel: "قصة منشورة",
-    metricSecondary: "4",
-    metricSecondaryLabel: "مسارات تحريرية قيد البحث",
-    note: "المسارات التحريرية مفاهيم، وليست مقالات أو حلقات.",
-  },
-  lanes: {
-    eyebrow: "مسارات البحث",
-    title: "أربع طرق إلى الذاكرة.",
-    lead: "لكل مسار منهجه ومعياره. لا نخلط الحكاية الإنسانية بالتحليل القانوني، ولا الملاحظة الميدانية بالرأي.",
-    items: [
+export const STORIES_CONTENT: Record<"ar" | "en", {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  statusLine: string;
+  caption: LocalizedText;
+  archiveNote: string;
+  lanes: { title: LocalizedText; body: LocalizedText; status: LocalizedText }[];
+  policy: { title: LocalizedText; body: LocalizedText }[];
+}> = {
+  ar: {
+    eyebrow: "القصص والتوثيق",
+    title: "أرشيف الذاكرة",
+    lead:
+      "قصص موثقة ومواد بحثية قيد الإعداد. لا ننشر什么 لم نتحقق منه.",
+    statusLine: "الأرشيف في مرحلة الإعداد — لا مواد منشورة بعد.",
+    caption: {
+      ar: "مشهد أرشيفي توضيحي — ليست مستندات حقيقية.",
+      en: "Illustrative archival scene — not real documents.",
+    },
+    archiveNote:
+      "عندما يُنصح الأرشيف، ستحمل كل مادة مصدرها وتاريخها وحالتها التحريرية.",
+    lanes: [
       {
-        title: "حكايات إنسانية",
-        body: "أشخاص عاديون يحملون معنى غير عادي. موافقة واضحة، وسياق كامل، ولا استعجال.",
+        title: { ar: "حكايات إنسانية", en: "Human stories" },
+        body: { ar: "قصص من الإمارات والمجتمع العربي، تُروى بإذن واضح.", en: "Stories from the UAE and the Arab world, told with clear consent." },
+        status: { ar: "قيد الإعداد", en: "In preparation" },
       },
       {
-        title: "ذاكرة المدن",
-        body: "المكان كشاهد: الشارقة والمدن العربية، تحولاتها وتفاصيلها اليومية.",
+        title: { ar: "تفسيرات قانونية", en: "Legal explainers" },
+        body: { ar: "مبنية على مصادر رسمية، مع إخلاء مسؤولية.", en: "Grounded in official sources, with disclaimers." },
+        status: { ar: "مخططات أولية", en: "Preliminary outlines" },
       },
       {
-        title: "ملاحظات ميدانية",
-        body: "ما يُكتب قبل الكاميرا: الأصوات، الطريق، التفاصيل التي لا تدخل المونتاج.",
+        title: { ar: "صوت المدينة", en: "City voices" },
+        body: { ar: "ملاحظات ميدانية من الشارقة والمدن.", en: "Field notes from Sharjah and the cities." },
+        status: { ar: "قيد الإعداد", en: "In preparation" },
       },
       {
-        title: "قراءات موثقة",
-        body: "مواد قانونية وثقافية تُقرأ مع مصدرها، وتُوسم بأنها شرح لا استشارة.",
+        title: { ar: "محتوى صوتي", en: "Audio content" },
+        body: { ar: "مقالات وحوارات مسجلة عند توفرها.", en: "Essays and recorded conversations when they exist." },
+        status: { ar: "قيد التطوير", en: "In development" },
+      },
+    ],
+    policy: [
+      {
+        title: { ar: "التحقق أولًا", en: "Verify first" },
+        body: { ar: "لا نُنشر قصة إلا بعد التحقق من مصادرها.", en: "No story published before its sources are verified." },
+      },
+      {
+        title: { ar: "موافقة واضحة", en: "Clear consent" },
+        body: { ar: "لا يظهر شخص recognizable دون موافقته.", en: "No identifiable person appears without consent." },
+      },
+      {
+        title: { ar: "حالة صادقة", en: "Honest status" },
+        body: { ar: "كل مادة تحمل حالتها: مفهوم، إعداد، أو منشور.", en: "Every item carries its status: concept, preparation, or published." },
       },
     ],
   },
-  policy: {
-    eyebrow: "سياسة النشر",
-    title: "ما الذي يدخل هذا الأرشيف؟",
-    items: [
-      "قصة حقيقية، وموافقة صريحة من صاحبها.",
-      "مصدر قابل للتحقق، وتاريخ واضح.",
-      "مراجعة تحريرية مستقلة عن صاحب المصلحة.",
-      "سياسة تصحيح مرئية عند الخطأ.",
-    ],
-    note: "لا نتحايل على غياب المحتوى بحكايات رمزية تُقدَّم كوقائع.",
-  },
-  cta: {
-    title: "لديك قصة تستحق أن تُحفظ؟",
-    body: "شاركنا بداية الحكاية، لا العنوان الجاذب. سنتحقق ثم نقرر.",
-    action: "تواصل عبر واتساب",
-  },
-} as const;
-
-const en: LocalizedPair<typeof ar>["en"] = {
-  hero: {
-    eyebrow: "The Memory Room",
-    title: "Stories are told when they are ready, not before.",
-    lead: "A documentary archive in preparation: human stories, field notes and the memory of cities. Every story needs its time, its consent and its source.",
-    caption: "A research archive scene — illustrative imagery.",
-  },
-  status: {
-    eyebrow: "Archive status",
-    title: "An honest archive, not a full one.",
-    body: "This archive would rather appear empty than fill itself with stories that were never told or never verified. When the first story enters, it will enter with its owner's name, its source and its review date.",
-    metric: "0",
-    metricLabel: "stories published",
-    metricSecondary: "4",
-    metricSecondaryLabel: "editorial paths in research",
-    note: "The editorial paths are concepts, not articles or episodes.",
-  },
-  lanes: {
-    eyebrow: "Research paths",
-    title: "Four ways into memory.",
-    lead: "Each path has its own method and standard. We do not confuse a human story with legal analysis, or a field note with opinion.",
-    items: [
+  en: {
+    eyebrow: "Stories & Archive",
+    title: "Memory Room",
+    lead:
+      "Documented stories and research materials being assembled. Nothing published before verification.",
+    statusLine: "The archive is in preparation — no materials published yet.",
+    caption: {
+      ar: "مشهد أرشيفي توضيحي — ليست مستندات حقيقية.",
+      en: "Illustrative archival scene — not real documents.",
+    },
+    archiveNote:
+      "When the archive opens, every item will carry its source, date, and editorial status.",
+    lanes: [
       {
-        title: "Human stories",
-        body: "Ordinary people carrying extraordinary meaning. Clear consent, full context, no rushing.",
+        title: { ar: "Human stories", en: "Human stories" },
+        body: { ar: "قصص من الإمارات والمجتمع العربي، تُروى بإذن واضح.", en: "Stories from the UAE and the Arab world, told with clear consent." },
+        status: { ar: "In preparation", en: "In preparation" },
       },
       {
-        title: "City memory",
-        body: "Place as witness: Sharjah and Arab cities, their changes and everyday details.",
+        title: { ar: "Legal explainers", en: "Legal explainers" },
+        body: { ar: "مبنية على مصادر رسمية، مع إخلاء مسؤولية.", en: "Grounded in official sources, with disclaimers." },
+        status: { ar: "Preliminary outlines", en: "Preliminary outlines" },
       },
       {
-        title: "Field notes",
-        body: "What is written before the camera: voices, routes and details that never reach the edit.",
+        title: { ar: "City voices", en: "City voices" },
+        body: { ar: "ملاحظات ميدانية من الشارقة والمدن.", en: "Field notes from Sharjah and the cities." },
+        status: { ar: "In preparation", en: "In preparation" },
       },
       {
-        title: "Documented readings",
-        body: "Legal and cultural material read with its source, labelled as explanation, not advice.",
+        title: { ar: "Audio content", en: "Audio content" },
+        body: { ar: "مقالات وحوارات مسجلة عند توفرها.", en: "Essays and recorded conversations when they exist." },
+        status: { ar: "In development", en: "In development" },
       },
     ],
-  },
-  policy: {
-    eyebrow: "Publication policy",
-    title: "What enters this archive?",
-    items: [
-      "A real story, with explicit consent from the person who owns it.",
-      "A verifiable source and a clear date.",
-      "Editorial review independent of the interested party.",
-      "A visible correction policy when something is wrong.",
+    policy: [
+      {
+        title: { ar: "Verify first", en: "Verify first" },
+        body: { ar: "No story published before its sources are verified.", en: "No story published before its sources are verified." },
+      },
+      {
+        title: { ar: "Clear consent", en: "Clear consent" },
+        body: { ar: "No identifiable person appears without consent.", en: "No identifiable person appears without consent." },
+      },
+      {
+        title: { ar: "Honest status", en: "Honest status" },
+        body: { ar: "Every item carries its status: concept, preparation, or published.", en: "Every item carries its status: concept, preparation, or published." },
+      },
     ],
-    note: "We do not disguise missing content with symbolic stories presented as facts.",
-  },
-  cta: {
-    title: "Have a story that deserves to be kept?",
-    body: "Share the beginning of the story, not the catchy headline. We will verify, then decide.",
-    action: "Reach out on WhatsApp",
   },
 };
-
-export const storiesPageContent: LocalizedPair<typeof ar> = { ar, en };

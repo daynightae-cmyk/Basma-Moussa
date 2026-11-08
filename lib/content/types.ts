@@ -1,42 +1,59 @@
-import type { Locale } from "@/lib/i18n/config";
-
 export type LocalizedText = { ar: string; en: string };
+export type Localized<T extends Record<string, unknown>> = {
+  ar: T;
+  en: T;
+};
+export type LocalizedForm<T extends Record<string, unknown>> = {
+  ar: T;
+  en: T;
+};
+export type LocaleDirection = "rtl" | "ltr";
 
 export type PublicationStatus =
   | "concept"
-  | "in-development"
   | "draft"
   | "review"
   | "published"
   | "archived";
+export type AssetSource =
+  | "user-approved-brand"
+  | "user-supplied-ai-concept";
+export type EditorialStatus = "brand-approved" | "illustrative-review-required";
+export type SourceKind =
+  | "official-legal-reference"
+  | "official-news-reference"
+  | "official-data-reference";
 
-export type AssetProvenance =
-  | "user-supplied-ai-concept"
-  | "user-approved-brand";
+export interface FocalPoint {
+  x: number; // 0-100
+  y: number; // 0-100
+}
 
-export type AssetEditorialStatus =
-  | "illustrative-review-required"
-  | "brand-approved";
-
-export type ProgramCategory = "conversation" | "legal" | "documentary" | "audio";
-
-export type FocalPoint = { x: number; y: number };
-
-export interface MediaAsset {
+export interface MediaAssetRecord {
   id: string;
   sourceRef: string;
-  src: string;
-  originalUrl: string;
+  src: string; // /media/... or /brand/...
+  originalUrl?: string;
   width: number;
   height: number;
-  title: string;
+  title: LocalizedText;
   alt: LocalizedText;
   pages: string[];
-  provenance: AssetProvenance;
-  editorialStatus: AssetEditorialStatus;
+  provenance: AssetSource;
+  editorialStatus: EditorialStatus;
   publishedClaimAllowed: boolean;
   focalPoint: FocalPoint;
-  blurDataURL: string;
+}
+
+export interface OfficialSourceRecord {
+  id: string;
+  url: string;
+  name: LocalizedText;
+  kind: SourceKind;
+  verifiedAsWebsiteEntryPoint: boolean;
+  apiVerified: boolean;
+  jurisdiction?: string;
+  localContext: LocalizedText; // how we describe what we link to
 }
 
 export interface ProgramRecord {
@@ -46,92 +63,53 @@ export interface ProgramRecord {
   status: PublicationStatus;
   episodeIds: string[];
   heroAssetId: string;
-}
-
-export interface ProgramWorld extends ProgramRecord {
-  category: ProgramCategory;
-  worldName: LocalizedText;
+  category: string;
   tagline: LocalizedText;
+  worldName: LocalizedText;
   atmosphere: LocalizedText;
-  introduction: LocalizedText;
-  formats: { title: LocalizedText; body: LocalizedText }[];
-  gates: LocalizedText[];
+  formats: LocalizedText[];
+  approach: LocalizedText[];
   statusNote: LocalizedText;
-  quote: LocalizedText;
-  experienceHref: string;
-  experienceLabel: LocalizedText;
-  secondaryAssetId: string;
+  worldHref: string;
+  secondaryAssetId?: string;
+  quote?: LocalizedText;
 }
 
-export interface OfficialSource {
-  id: string;
-  url: string;
-  name: string;
-  kind:
-    | "official-legal-reference"
-    | "official-news-reference"
-    | "official-data-reference";
-  verifiedAsWebsiteEntryPoint: boolean;
-  apiVerified: boolean;
-  publisher: LocalizedText;
-  description: LocalizedText;
-  jurisdiction: "UAE-federal" | "Dubai" | "Sharjah" | "global";
-  retrievedAt: string;
-  licenseReviewed: boolean;
-}
-
-export interface LegalOutline {
+export interface LegalOutlineRecord {
   id: string;
   title: LocalizedText;
   summary: LocalizedText;
-  jurisdiction: LocalizedText;
+  jurisdiction: string;
   status: "outline";
   sourceIds: string[];
   note: LocalizedText;
 }
 
-export interface WorldCard {
+export interface WorldCardRecord {
   id: string;
   href: string;
   assetId: string;
+  programSlug?: string;
   kicker: LocalizedText;
   title: LocalizedText;
   teaser: LocalizedText;
   status: PublicationStatus;
-  category: ProgramCategory;
-  variant: "wide" | "tall";
+  variant: "wide" | "tall" | "editorial";
+  category?: string;
 }
 
-export interface MediaWorldEntry extends WorldCard {
-  programSlug: string;
-  searchText: LocalizedText;
-}
-
-export interface SecondaryWorldCard {
-  id: string;
-  href: string;
-  assetId: string;
-  kicker: LocalizedText;
+export interface PageContent {
+  eyebrow: LocalizedText;
   title: LocalizedText;
-  teaser: LocalizedText;
+  lead: LocalizedText;
 }
 
-/**
- * Widens literal strings so a second language can be checked against the
- * shape of the first without pretending the copy is identical.
- */
-export type CopyShape<T> = T extends string
-  ? string
-  : T extends number
-    ? number
-    : T extends boolean
-      ? boolean
-      : T extends readonly (infer U)[]
-        ? CopyShape<U>[]
-        : { [K in keyof T]: CopyShape<T[K]> };
+export interface CaptionNote {
+  label: LocalizedText;
+  prose: LocalizedText;
+}
 
-export type LocalizedPair<T> = { ar: T; en: CopyShape<T> };
-
-export function localize(text: LocalizedText, locale: Locale): string {
-  return text[locale];
+export interface CopyrightLine {
+  ar: string;
+  en: string;
 }

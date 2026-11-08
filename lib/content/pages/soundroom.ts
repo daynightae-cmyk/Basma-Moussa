@@ -1,77 +1,76 @@
-import type { LocalizedPair } from "../types";
-
-const ar = {
-  hero: {
-    eyebrow: "مساحة صوت · التردد الذهبي",
-    title: "استمع للطبقات التي لا تظهر في الصورة.",
-    lead: "عالم للأصوات التي لا تكفي الصورة لتحملها. هذا الإصدار لا يحتوي ملفًا صوتيًا منشورًا — وسنقول ذلك بوضوح.",
-    caption: "موجة ذهبية — عمل بصري توضيحي، ليس غلاف حلقة.",
+export const SOUNDROOM_CONTENT: Record<"ar" | "en", {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  statusLine: string;
+  caption: string;
+  emptyTitle: string;
+  emptyBody: string;
+  controlsHint: string;
+  decorativeToggleOn: string;
+  decorativeToggleOff: string;
+  whatToExpectTitle: string;
+  whatToExpectBody: string;
+  formats: { title: string; body: string }[];
+  gates: string[];
+  whatsReal: string[];
+}> = {
+  ar: {
+    eyebrow: "مساحة صوت",
+    title: "التردد الذهبي",
+    lead: "عالم صوتي للحوارات والقصص الإنسانية — قيد التطوير.",
+    statusLine: "لا تسجيلات منشورة بعد. هذا ليس مشغل صوت.",
+    caption: "موجة صوتية زخرفية فقط — لا تشغيل صامت ولا فعلي.",
+    emptyTitle: "لا تسجيلات بعد",
+    emptyBody: "مساحة الصوت تُبنى الآن. عندما يُوافَق على مصدر صوتي، سيظهر مشغل حقيقي مع حالات التشغيل والإيقاف والوصف. حتى ذلك الحين، الحركة أعلاه هي تحريك واجهة فقط، وليس صوتًا.",
+    controlsHint: "إيقاف/تشغيل الحركة الزخرفية",
+    decorativeToggleOn: "الحركة مفعلة",
+    decorativeToggleOff: "الحركة متوقفة",
+    whatToExpectTitle: "ماذا سيُستمع هنا؟",
+    whatToExpectBody: "مقالات صوتية، وحوارات مسجلة، وقراءات تحريرية — كل ذلك فقط عندما تكون المصادر حقيقية ومُعتمدة.",
+    formats: [
+      { title: "مقالات صوتية", body: "تأملات صوتية حول الحكاية والقانون." },
+      { title: "حوارات مسجلة", body: "حوار يُصغي إلى الشخص أولًا، مع موافقة واضحة على الظهور." },
+      { title: "قراءات تحريرية", body: "نصوص من المحتوى التحريري للموقع، تُقرأ بصوت." },
+    ],
+    gates: [
+      "مصدر صوتي حقيقي ومُعتمد للنشر",
+      "نصوص وموافقات جاهزة",
+      "إحساس واضح بحق الاستماع والحفظ",
+    ],
+    whatsReal: [
+      "الفراغ الصوتي هنا حقيقي: لا صوت.",
+      "الموجة أعلاه تحريك واجهة، لا صوت.",
+      "لا تشغيل تلقائي، ولا حلقات وهمية.",
+    ],
   },
-  absent: {
-    eyebrow: "حالة حقيقية",
-    title: "لا صوت منشور بعد.",
-    body: "لم نسجّل حلقة، ولم نستلم ملفًا صوتيًا مصرّحًا به. بدلًا من مشغل وهمي يخدع الزائر، هذه المساحة تعلن حالتها وتنتظر أول مادة حقيقية.",
-    metricOne: "0",
-    metricLabel: "ملفات صوتية منشورة",
-    motionNote: "الموجة أدناه زخرفية بالكامل. زر الحركة يوقفها ويشغّلها، ولا يشغّل صوتًا.",
-    realPlayerNote: "المشغل الحقيقي — بأزرار تشغيل ووقت وتفريغ نصي — يظهر فقط عند توفر ملف صوتي مصرّح به.",
-  },
-  formats: {
-    eyebrow: "ما الذي سيُسمع هنا",
-    title: "ثلاث صيغ صوتية، بمعيار واحد.",
-    lead: "الصوت لا يُنشر لأنه جميل فقط؛ يُنشر لأنه مفهوم، موثّق، ومصرّح به.",
-  },
-  gates: {
-    eyebrow: "شروط النشر",
-    title: "ما الذي يجب أن يكون صحيحًا قبل أول حلقة؟",
-  },
-  programLink: {
-    title: "المفهوم الكامل",
-    body: "اقرأ تعريف عالم «مساحة صوت» وشروط إنتاجه، بعيدًا عن واجهة الاستماع.",
-    cta: "افتح بطاقة المفهوم",
-  },
-  cta: {
-    title: "لديك مادة صوتية أو فكرة؟",
-    body: "القناة مفتوحة للتعاون الصوتي — بشرط الحقوق والموافقة والوضوح.",
-    action: "تواصل عبر واتساب",
-  },
-} as const;
-
-const en: LocalizedPair<typeof ar>["en"] = {
-  hero: {
-    eyebrow: "Soundroom · The Golden Frequency",
-    title: "Listen for the layers you cannot see.",
-    lead: "A world for sounds the image cannot hold. This release contains no published audio — and we say so plainly.",
-    caption: "A golden waveform — illustrative visual work, not an episode cover.",
-  },
-  absent: {
-    eyebrow: "An honest state",
-    title: "No audio published yet.",
-    body: "We have not recorded an episode, and no rights-cleared audio file has been supplied. Instead of a pretend player that misleads visitors, this space states its condition and waits for its first real piece.",
-    metricOne: "0",
-    metricLabel: "published audio files",
-    motionNote: "The waveform below is entirely decorative. The motion button pauses or resumes it and never plays sound.",
-    realPlayerNote: "A real player — with play controls, time and transcript — appears only when approved audio exists.",
-  },
-  formats: {
-    eyebrow: "What will be heard here",
-    title: "Three audio formats, one standard.",
-    lead: "Audio is not published because it sounds beautiful. It is published because it is clear, documented and rights-cleared.",
-  },
-  gates: {
-    eyebrow: "Publication gates",
-    title: "What must be true before the first episode?",
-  },
-  programLink: {
-    title: "The full concept",
-    body: "Read the definition of the Soundroom world and its production gates, away from the listening surface.",
-    cta: "Open the concept card",
-  },
-  cta: {
-    title: "Have audio material or an idea?",
-    body: "The channel is open for audio collaboration — subject to rights, consent and clarity.",
-    action: "Reach out on WhatsApp",
+  en: {
+    eyebrow: "Soundroom",
+    title: "The Golden Frequency",
+    lead: "An audio world for conversations and human stories — in development.",
+    statusLine: "No recordings published yet. This is not an audio player.",
+    caption: "Decorative waveform only — no silent or actual playback.",
+    emptyTitle: "No recordings yet",
+    emptyBody: "The Soundroom is being built. When an approved audio source exists, a real player with play/pause and description will appear. Until then, the motion above is UI animation only — not audio.",
+    controlsHint: "Pause/start decorative motion",
+    decorativeToggleOn: "Motion on",
+    decorativeToggleOff: "Motion off",
+    whatToExpectTitle: "What will be heard here?",
+    whatToExpectBody: "Audio essays, recorded conversations, and editorial readings — only when sources are real and approved.",
+    formats: [
+      { title: "Audio essays", body: "Audio reflections on story and law." },
+      { title: "Recorded conversations", body: "People-first conversations, with clear consent." },
+      { title: "Editorial readings", body: "Site editorial content read aloud." },
+    ],
+    gates: [
+      "A real, approved audio source for publication",
+      "Transcripts and consents ready",
+      "Clear listening and archiving rights",
+    ],
+    whatsReal: [
+      "The silence here is real: no audio.",
+      "The wave above is interface motion, not sound.",
+      "No autoplay, no invented episodes.",
+    ],
   },
 };
-
-export const soundroomPageContent: LocalizedPair<typeof ar> = { ar, en };

@@ -1,219 +1,169 @@
-import type { LocalizedPair } from "../types";
-
-const ar = {
-  hero: {
+export const HOME_CONTENT: Record<"ar" | "en", {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  primaryCta: string;
+  secondaryCta: string;
+  statusLine: string;
+  heroCaption: string;
+  introEyebrow: string;
+  introTitle: string;
+  introBody: string;
+  pillars: { title: string; body: string }[];
+  worldsSection: { eyebrow: string; title: string; lead: string };
+  legalSection: { eyebrow: string; title: string; lead: string };
+  storiesSection: { eyebrow: string; title: string; lead: string };
+  aboutSection: { eyebrow: string; title: string; lead: string };
+  studioSection: { eyebrow: string; title: string; lead: string };
+  journey: { label: string; title: string; body: string }[];
+  contact: { eyebrow: string; title: string; lead: string };
+}> = {
+  ar: {
     eyebrow: "بسمة موسى · عالم الإعلام",
     title: "لكل حكاية صوت... ولكل صوت رؤية.",
     lead: "منصة إعلامية عربية تُبنى الآن: حكايات إنسانية، وعي قانوني، وأصوات المدن — برؤية سينمائية وصدق تحريري.",
     primaryCta: "ادخل عالم الإعلام",
     secondaryCta: "لنتعاون",
-    status: "مفاهيم قيد التطوير · لا حلقات منشورة بعد",
-    caption: "تصوّر بصري للهوية — ليس توثيقًا لبث حقيقي.",
-    scroll: "مرّر لتكتشف",
-  },
-  intro: {
-    eyebrow: "الرؤية",
-    title: "ليست مجرد صفحة... إنها عالم باسم بسمة.",
-    body: "هنا تلتقي الحكاية بالبحث، والصوت بالمكان. أربعة عوالم تُفتح كأبواب: حوارات تهدأ لتسمع، قانون يُقرأ بلغة الناس، مدينة تُروى بأصوات أهلها، وتردد ذهبي يحفظ ما لا يُقال في الصورة. نبني هذا العالم على قاعدة واحدة: لا نُنشر ما لم نتحقق منه.",
-    note: "أربعة عوالم مفاهيمية · صفر حلقات منشورة · رؤية واحدة قابلة للنمو",
+    statusLine: "مفاهيم قيد التطوير · لا حلقات منشورة بعد.",
+    heroCaption: "تصوّر بصري للهوية — ليس توثيقًا لبث حقيقي.",
+    introEyebrow: "الرؤية",
+    introTitle: "ليست مجرد صفحة... إنها عالم باسم بسمة.",
+    introBody:
+      "هنا تلتقي الحكاية بالبحث، والصوت بالمكان. أربعة عوالم تُفتح كأبواب: حوارات إنسانية، ووعي قانوني، وحكايات المدينة، ومساحة للصوت. هذه المنصة تُبنى بصدق، وتُعرض حالاتها بوضوح.",
     pillars: [
       {
         title: "الحكاية أولًا",
-        body: "نبدأ بالإنسان، لا بالعنوان. الحكاية الجيدة تمنح الوقت لمن يحكيها.",
+        body: "قصص إنسانية تُروى بدفء ومهنية، لا بمقاييس زائفة.",
       },
       {
         title: "البحث أساس",
-        body: "كل ادعاء يحتاج مصدرًا، وكل مصدر يحتاج تاريخًا وسياقًا.",
+        body: "مصادر رسمية وإخلاء مسؤولية، قبل أي محتوى قانوني.",
       },
       {
         title: "المكان حاضر",
-        body: "من الشارقة إلى المدن العربية، المكان جزء من الحكاية لا خلفية لها.",
+        body: "الإمارات والمجتمع العربي في القلب، وليس في الهامش.",
       },
     ],
-  },
-  portals: {
-    eyebrow: "عالم الإعلام",
-    title: "أربعة أبواب. أربعة عوالم.",
-    lead: "كل عالم له لغته البصرية وإيقاعه. افتح الباب الذي يناديك — وستجد طريق العودة دائمًا مفتوحًا.",
-    note: "تُوسم كل التجارب بحالتها الحقيقية: مفهوم قيد التطوير، وليس إنتاجًا منشورًا.",
-  },
-  legal: {
-    eyebrow: "من زاوية القانون",
-    title: "القانون أوضح عندما نقرأه معًا.",
-    body: "مكتبة توعوية تبدأ من المصادر الرسمية، وتحدد الاختصاص وتاريخ القراءة. لا استشارات فردية، ولا وعود يقينية — فقط شرح مسؤول بلغة إنسانية.",
-    cta: "ادخل مكتبة القانون",
-    caption: "مشهد مكتب قانوني — صورة توضيحية.",
-  },
-  archive: {
-    eyebrow: "أرشيف الذاكرة",
-    title: "لا ننشر قصة قبل أن نتحقق منها.",
-    body: "أرشيف وثائقي قيد الإعداد: قصص إنسانية، ملاحظات ميدانية، ومواد تُراجع قبل النشر. هذا ليس أرشيفًا فارغًا؛ إنه أرشيف يرفض أن يمتلئ بما ليس صحيحًا.",
-    cta: "تعرّف على الأرشيف",
-    caption: "مشهد أرشيف بحثي — صورة توضيحية.",
-  },
-  about: {
-    eyebrow: "عن بسمة",
-    title: "بين الحكاية والقانون.",
-    body: "صوت إعلامي وعين بحثية. تؤمن بسمة أن الحكاية الجيدة تبدأ بالإنصات، وأن القانون الواضح يبدأ بمصدر موثوق. هذه المنصة هي المساحة التي تجتمع فيها الرؤيتان.",
-    cta: "اقرأ الحكاية",
-    caption: "بورتريه تصوري للهوية — ليس توثيقًا لحدث أو منصب.",
-  },
-  studio: {
-    eyebrow: "خلف الرؤية",
-    title: "الحكاية تُصنع قبل أن تُرى.",
-    body: "بحث، حوار، تحرير، ثم نشر. نكشف الطريق الذي تسلكه الفكرة قبل أن تصل إلى الشاشة — ونسمّي كل مرحلة باسمها.",
-    cta: "ادخل الاستوديو",
-  },
-  facts: {
-    eyebrow: "الحقيقة العددية",
-    title: "أرقام صغيرة، بصدق.",
-    body: "لا نحتاج أرقامًا كبيرة لنبدو حقيقيين. هذه حالة المشروع الآن.",
-    items: [
-      { value: "04", label: "عوالم مفاهيمية" },
-      { value: "00", label: "حلقات منشورة" },
-      { value: "01", label: "رؤية قابلة للنمو" },
-    ],
-    note: "تتغير هذه الأرقام فقط عندما يحدث الشيء فعلًا.",
-  },
-  journey: {
-    eyebrow: "كيف تبدأ؟",
-    title: "تجربة مفهومة… من أول لمسة.",
-    lead: "ثلاث خطوات فقط، بلا متاهة.",
-    steps: [
+    worldsSection: {
+      eyebrow: "عالم الإعلام",
+      title: "اخرج من الباب الذي يخاطبك",
+      lead: "كل عالم له جوه، ومصيره يُحكى بحالة صادقة.",
+    },
+    legalSection: {
+      eyebrow: "من زاوية القانون",
+      title: "القانون بلغة الناس",
+      lead: "محتوى توعوي مرجع إلى مصادر رسمية، بلا فتاوى فردية.",
+    },
+    storiesSection: {
+      eyebrow: "القصص والتوثيق",
+      title: "أرشيف الذاكرة",
+      lead: "قصص موثقة، ومواد قيد البحث — لا نُنشَر ما لم نتحقق.",
+    },
+    aboutSection: {
+      eyebrow: "عن بسمة",
+      title: "بين الإعلام والقانون",
+      lead: "بسمة موسى — صوت إعلامي يحمل القانون كأداة فهم، والحكاية كمسؤولية.",
+    },
+    studioSection: {
+      eyebrow: "خلف الرؤية",
+      title: "مساحة للصناعة",
+      lead: "بحث، حوار، تحرير، ثم نشر — مع توضيح لما هو توضيحي فقط.",
+    },
+    journey: [
       {
-        number: "01",
+        label: "الخطوة 1",
         title: "اكتشف",
-        body: "تعرّف على بسمة والرؤية خلف هذا العالم.",
+        body: "تعرف إلى بسمة ورؤيتها، ومنصة عالم الإعلام.",
       },
       {
-        number: "02",
+        label: "الخطوة 2",
         title: "استكشف",
-        body: "ادخل أي عالم عبر بابه، ثم عُد إلى الخريطة متى شئت.",
+        body: "افتح العوالم، وتصفح البرامج المفاهيمية، واقرأ حالة كل تجربة.",
       },
       {
-        number: "03",
+        label: "الخطوة 3",
         title: "تواصل",
-        body: "للتعاون، الحوار، أو فكرة تريد أن تُروى — القناة جاهزة.",
+        body: "راسل بسمة عبر واتساب للتعاون الإعلامي والتحريري.",
       },
     ],
-    note: "كل رابط حقيقي، وكل حالة معلنة بصدق.",
+    contact: {
+      eyebrow: "لنصنع الحكاية القادمة",
+      title: "للتعاون والتواصل",
+      lead: "للتعاون الإعلامي، الحوارات، والبحث التحريري — راسل بسمة مباشرة عبر واتساب.",
+    },
   },
-  contact: {
-    eyebrow: "الدعوة",
-    title: "لنفتح بابًا لحكاية جديدة.",
-    body: "للتعاون الإعلامي، الحوارات، والبحث التحريري — تواصل مباشرة عبر واتساب. سنرد عندما نستطيع؛ لا وعود آلية.",
-    cta: "ابدأ حوارًا على واتساب",
-    note: "قناة واتساب العامة مأخوذة من الرؤية المعتمدة. لا يوجد نموذج إرسال في هذا الإصدار.",
-    caption: "مساحة تعاون تصورية — لا تدّعي مكتبًا حقيقيًا.",
-  },
-} as const;
-
-const en: LocalizedPair<typeof ar>["en"] = {
-  hero: {
-    eyebrow: "BASMA MOUSSA · MEDIA UNIVERSE",
+  en: {
+    eyebrow: "Basma Moussa · Media Universe",
     title: "Where Stories Find Their Voice.",
-    lead: "An Arabic-first media platform in the making: human stories, legal awareness, and the voices of cities — with cinematic vision and editorial honesty.",
-    primaryCta: "Enter the Media Universe",
+    lead: "A cinematic Arabic-first media universe being built now: human stories, legal awareness, and city voices — with editorial honesty and film-quality imagery.",
+    primaryCta: "Enter Media Universe",
     secondaryCta: "Collaborate",
-    status: "Concepts in development · no episodes published yet",
-    caption: "Visual identity concept — not documentation of an actual broadcast.",
-    scroll: "Scroll to discover",
-  },
-  intro: {
-    eyebrow: "The vision",
-    title: "Not just a website. A world named Basma.",
-    body: "Here, story meets research, and sound meets place. Four worlds open like doors: conversations that slow down to listen, law read in human language, a city told by its people, and a golden frequency for what the image cannot hold. One rule holds it together: nothing is published before it is verified.",
-    note: "Four conceptual worlds · zero published episodes · one vision built to grow",
+    statusLine: "Concepts in development · no episodes published yet.",
+    heroCaption: "Visual identity illustration — not a record of a live broadcast.",
+    introEyebrow: "Vision",
+    introTitle: "Not just a page — a world called Basma.",
+    introBody:
+      "Here story meets research, voice meets place. Four worlds open like doors: human conversations, legal awareness, city stories, and a space for sound. The platform is being built honestly, with every condition stated clearly.",
     pillars: [
       {
-        title: "Story first",
-        body: "We begin with the person, not the headline. A good story gives its teller time.",
+        title: "Story First",
+        body: "Human stories told with warmth and professionalism, not fake metrics.",
       },
       {
-        title: "Research underneath",
-        body: "Every claim needs a source; every source needs a date and a context.",
+        title: "Research First",
+        body: "Official sources and disclaimers before any legal content.",
       },
       {
-        title: "Place is present",
-        body: "From Sharjah across Arab cities, place is part of the story, not its backdrop.",
+        title: "Place Matters",
+        body: "The UAE and the Arab community are central, not marginal.",
       },
     ],
-  },
-  portals: {
-    eyebrow: "Media Universe",
-    title: "Four doors. Four worlds.",
-    lead: "Every world has its own visual language and rhythm. Open the door that calls you — the way back stays open.",
-    note: "Every experience carries its true status: a concept in development, not published production.",
-  },
-  legal: {
-    eyebrow: "The Legal Lens",
-    title: "Law is clearer when we read it together.",
-    body: "An awareness library that starts from official sources, names the jurisdiction and records the reading date. No individual advice, no absolute promises — only responsible explanation in human language.",
-    cta: "Enter the Legal Lens library",
-    caption: "A legal research scene — illustrative imagery.",
-  },
-  archive: {
-    eyebrow: "The Memory Room",
-    title: "No story is published before it is verified.",
-    body: "A documentary archive in preparation: human stories, field notes, and material reviewed before publication. This is not an empty archive; it is an archive that refuses to fill itself with things that are not true.",
-    cta: "Discover the archive",
-    caption: "A research archive scene — illustrative imagery.",
-  },
-  about: {
-    eyebrow: "About Basma",
-    title: "Between story and law.",
-    body: "A media voice and a research eye. Basma believes a good story begins with listening, and clear law begins with a trustworthy source. This platform is where both perspectives meet.",
-    cta: "Read the story",
-    caption: "Illustrative identity portrait — not documentation of an event or role.",
-  },
-  studio: {
-    eyebrow: "Behind the Vision",
-    title: "A story is made before it is seen.",
-    body: "Research, conversation, editing, then publication. We reveal the path an idea takes before it reaches the screen — and name every stage honestly.",
-    cta: "Enter the Studio",
-  },
-  facts: {
-    eyebrow: "An honest count",
-    title: "Small numbers, told truthfully.",
-    body: "We do not need large numbers to look real. This is the state of the project now.",
-    items: [
-      { value: "04", label: "conceptual worlds" },
-      { value: "00", label: "published episodes" },
-      { value: "01", label: "vision built to grow" },
-    ],
-    note: "These numbers change only when the thing actually happens.",
-  },
-  journey: {
-    eyebrow: "How to begin",
-    title: "An experience understood from the first touch.",
-    lead: "Three steps, no maze.",
-    steps: [
+    worldsSection: {
+      eyebrow: "Media Universe",
+      title: "Step through the door that speaks to you",
+      lead: "Every world has its own atmosphere — and an honest status.",
+    },
+    legalSection: {
+      eyebrow: "Legal Lens",
+      title: "Law in the language of people",
+      lead: "Educational content grounded in official sources, no individual fatwas.",
+    },
+    storiesSection: {
+      eyebrow: "Stories & Archive",
+      title: "Memory Room",
+      lead: "Documented stories and research materials — nothing published unverified.",
+    },
+    aboutSection: {
+      eyebrow: "About Basma",
+      title: "Between media and law",
+      lead: "Basma Moussa — a media voice holding law as a tool of understanding, and storytelling as responsibility.",
+    },
+    studioSection: {
+      eyebrow: "Behind the Vision",
+      title: "A space for making",
+      lead: "Research, conversation, edit, publish — with honesty about what is illustrative.",
+    },
+    journey: [
       {
-        number: "01",
+        label: "Step 1",
         title: "Discover",
-        body: "Meet Basma and the vision behind this world.",
+        body: "Get to know Basma and her vision, and the Media Universe platform.",
       },
       {
-        number: "02",
+        label: "Step 2",
         title: "Explore",
-        body: "Enter any world through its door, then return to the map whenever you wish.",
+        body: "Open the worlds, browse program concepts, and read each experience's honest status.",
       },
       {
-        number: "03",
+        label: "Step 3",
         title: "Connect",
-        body: "For collaboration, conversation, or a story that deserves to be told — the channel is open.",
+        body: "Reach Basma on WhatsApp for media and editorial collaboration.",
       },
     ],
-    note: "Every link is real, and every status is stated honestly.",
-  },
-  contact: {
-    eyebrow: "The Invitation",
-    title: "Let us open a door to a new story.",
-    body: "For media collaboration, conversations and editorial research — reach out directly on WhatsApp. We will reply when we can; no automated promises.",
-    cta: "Start a conversation on WhatsApp",
-    note: "The public WhatsApp channel comes from the approved vision. No submission form exists in this release.",
-    caption: "An illustrative collaboration room — not a claim of an actual office.",
+    contact: {
+      eyebrow: "Let's create the next story",
+      title: "Collaboration and contact",
+      lead: "For media collaboration, conversations, and editorial research — reach Basma directly on WhatsApp.",
+    },
   },
 };
-
-export const homeContent: LocalizedPair<typeof ar> = { ar, en };

@@ -1,210 +1,154 @@
-import Link from "next/link";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProgramHero } from "@/components/programs/ProgramHero";
-import { MediaFigure } from "@/components/editorial/MediaFigure";
-import { StatusBadge } from "@/components/editorial/StatusBadge";
-import { ArrowIcon } from "@/components/ui/icons";
+import Image from "next/image";
+import Link from "next/link";
+
+import { PROGRAMS } from "@/lib/content/programs";
 import { getAsset } from "@/lib/content/assets";
-import {
-  getProgram,
-  programSlugs,
-  programs,
-} from "@/lib/content/programs";
-import { programLabels } from "@/lib/content/pages/programs";
-import { getDictionary } from "@/lib/i18n/dictionary";
-import { isLocale } from "@/lib/i18n/config";
+import { buildPageMeta } from "@/lib/seo";
 import { localizedPath } from "@/lib/i18n/paths";
-import { buildPageMetadata } from "@/lib/seo";
-import type { ProgramCategory } from "@/lib/content/types";
-import type { Metadata } from "next";
-
-const OG_BY_CATEGORY: Record<ProgramCategory, string> = {
-  conversation: "/brand/og-beyond.jpg",
-  legal: "/brand/og-legal.jpg",
-  documentary: "/brand/og-city.jpg",
-  audio: "/brand/og-soundroom.jpg",
-};
-
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return programSlugs.map((slug) => ({ slug }));
-}
+import { getDictionary } from "@/lib/i18n/dictionary";
+import type { Locale } from "@/lib/i18n/config";
+import { BrandThreadSplash } from "@/components/brand/splash";
+import { SectionHeading } from "@/components/editorial/section-heading";
+import { StatusBadge } from "@/components/editorial/status-badge";
+import { whatsappHref } from "@/lib/site";
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string; slug: string }>;
+  params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
-  const { locale: raw, slug } = await params;
-  if (!isLocale(raw)) return {};
-  const locale = raw;
-  const program = getProgram(slug);
-  if (!program) return {};
-  return buildPageMetadata({
-    locale,
-    path: `/programs/${program.slug}`,
-    title: `${program.title[locale]} — ${program.worldName[locale]}`,
-    description: program.tagline[locale],
-    image: OG_BY_CATEGORY[program.category],
-    imageAlt: program.atmosphere[locale],
+  const { slug, locale } = await params;
+  const l = locale as Locale;
+  const program = PROGRAMS.find((item) => item.slug === slug);
+  if (!program) return { title: "Not found" };
+  const dict = getDictionary(l);
+  return buildPageMeta({
+    locale: l,
+    path: `/programs/${slug}`,
+    title: `${program.title[l]} · ${dict.nav.media}`,
+    description: program.description[l],
+    imageAlt: getAsset(program.heroAssetId).alt[l],
   });
 }
 
-export default async function ProgramPage({
-  params,
-}: {
-  params: Promise<{ locale: string; slug: string }>;
-}) {
-  const { locale: raw, slug } = await params;
-  if (!isLocale(raw)) notFound();
-  const locale = raw;
-  const program = getProgram(slug);
-  if (!program) notFound();
-
-  const dict = getDictionary(locale);
-  const labels = programLabels[locale];
-  const secondaryAsset = getAsset(program.secondaryAssetId);
-  const otherPrograms = programs.filter((item) => item.slug !== program.slug);
-
-  return (
-    <div className={`world-page world-page--${program.category}`}>
-      <ProgramHero program={program} locale={locale} />
-
-      <section className="world-quote" aria-label={labels.quoteLabel}>
-        <figure>
-          <blockquote>{program.quote[locale]}</blockquote>
-          <figcaption>{labels.quoteLabel}</figcaption>
-        </figure>
-      </section>
-
-      <section className="section" aria-labelledby="world-intro-title">
-        <div className="shell">
-          <div className="split split--media-wide">
-            <div className="split__copy">
-              <p className="eyebrow">
-                {labels.worldLabel} · {program.worldName[locale]}
-              </p>
-              <h2 id="world-intro-title">{labels.introductionHeading}</h2>
-              <p className="lead">{program.introduction[locale]}</p>
-              <p className="media-caption">
-                <StatusBadge tone="illustrative">
-                  {dict.common.illustrative}
-                </StatusBadge>
-                {labels.heroCaption}
-              </p>
-            </div>
-            <MediaFigure
-              asset={secondaryAsset}
-              locale={locale}
-              caption={labels.heroCaption}
-              className="split__figure reveal"
-            />
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--hairline" aria-labelledby="formats-title">
-        <div className="shell">
-          <div className="section-head">
-            <p className="eyebrow">{program.worldName[locale]}</p>
-            <h2 id="formats-title">{labels.formatsHeading}</h2>
-            <p className="lead">{labels.formatsLead}</p>
-          </div>
-          <div className="format-grid">
-            {program.formats.map((format) => (
-              <article className="format-card" key={format.title.en}>
-                <h3>{format.title[locale]}</h3>
-                <p>{format.body[locale]}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section" aria-labelledby="status-title">
-        <div className="shell">
-          <div className="two-grid">
-            <div className="panel panel--gold">
-              <p className="panel__eyebrow">{labels.statusHeading}</p>
-              <div className="page-hero__chips" style={{ marginBlockEnd: "0.9rem" }}>
-                <StatusBadge tone="concept">{dict.status.concept}</StatusBadge>
-                <StatusBadge tone="unavailable">
-                  {dict.status.notPublished}
-                </StatusBadge>
-              </div>
-              <h2 id="status-title" className="compact">
-                {labels.statusLabel}
-              </h2>
-              <p>{program.statusNote[locale]}</p>
-            </div>
-
-            <div className="panel panel--flat">
-              <p className="panel__eyebrow">{labels.gatesHeading}</p>
-              <p style={{ marginBlockEnd: "0.9rem" }}>{labels.gatesLead}</p>
-              <ul className="gate-list">
-                {program.gates.map((gate) => (
-                  <li key={gate.en}>{gate[locale]}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--tight" aria-labelledby="episodes-title">
-        <div className="shell">
-          <div className="section-head">
-            <p className="eyebrow">{labels.episodesHeading}</p>
-            <h2 id="episodes-title" className="compact">
-              {dict.status.notPublished}
-            </h2>
-          </div>
-          <div className="empty-state">
-            <span className="empty-state__label">
-              {labels.episodesHeading} · 00
-            </span>
-            <h3>{labels.episodesEmptyTitle}</h3>
-            <p>{labels.episodesEmptyBody}</p>
-            <Link
-              className="text-link"
-              href={localizedPath(locale, program.experienceHref)}
-            >
-              {program.experienceLabel[locale]}
-              <ArrowIcon className="arrow" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="section section--hairline" aria-labelledby="related-title">
-        <div className="shell">
-          <div className="section-head section-head--split">
-            <div>
-              <p className="eyebrow">{labels.worldLabel}</p>
-              <h2 id="related-title">{labels.relatedHeading}</h2>
-            </div>
-            <Link className="text-link" href={localizedPath(locale, "/media")}>
-              {dict.common.backToUniverse}
-              <ArrowIcon className="arrow" />
-            </Link>
-          </div>
-
-          <div className="program-switcher">
-            {otherPrograms.map((item) => (
-              <Link
-                key={item.slug}
-                className="program-switch"
-                href={localizedPath(locale, `/programs/${item.slug}`)}
-              >
-                <span>{item.worldName[locale]}</span>
-                <strong>{item.title[locale]}</strong>
-                <ArrowIcon />
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-    </div>
+export async function generateStaticParams() {
+  const locales: Locale[] = ["ar", "en"];
+  return PROGRAMS.flatMap((program) =>
+    locales.map((locale) => ({ slug: program.slug, locale }))
   );
 }
+
+interface ProgramPageProps {
+  params: Promise<{ slug: string; locale: string }>;
+}
+
+export default async function ProgramPage({ params }: ProgramPageProps) {
+  const { slug, locale } = await params;
+  const l = locale as Locale;
+  const dict = getDictionary(l);
+  const program = PROGRAMS.find((item) => item.slug === slug);
+  if (!program) notFound();
+  const asset = getAsset(program.heroAssetId);
+  const secondary = program.secondaryAssetId ? getAsset(program.secondaryAssetId) : null;
+
+  return (
+    <>
+      <BrandThreadSplash locale={l} dict={dict} />
+      <section className="chapter program-hero" aria-labelledby="program-title">
+        <div className="shell">
+          <div className="program-hero__grid grid-uneven">
+            <div className="program-hero__text reveal">
+              <SectionHeading
+                eyebrow={program.worldName}
+                title={program.title}
+                lead={program.description}
+              />
+              <div className="program-hero__meta">
+                <StatusBadge status={program.status} dict={dict} />
+                <span>{program.statusNote[l]}</span>
+              </div>
+              <p className="media-caption">{asset.alt[l]}</p>
+              {secondary && <p className="media-caption">{secondary.alt[l]}</p>}
+            </div>
+            <div className="program-hero__media media-frame">
+              <Image
+                src={asset.src}
+                alt={asset.alt[l]}
+                width={asset.width}
+                height={asset.height}
+                sizes="(max-width: 768px) 100vw, 40vw"
+                priority
+                className="program-hero__img"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="chapter chapter--tight formats">
+        <div className="shell grid-uneven strips__grid">
+          <div className="panel reveal">
+            <SectionHeading
+              eyebrow={{ ar: "صيغ العالم", en: "World formats" }}
+              title={program.tagline}
+              lead={program.atmosphere}
+            />
+            {program.formats.map((f, i) => (
+              <div key={i} className="format-item reveal-delay">
+                <p className="format__body">{f[l]}</p>
+              </div>
+            ))}
+          </div>
+          <div className="panel reveal">
+            <p className="eyebrow eyebrow-gold">{dict.common.status}</p>
+            <h3 className="display display-m">{program.statusNote[l]}</h3>
+            {program.quote && (
+              <blockquote className="program-quote">
+                “{program.quote[l]}”
+              </blockquote>
+            )}
+            <p className="media-caption">{dict.common.illustrativeShort}</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="chapter chapter--tight gates">
+        <div className="shell">
+          <p className="eyebrow eyebrow-gold">ما سيُصبح العالم</p>
+          <ul className="editorial-list">
+            {program.approach.map((a, i) => (
+              <li key={i} className="reveal-delay">
+                <strong>{a[l]}</strong>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="chapter chapter--tight cta">
+        <div className="shell panel panel-gold reveal">
+          <h2 className="display display-m">الخطوة التالية</h2>
+          <p className="lead">
+            العالم قيد التطوير. عندما تكون المواد حقيقية ومعتمدة، سيفتح الباب.
+          </p>
+          <div className="cta__actions">
+            <Link href={localizedPath(l, "/media")} className="btn btn-gold">
+              {dict.common.backToUniverse}
+            </Link>
+            <a
+              href={whatsappHref(l)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-ghost"
+            >
+              {dict.common.explore} · WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+

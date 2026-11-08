@@ -1,129 +1,131 @@
-import { requireProgram } from "./programs";
-import type { LocalizedText, MediaWorldEntry, SecondaryWorldCard } from "./types";
+import { getProgram } from "@/lib/content/programs";
+import type { WorldCardRecord } from "@/lib/content/types";
 
-const beyond = requireProgram("beyond-the-frame");
-const legal = requireProgram("the-legal-lens");
-const city = requireProgram("city-voices");
-const sound = requireProgram("soundroom");
-
-export const portalWorlds: MediaWorldEntry[] = [
+/**
+ * Registry of media-universe portals. Every href is locale-free (without /ar or /en)
+ * and is prefixed by pages at render time via localizedPath().
+ */
+export const PORTAL_WORLDS: WorldCardRecord[] = [
   {
     id: "beyond-the-frame",
-    programSlug: beyond.slug,
     href: "/programs/beyond-the-frame",
-    assetId: "bm-12",
-    kicker: beyond.worldName,
-    title: beyond.title,
-    teaser: beyond.tagline,
-    status: beyond.status,
-    category: beyond.category,
+    assetId: getProgram("beyond-the-frame").heroAssetId,
+    programSlug: "beyond-the-frame",
+    kicker: { ar: "غرفة الحوار", en: "The Conversation Chamber" },
+    title: getProgram("beyond-the-frame").title,
+    teaser: getProgram("beyond-the-frame").description,
+    status: "concept",
     variant: "wide",
-    searchText: {
-      ar: "خارج الإطار حوار مقابلات ضيف استوديو كراسي حوارات إنسانية",
-      en: "beyond the frame conversation interview guest studio chairs human stories",
-    },
+    category: "conversation",
   },
   {
     id: "the-legal-lens",
-    programSlug: legal.slug,
     href: "/legal-lens",
     assetId: "bm-04",
-    kicker: legal.worldName,
-    title: legal.title,
-    teaser: legal.tagline,
-    status: legal.status,
-    category: legal.category,
+    kicker: { ar: "معرض البحث", en: "The Research Gallery" },
+    title: getProgram("the-legal-lens").title,
+    teaser: getProgram("the-legal-lens").description,
+    status: "concept",
     variant: "tall",
-    searchText: {
-      ar: "من زاوية القانون قانون توعية مصادر تشريع ميزان مكتبة بحث",
-      en: "legal lens law awareness sources legislation scales library research",
-    },
+    category: "legal",
   },
   {
     id: "city-voices",
-    programSlug: city.slug,
     href: "/programs/city-voices",
-    assetId: "bm-11",
-    kicker: city.worldName,
-    title: city.title,
-    teaser: city.tagline,
-    status: city.status,
-    category: city.category,
+    assetId: getProgram("city-voices").heroAssetId,
+    programSlug: "city-voices",
+    kicker: { ar: "الواجهة المائية", en: "The Waterfront" },
+    title: getProgram("city-voices").title,
+    teaser: getProgram("city-voices").description,
+    status: "concept",
     variant: "tall",
-    searchText: {
-      ar: "صوت المدينة شارقة الإمارات كورنيش وثائقي ميدان كاميرا مجتمع",
-      en: "city voices sharjah uae waterfront documentary field camera community",
-    },
+    category: "documentary",
   },
   {
     id: "soundroom",
-    programSlug: sound.slug,
     href: "/soundroom",
     assetId: "bm-01",
-    kicker: sound.worldName,
-    title: sound.title,
-    teaser: sound.tagline,
-    status: sound.status,
-    category: sound.category,
+    kicker: { ar: "التردد الذهبي", en: "The Golden Frequency" },
+    title: getProgram("soundroom").title,
+    teaser: getProgram("soundroom").description,
+    status: "concept",
     variant: "wide",
-    searchText: {
-      ar: "مساحة صوت بودكاست موجات ذهبية سمعي حوارات مسموعة قراءة",
-      en: "soundroom podcast waveform gold audio listening conversation reading",
-    },
+    category: "audio",
   },
 ];
 
-export const secondaryWorlds: SecondaryWorldCard[] = [
+export const SECONDARY_WORLDS: WorldCardRecord[] = [
   {
     id: "stories",
     href: "/stories",
     assetId: "bm-13",
-    kicker: { ar: "أرشيف الذاكرة", en: "The Memory Room" },
-    title: { ar: "القصص والوثائق", en: "Stories & Archive" },
+    kicker: { ar: "أرشيف الذاكرة", en: "Memory Room" },
+    title: { ar: "القصص والتوثيق", en: "Stories & Documentary Archive" },
     teaser: {
-      ar: "أرشيف وثائقي قيد الإعداد؛ لا ننشر قصة قبل التحقق منها.",
-      en: "A documentary archive in preparation; no story is published before verification.",
+      ar: "أرشيف قيد الإعداد للقصص الموثقة والمواد البحثية.",
+      en: "An archive being assembled: documented stories and research materials.",
     },
+    status: "concept",
+    variant: "editorial",
   },
   {
     id: "studio",
     href: "/studio",
     assetId: "bm-09",
-    kicker: { ar: "الطابق الإبداعي", en: "The Creative Floor" },
-    title: { ar: "خلف الرؤية", en: "Behind the Vision" },
+    kicker: { ar: "خلف الرؤية", en: "Behind the Vision" },
+    title: { ar: "الاستوديو والمكتبة", en: "Studio & Media Library" },
     teaser: {
-      ar: "بحث، حوار، تحرير، ثم نشر — كيف تُصنع الحكاية.",
-      en: "Research, conversation, editing, then publication — how a story is made.",
+      ar: "نظرة في عملية الإنتاج: بحث، حوار، تحرير، نشر.",
+      en: "A look at the production process: research, conversation, edit, publish.",
     },
+    status: "concept",
+    variant: "editorial",
   },
   {
     id: "about",
     href: "/about",
     assetId: "bm-02",
-    kicker: { ar: "بين الحكاية والقانون", en: "Between Story and Law" },
-    title: { ar: "عن بسمة", en: "About Basma" },
+    kicker: { ar: "عن بسمة", en: "About Basma" },
+    title: { ar: "عن بسمة موسى", en: "About Basma Moussa" },
     teaser: {
-      ar: "صوت إعلامي وعين بحثية، وحدود واضحة بين الحقيقة والتصور.",
-      en: "A media voice and a research eye, with a clear line between fact and vision.",
+      ar: "صوت إعلامي وبحث قانوني، مقيم في الإمارات.",
+      en: "A media voice and legal research perspective, based in the UAE.",
     },
+    status: "concept",
+    variant: "editorial",
   },
   {
     id: "contact",
     href: "/contact",
     assetId: "bm-10",
-    kicker: { ar: "الدعوة", en: "The Invitation" },
-    title: { ar: "لنتعاون", en: "Collaborate" },
+    kicker: { ar: "تواصل للتعاون", en: "Collaboration" },
+    title: { ar: "لنصنع الحكاية القادمة", en: "Let's Create the Next Story" },
     teaser: {
-      ar: "قناة واتساب حقيقية، بلا نماذج وهمية أو وعود آلية.",
-      en: "A real WhatsApp channel, with no fake forms or automated promises.",
+      ar: "للتعاون الإعلامي، الحوارات، والبحث التحريري.",
+      en: "Media collaboration, conversations, editorial research.",
     },
+    status: "concept",
+    variant: "editorial",
   },
 ];
 
-export function getPortalWorld(id: string): MediaWorldEntry | undefined {
-  return portalWorlds.find((world) => world.id === id);
+export const ALL_WORLDS = [...PORTAL_WORLDS, ...SECONDARY_WORLDS];
+
+export function getWorld(id: string): WorldCardRecord {
+  const world = ALL_WORLDS.find((item) => item.id === id);
+  if (!world) throw new Error(`Unknown world: ${id}`);
+  return world;
 }
 
-export function localizedTextSearchValue(text: LocalizedText): string {
-  return `${text.ar} ${text.en}`;
+export function navWorlds(): WorldCardRecord[] {
+  return PORTAL_WORLDS;
+}
+
+export function statusVariantClass(status: WorldCardRecord["status"]): string {
+  switch (status) {
+    case "published":
+      return "status--published";
+    default:
+      return "status--concept";
+  }
 }

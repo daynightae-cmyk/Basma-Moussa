@@ -1,117 +1,86 @@
-import type { LocalizedPair } from "../types";
+import type { LocalizedText } from "@/lib/content/types";
 
-const ar = {
-  hero: {
+export const STUDIO_CONTENT: Record<"ar" | "en", {
+  eyebrow: string;
+  title: string;
+  lead: string;
+  caption: LocalizedText;
+  steps: { label: LocalizedText; title: LocalizedText; body: LocalizedText }[];
+  libraryTitle: string;
+  libraryBody: LocalizedText;
+}> = {
+  ar: {
     eyebrow: "خلف الرؤية",
-    title: "الطابق الإبداعي.",
-    lead: "قبل الصورة، هناك بحث. وقبل الحوار، هناك إنصات. هذا ما نصنع به العالم.",
-    caption: "مكتب إنتاج تصوري — لا ندّعي امتلاك منشأة أو طاقم إنتاج.",
-  },
-  disclosure: {
-    title: "ما تراه هنا تصور، وليس منشأة.",
-    body: "مشهد الاستوديو في هذه الصفحة عمل بصري توضيحي للهوية. لا نملك استوديو بث، ولا نقدّم صورة كأنها مكان تشغيل حقيقي. ما نملكه فعلًا: الرؤية، والمنهج، والالتزام بالتحقق.",
-  },
-  method: {
-    eyebrow: "المنهج",
-    title: "أربع مراحل، بلا اختصارات.",
-    lead: "كل مرحلة لها مخرج واضح. لا ننتقل إلى التالية قبل أن تتحقق.",
+    title: "مساحة للصناعة",
+    lead:
+      "نظرة في عملية الإنتاج: بحث، حوار، تحرير، ثم نشر. الاستوديو هنا مجاز للإبداع، وليس ادعاء ملكية منشأة.",
+    caption: {
+      ar: "مشهد إنتاج إعلامي توضيحي — ليست استوديوًا مملوكًا.",
+      en: "Illustrative media-production scene — not an owned studio.",
+    },
     steps: [
       {
-        number: "01",
-        title: "البحث",
-        body: "فهم الموضوع، تحديد المصادر، وكتابة الأسئلة التي تستحق أن تُطرح.",
-        gate: "مخرج: ملف بحث قابل للمراجعة.",
+        label: { ar: "الخطوة 1", en: "Step 1" },
+        title: { ar: "البحث", en: "Research" },
+        body: { ar: "مصادر أولية، وسياق حقيقي، قبل كل حكاية.", en: "Primary sources and real context before every story." },
       },
       {
-        number: "02",
-        title: "الحوار",
-        body: "إنصات طويل، موافقة واضحة، وتسجيل يحترم صاحب الحكاية.",
-        gate: "مخرج: مادة خام موثّقة وموافقات.",
+        label: { ar: "الخطوة 2", en: "Step 2" },
+        title: { ar: "الحوار", en: "Conversation" },
+        body: { ar: "استماع verdade، لا أسئلة أداء.", en: "Genuine listening, not performance questions." },
       },
       {
-        number: "03",
-        title: "التحرير",
-        body: "اختيار المعنى لا الإثارة، وكتابة نص يمكن الدفاع عنه.",
-        gate: "مخرج: نسخة مراجعة وتفريغ نصي.",
+        label: { ar: "الخطوة 3", en: "Step 3" },
+        title: { ar: "التحرير", en: "Edit" },
+        body: { ar: "تشذيب القصة، لا تشويهها.", en: "Shaping the story, not distorting it." },
       },
       {
-        number: "04",
-        title: "النشر",
-        body: "وسم الحالة، ذكر المصادر، وتوفير طريق واضح للتصحيح.",
-        gate: "مخرج: مادة منشورة، بتاريخ ومراجعة.",
+        label: { ar: "الخطوة 4", en: "Step 4" },
+        title: { ar: "النشر", en: "Publish" },
+        body: { ar: "فقط عندما تكون المادة جاهزة وصادقة.", en: "Only when the material is ready and honest." },
       },
     ],
+    libraryTitle: "المكتبة الإعلامية",
+    libraryBody: {
+      ar: "المكتبة قيد البناء. عند توفر مواد معتمدة، ستظهر هنا مع حالاتها التحريرية.",
+      en: "The media library is being built. Approved materials will appear here with their editorial status.",
+    },
   },
-  library: {
-    eyebrow: "المكتبة",
-    title: "مكتبة الوسائط تنتظر مادتها الحقيقية.",
-    body: "سيظهر هنا كل فيديو أو صوت أو نص معتمد، مع المصدر والمدة والحالة. لا مشغلات وهمية، ولا مواد توضيحية تُقدَّم كإنتاج حقيقي.",
-    metric: "0",
-    metricLabel: "مواد منشورة",
-    note: "الصور في بقية الموقع توضيحية ومسماة كذلك.",
-  },
-  cta: {
-    title: "تريد أن تُصنع حكاية معًا؟",
-    body: "الباب مفتوح للتعاون في البحث، الحوار، والتحرير.",
-    action: "تواصل عبر واتساب",
-  },
-} as const;
-
-const en: LocalizedPair<typeof ar>["en"] = {
-  hero: {
+  en: {
     eyebrow: "Behind the Vision",
-    title: "The Creative Floor.",
-    lead: "Before the image, there is research. Before the conversation, there is listening. This is how the world is made.",
-    caption: "An illustrative production desk — we do not claim ownership of a facility or production crew.",
-  },
-  disclosure: {
-    title: "What you see is a concept, not a venue.",
-    body: "The studio scene on this page is illustrative brand imagery. We do not own a broadcast studio, and we do not present an image as if it were a real operating location. What we do own: the vision, the method, and a commitment to verification.",
-  },
-  method: {
-    eyebrow: "The method",
-    title: "Four stages, no shortcuts.",
-    lead: "Every stage has a clear output. We do not move to the next before it is true.",
+    title: "A space for making",
+    lead:
+      "A look at the production process: research, conversation, edit, publish. The studio here is a metaphor for craft, not a claim of owning a facility.",
+    caption: {
+      ar: "مشهد إنتاج إعلامي توضيحي — ليست استوديوًا مملوكًا.",
+      en: "Illustrative media-production scene — not an owned studio.",
+    },
     steps: [
       {
-        number: "01",
-        title: "Research",
-        body: "Understand the subject, identify sources and write the questions worth asking.",
-        gate: "Output: a reviewable research file.",
+        label: { ar: "Step 1", en: "Step 1" },
+        title: { ar: "Research", en: "Research" },
+        body: { ar: "Primary sources and real context before every story.", en: "Primary sources and real context before every story." },
       },
       {
-        number: "02",
-        title: "Conversation",
-        body: "Long listening, clear consent and a recording that respects the storyteller.",
-        gate: "Output: documented raw material and consents.",
+        label: { ar: "Step 2", en: "Step 2" },
+        title: { ar: "Conversation", en: "Conversation" },
+        body: { ar: "Genuine listening, not performance questions.", en: "Genuine listening, not performance questions." },
       },
       {
-        number: "03",
-        title: "Editing",
-        body: "Choose meaning over sensation, and write a text we can defend.",
-        gate: "Output: a review cut and transcript.",
+        label: { ar: "Step 3", en: "Step 3" },
+        title: { ar: "Edit", en: "Edit" },
+        body: { ar: "Shaping the story, not distorting it.", en: "Shaping the story, not distorting it." },
       },
       {
-        number: "04",
-        title: "Publication",
-        body: "Label the status, credit sources and provide a clear correction path.",
-        gate: "Output: a published piece with date and review.",
+        label: { ar: "Step 4", en: "Step 4" },
+        title: { ar: "Publish", en: "Publish" },
+        body: { ar: "Only when the material is ready and honest.", en: "Only when the material is ready and honest." },
       },
     ],
-  },
-  library: {
-    eyebrow: "The library",
-    title: "The media library awaits its real material.",
-    body: "Every approved video, audio piece or text will appear here with its source, duration and status. No pretend players, and no illustrative material presented as real production.",
-    metric: "0",
-    metricLabel: "published items",
-    note: "Images elsewhere on the site are illustrative and labelled as such.",
-  },
-  cta: {
-    title: "Want to make a story together?",
-    body: "The door is open for collaboration in research, conversation and editing.",
-    action: "Reach out on WhatsApp",
+    libraryTitle: "Media library",
+    libraryBody: {
+      ar: "The media library is being built. Approved materials will appear here with their editorial status.",
+      en: "The media library is being built. Approved materials will appear here with their editorial status.",
+    },
   },
 };
-
-export const studioPageContent: LocalizedPair<typeof ar> = { ar, en };

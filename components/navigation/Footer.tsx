@@ -1,98 +1,160 @@
+"use client";
+
 import Link from "next/link";
-import { BrandLockup } from "@/components/brand/BrandLockup";
-import { ExternalIcon } from "@/components/ui/icons";
-import { officialSources } from "@/lib/content/sources";
-import { getDictionary } from "@/lib/i18n/dictionary";
-import type { Locale } from "@/lib/i18n/config";
+import { usePathname } from "next/navigation";
+import Image from "next/image";
+
+import { otherLocale } from "@/lib/i18n/config";
 import { localizedPath } from "@/lib/i18n/paths";
-import { whatsappHref } from "@/lib/site";
+import type { Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionary";
+import { OFFICIAL_SOURCES } from "@/lib/content/sources";
+import { BRAND, CONTACT_CHANNELS, whatsappHref } from "@/lib/site";
 
-const EXPLORE = [
-  { key: "media", href: "/media" },
-  { key: "soundroom", href: "/soundroom" },
-  { key: "legal", href: "/legal-lens" },
-  { key: "stories", href: "/stories" },
-] as const;
+interface FooterProps {
+  locale: Locale;
+  dict: Dictionary;
+}
 
-const PLATFORM = [
-  { key: "home", href: "/" },
-  { key: "about", href: "/about" },
-  { key: "studio", href: "/studio" },
-  { key: "contact", href: "/contact" },
-  { key: "privacy", href: "/privacy" },
-] as const;
+export function Footer({ locale, dict }: FooterProps) {
+  const isAr = locale === "ar";
+  const pathname = usePathname();
+  const other = otherLocale(locale);
 
-export function Footer({ locale }: { locale: Locale }) {
-  const dict = getDictionary(locale);
+  const worldLinks = [
+    { key: "media", label: dict.nav.media, path: "/media" },
+    { key: "soundroom", label: dict.nav.soundroom, path: "/soundroom" },
+    { key: "legal", label: dict.nav.legal, path: "/legal-lens" },
+    { key: "stories", label: dict.nav.stories, path: "/stories" },
+  ];
+  const platformLinks = [
+    { key: "about", label: dict.nav.about, path: "/about" },
+    { key: "studio", label: dict.nav.studio, path: "/studio" },
+    { key: "contact", label: dict.nav.contact, path: "/contact" },
+    { key: "privacy", label: dict.nav.privacy, path: "/privacy" },
+  ];
 
   return (
-    <footer className="site-footer">
-      <div className="shell">
-        <div className="site-footer__grid">
-          <div className="site-footer__brand">
-            <BrandLockup locale={locale} />
-            <p>{dict.footer.tagline}</p>
-            <p className="site-footer__disclosure">{dict.footer.disclosure}</p>
-          </div>
-
+    <footer className="footer" role="contentinfo">
+      <div className="footer__inner shell">
+        <div className="footer__brand">
+          <Image src="/brand/basma-icon-circle.png" alt="" width={40} height={40} className="footer__brand-icon" />
           <div>
-            <h2>{dict.footer.exploreHeading}</h2>
-            <div className="site-footer__links">
-              {EXPLORE.map((item) => (
-                <Link key={item.key} href={localizedPath(locale, item.href)}>
-                  {dict.nav[item.key]}
-                </Link>
-              ))}
+            <div className="footer__brand-name">
+              <span className="wordmark-ar">{BRAND.nameAr}</span>
+              <span className="wordmark-en">{BRAND.name}</span>
             </div>
-          </div>
-
-          <div>
-            <h2>{dict.footer.platformHeading}</h2>
-            <div className="site-footer__links">
-              {PLATFORM.map((item) => (
-                <Link key={item.key} href={localizedPath(locale, item.href)}>
-                  {item.key === "home" ? dict.common.home : dict.nav[item.key]}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div>
-            <h2>{dict.footer.officialHeading}</h2>
-            <div className="site-footer__links">
-              {officialSources.map((source) => (
-                <a
-                  key={source.id}
-                  className="site-footer__source"
-                  href={source.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {source.publisher[locale]}
-                  <ExternalIcon />
-                  <span className="sr-only">({dict.common.opensInNewTab})</span>
-                </a>
-              ))}
-            </div>
-            <p className="site-footer__disclosure">{dict.footer.sourcesNote}</p>
+            <p className="footer__tagline">{dict.footer.tagline}</p>
           </div>
         </div>
 
-        <div className="site-footer__bottom">
-          <p>{dict.footer.rights}</p>
-          <p>{dict.footer.conceptNote}</p>
-          <div className="site-footer__bottom-actions">
-            <a
-              href={whatsappHref(locale)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {dict.footer.makeContact}
-              <ExternalIcon />
-              <span className="sr-only">({dict.common.opensInNewTab})</span>
-            </a>
-            <a href={`${localizedPath(locale)}?replay=1`}>{dict.common.replayIntro}</a>
+        <nav className="footer__nav" aria-label={dict.common.footerNavigation}>
+          <div className="footer__col">
+            <h2 className="footer__heading">{dict.footer.exploreHeading}</h2>
+            <ul>
+              {worldLinks.map((link) => {
+                const active = pathname === localizedPath(locale, link.path);
+                return (
+                  <li key={link.key}>
+                    <Link
+                      href={localizedPath(locale, link.path)}
+                      className={active ? "footer__link--active" : undefined}
+                      onClick={() => {}}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
+          <div className="footer__col">
+            <h2 className="footer__heading">{dict.footer.platformHeading}</h2>
+            <ul>
+              {platformLinks.map((link) => {
+                const active = pathname === localizedPath(locale, link.path);
+                return (
+                  <li key={link.key}>
+                    <Link
+                      href={localizedPath(locale, link.path)}
+                      className={active ? "footer__link--active" : undefined}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
+              <li>
+                <Link href={localizedPath(locale, "/?replay=1")}>{dict.common.replayIntro}</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="footer__col footer__col--contact">
+            <h2 className="footer__heading">{dict.footer.contactHeading}</h2>
+            {CONTACT_CHANNELS.whatsapp ? (
+              <>
+                <a
+                  className="footer__whatsapp"
+                  href={whatsappHref(locale)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span className="footer__whatsapp-label">{dict.common.explore}</span>
+                  <span className="footer__whatsapp-sub">
+                    WhatsApp · {dict.common.opensInNewTab}
+                  </span>
+                </a>
+              </>
+            ) : null}
+          </div>
+        </nav>
+
+        <aside className="footer__sources">
+          <h2 className="footer__heading">{dict.footer.officialHeading}</h2>
+          <ul>
+            {OFFICIAL_SOURCES.map((source) => (
+              <li key={source.id}>
+                <a
+                  href={source.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="footer__source"
+                >
+                  {source.name[locale]}
+                  <span className="footer__source-note">
+                    {dict.common.externalLink} · {source.jurisdiction ?? ""}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p className="footer__source-note--small">{dict.footer.sourcesNote}</p>
+        </aside>
+
+        <hr className="footer__rule" />
+        <div className="footer__bottom">
+          <p className="footer__rights">{dict.footer.rights}</p>
+          <div className="footer__status">
+            <span className="badge badge--concept">{dict.status.conceptShort}</span>
+            <span>{dict.footer.conceptNote}</span>
+          </div>
+          <a
+            href={localizedPath(locale, "/privacy")}
+            className="footer__lang-switch"
+            onClick={(e) => {
+              e.preventDefault();
+              // no-op styling hook; privacy is same-locale link
+            }}
+          >
+            {dict.nav.privacy}
+          </a>
+          <a
+            href={localizedPath(other)}
+            className="footer__lang-switch"
+            title={dict.common.language}
+          >
+            {isAr ? "English" : "العربية"}
+          </a>
         </div>
       </div>
     </footer>

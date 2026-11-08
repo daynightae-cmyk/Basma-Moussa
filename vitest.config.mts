@@ -4,11 +4,12 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
-      "@": path.resolve(__dirname),
+      "@": path.resolve(process.cwd()),
     },
   },
   test: {
     environment: "jsdom",
+    globals: true,
     setupFiles: ["./tests/setup.ts"],
     include: ["tests/unit/**/*.test.{ts,tsx}"],
     css: false,

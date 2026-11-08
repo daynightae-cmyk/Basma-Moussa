@@ -1,186 +1,113 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import { PageHero } from "@/components/navigation/PageHero";
-import { StatusBadge } from "@/components/editorial/StatusBadge";
-import { ExternalIcon } from "@/components/ui/icons";
+import { Metadata } from "next";
+
+import { CONTACT_CONTENT } from "@/lib/content/pages/contact";
 import { getAsset } from "@/lib/content/assets";
-import { contactPageContent } from "@/lib/content/pages/contact";
+import { buildPageMeta } from "@/lib/seo";
 import { getDictionary } from "@/lib/i18n/dictionary";
-import { isLocale } from "@/lib/i18n/config";
-import { localizedPath } from "@/lib/i18n/paths";
-import { buildPageMetadata } from "@/lib/seo";
+import type { Locale } from "@/lib/i18n/config";
+import { BrandThreadSplash } from "@/components/brand/splash";
+import { SectionHeading } from "@/components/editorial/section-heading";
+import { MediaFrame } from "@/components/editorial/media-frame";
 import { whatsappHref } from "@/lib/site";
 
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
-}) {
-  const { locale: raw } = await params;
-  if (!isLocale(raw)) return {};
-  const locale = raw;
-  const copy = contactPageContent[locale];
-  return buildPageMetadata({
-    locale,
-    path: "/contact",
-    title: copy.hero.title,
-    description: copy.hero.lead,
-    image: "/brand/og-contact.jpg",
-    imageAlt: copy.hero.caption,
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const l = locale as Locale;
+  const dict = getDictionary(l);
+  const c = CONTACT_CONTENT[l];
+  return buildPageMeta({
+    locale: l,
+    title: `${c.title} · ${dict.nav.contact}`,
+    description: c.lead,
+    imageAlt: getAsset("bm-10").alt[l],
   });
 }
 
-export default async function ContactPage({
-  params,
-}: {
+interface ContactPageProps {
   params: Promise<{ locale: string }>;
-}) {
-  const { locale: raw } = await params;
-  if (!isLocale(raw)) notFound();
-  const locale = raw;
-  const dict = getDictionary(locale);
-  const copy = contactPageContent[locale];
-  const hero = getAsset("bm-08");
+}
+
+export default async function Contact({ params }: ContactPageProps) {
+  const { locale } = await params;
+  const l: Locale = locale as Locale;
+  const dict = getDictionary(l);
+  const c = CONTACT_CONTENT[l];
 
   return (
     <>
-      <PageHero
-        locale={locale}
-        eyebrow={copy.hero.eyebrow}
-        title={copy.hero.title}
-        lead={copy.hero.lead}
-        asset={hero}
-        caption={copy.hero.caption}
-        variant="portrait"
-        priority
-        testId="contact-hero"
-        chips={
-          <StatusBadge tone="illustrative">{dict.common.illustrative}</StatusBadge>
-        }
-        actions={
-          <>
-            <a
-              className="btn btn--gold"
-              href={whatsappHref(locale)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {copy.whatsapp.cta}
-              <ExternalIcon className="arrow" />
-              <span className="sr-only">({dict.common.opensInNewTab})</span>
-            </a>
-            <Link className="btn btn--ghost" href={localizedPath(locale, "/privacy")}>
-              {copy.privacy.cta}
-            </Link>
-          </>
-        }
-      />
-
-      <section className="section" aria-labelledby="whatsapp-title">
+      <BrandThreadSplash locale={l} dict={dict} />
+      <section className="chapter contact-hero" aria-labelledby="contact-title">
         <div className="shell">
-          <div className="panel panel--gold">
-            <div className="contact-panel">
-              <div className="contact-panel__copy">
-                <p className="eyebrow">{copy.whatsapp.eyebrow}</p>
-                <h2 id="whatsapp-title">{copy.whatsapp.title}</h2>
-                <p className="lead">{copy.whatsapp.body}</p>
-                <div className="button-row">
-                  <a
-                    className="btn btn--gold"
-                    href={whatsappHref(locale)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {copy.whatsapp.cta}
-                    <ExternalIcon className="arrow" />
-                    <span className="sr-only">
-                      ({dict.common.opensInNewTab})
-                    </span>
-                  </a>
-                  <Link
-                    className="text-link"
-                    href={localizedPath(locale, "/privacy")}
-                  >
-                    {copy.privacy.cta}
-                  </Link>
-                </div>
-                <p className="contact-panel__note">{copy.whatsapp.note}</p>
-              </div>
-
-              <div className="contact-panel__figure">
-                <div className="panel panel--flat" style={{ boxShadow: "none" }}>
-                  <p className="panel__eyebrow">{copy.closing.title}</p>
-                  <p>{copy.closing.body}</p>
-                  <div className="status-grid" style={{ marginBlockStart: "1rem" }}>
-                    <div className="metric">
-                      <span className="metric__value" aria-hidden="true">
-                        01
-                      </span>
-                      <span className="metric__label">
-                        {locale === "ar" ? "قناة عامة موثّقة" : "verified public channel"}
-                      </span>
-                    </div>
-                    <div className="metric">
-                      <span className="metric__value" aria-hidden="true">
-                        00
-                      </span>
-                      <span className="metric__label">
-                        {locale === "ar" ? "نماذج إرسال غير موثّقة" : "unverified forms"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div className="contact-hero__grid grid-uneven">
+            <MediaFrame
+              src={getAsset("bm-10").src}
+              alt={getAsset("bm-10").alt[l]}
+              width={getAsset("bm-10").width}
+              height={getAsset("bm-10").height}
+              sizes="(max-width: 768px) 100vw, 48vw"
+              className="contact-hero__frame"
+            />
+            <div className="contact-hero__text reveal">
+              <SectionHeading
+                eyebrow={c.eyebrow}
+                title={c.title}
+                lead={c.lead}
+              />
+              <a
+                href={whatsappHref(l)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-gold"
+              >
+                {c.whatsappLabel[l]}
+                <svg className="icon-arrow" viewBox="0 0 24 24" style={{ marginInlineStart: "0.5rem" }}>
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </a>
+              <p className="media-caption contact-hero__whatsapp-sub">{c.whatsappSub[l]}</p>
+              <p className="media-caption">{dict.common.externalLink} · {dict.common.opensInNewTab}</p>
+              <p className="media-caption">{c.caption[l]}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="section section--hairline" aria-labelledby="themes-title">
-        <div className="shell">
-          <div className="section-head">
-            <p className="eyebrow">{copy.themes.eyebrow}</p>
-            <h2 id="themes-title">{copy.themes.title}</h2>
-            <p className="lead">{copy.themes.lead}</p>
-          </div>
-          <div className="four-grid">
-            {copy.themes.items.map((item, index) => (
-              <article className="pillar" key={item.title}>
-                <span className="pillar__index" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3>{item.title}</h3>
-                <p>{item.body}</p>
-              </article>
+      <section className="chapter chapter--tight no-form">
+        <div className="shell panel reveal">
+          <p className="eyebrow eyebrow-gold">{c.noFormTitle}</p>
+          <p className="lead">{c.noFormBody[l]}</p>
+        </div>
+      </section>
+
+      <section className="chapter themes">
+        <div className="shell strips__grid">
+          <SectionHeading
+            eyebrow={{ ar: "أوجه التعاون", en: "Collaboration themes" }}
+            title={{ ar: "", en: "" }}
+            lead=""
+          />
+          <div className="grid-uneven strips__grid">
+            {c.themes.map((theme, i) => (
+              <div key={i} className="panel theme-card reveal-delay">
+                <h4 className="theme-card__title">{theme.title[l]}</h4>
+                <p className="theme-card__body">{theme.body[l]}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section" aria-labelledby="noform-title">
-        <div className="shell">
-          <div className="two-grid">
-            <div className="panel">
-              <p className="panel__eyebrow">{copy.noForm.eyebrow}</p>
-              <h2 id="noform-title" className="compact">
-                {copy.noForm.title}
-              </h2>
-              <p>{copy.noForm.body}</p>
-            </div>
-            <div className="panel panel--flat">
-              <p className="panel__eyebrow">{copy.privacy.title}</p>
-              <p>{copy.privacy.body}</p>
-              <Link
-                className="text-link"
-                href={localizedPath(locale, "/privacy")}
-                style={{ marginBlockStart: "0.8rem" }}
-              >
-                {copy.privacy.cta}
-              </Link>
-            </div>
-          </div>
+      <section className="chapter chapter--tight privacy-note">
+        <div className="shell panel reveal">
+          <p className="eyebrow eyebrow-gold">{dict.nav.privacy}</p>
+          <p className="lead">{c.privacyNote[l]}</p>
         </div>
       </section>
     </>
   );
 }
+

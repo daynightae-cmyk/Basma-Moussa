@@ -69,7 +69,6 @@
 .studio-stage {
   position: relative;
   aspect-ratio: 16 / 9;
-  min-height: min(70vh, 660px);
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(242, 215, 160, 0.18);
@@ -1308,6 +1307,16 @@ html[lang="ar"] .on-air__label {
 }
 
 /* -------------------------------------------------------------- responsive --- */
+
+/* The tall plate only exists where the stage sits beside the control rail.
+   Below that the stage owns the full column width, so its height must follow
+   the column and the aspect ratio — never force a width back out of a
+   min-height (that made the frame wider than the screen on mobile). */
+@media (min-width: 1181px) {
+  .studio-stage {
+    min-height: min(70vh, 660px);
+  }
+}
 
 @media (max-width: 1180px) {
   .studio-layout {

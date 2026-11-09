@@ -13,108 +13,136 @@ export const PRIVACY_CONTENT: Record<"ar" | "en", {
     eyebrow: "الخصوصية",
     title: "خصوصية زوار عالم الإعلام",
     intro: {
-      ar: "هذا الموقع يُبنى كمنصة ثابتة تُعرض المحتوى فقط، ولا تُثبّت أدوات تتبع، ولا تستخدم ملفات تعريف الارتباط (ملفات الكوكيز)، ولا تحتوي على نماذج إرسال.",
-      en: "This site is built as a static content platform: it installs no tracking tools, uses no cookies, and contains no submission forms.",
+      ar: "تقدم المنصة محتوى إعلاميًا وتجربة استوديو ذكاء اصطناعي اختيارية. لا نثبت أدوات تتبع إعلانية أو نموذج اتصال خفي. إذا أرسلت سؤالًا إلى الاستوديو الذكي، يُنقل محتوى سؤالك والسياق الحديث الضروري إلى مزوّد الذكاء الاصطناعي المُعتمد لتوليد الرد.",
+      en: "This platform offers editorial content and an optional AI Studio. Sending a chat message transmits the necessary message and recent context to the approved AI provider.",
     },
     sections: [
       {
         title: { ar: "التحليلات والتتبع", en: "Analytics and tracking" },
         body: {
-          ar: "لا تُثبّت هذه المنصة أدوات تحليل، ولا بكسلات، ولا سكريبتات تتبع من أطراف ثالثة.",
-          en: "This platform installs no analytics, pixels, or third-party tracking scripts.",
+          ar: "لا تُثبت المنصة في هذا الإصدار أدوات تحليل إعلانية أو بكسلات تتبع طرف ثالث.",
+          en: "This release does not install advertising analytics or third-party tracking pixels.",
         },
       },
       {
-        title: { ar: "التخزين محليًا فقط", en: "Local storage only" },
+        title: { ar: "المحادثة مع الذكاء الاصطناعي", en: "AI Studio conversations" },
         body: {
-          ar: "يُستخدم المتصفح لتremember خيارين فقط: whether the intro was shown this session, and the chosen language. لا تُرسل أي معلومات للخادم.",
-          en: "The browser remembers only two choices: whether the intro was shown this session, and the chosen language. Nothing is sent to a server.",
+          ar: "تظل المحادثة الحالية في ذاكرة المتصفح ويمكن مسحها بزر «محادثة جديدة». لا يخزن هذا التنفيذ رسائل المحادثة في قاعدة بيانات بالموقع، لكن مزوّد الذكاء الاصطناعي قد يعالجها أو يحتفظ بها وفق شروطه. تجنّب إدخال بيانات حساسة أو وثائق سرية.",
+          en: "Current conversation state remains in browser memory and can be cleared with New Conversation. This implementation does not store chat transcripts in a site database; the AI provider may process or retain submitted content according to its own terms. Avoid sensitive information and confidential documents.",
+        },
+      },
+      {
+        title: { ar: "الإملاء الصوتي", en: "Voice dictation" },
+        body: {
+          ar: "الميكروفون يعمل فقط عند طلبك. تستخدم ميزة الإملاء Web Speech API عندما يدعمها المتصفح؛ وقد يرسل المتصفح الصوت إلى خدمة تعرف على الكلام خاضعة لسياسته. يظهر النص لك للمراجعة قبل أي إرسال إلى المساعد.",
+          en: "The microphone is activated only on request. Browser Web Speech API support may involve the browser's speech recognition service under its own terms. You see and can edit the transcript before any chat submission.",
+        },
+      },
+      {
+        title: { ar: "اختيارات المتصفح", en: "Browser preferences" },
+        body: {
+          ar: "يستخدم الموقع تخزين جلسة محدودًا لتذكر عرض مقدمة الهوية؛ ولا يستخدم AI Studio ملفات كوكيز لتخزين المحادثات.",
+          en: "The site uses limited session storage to remember whether the brand intro was shown; AI Studio does not use cookies to store conversations.",
         },
       },
       {
         title: { ar: "واتساب", en: "WhatsApp" },
         body: {
-          ar: "زر التواصل يفتح محادثة خارجية على واتساب. تُدار المراسلة وفقًا لسياسة واتساب الخاصة؛ الموقع لا receives ولا يخزن محتوى الرسائل.",
-          en: "The contact button opens an external WhatsApp chat. Messaging is governed by WhatsApp's own policy; this site neither receives nor stores message content.",
+          ar: "يفتح زر التواصل محادثة خارجية على واتساب، وتخضع رسائلك هناك لسياسة واتساب. لا يتلقى الموقع محتوى رسائل واتساب.",
+          en: "The contact action opens a WhatsApp conversation, governed by WhatsApp's own policies. The site does not receive WhatsApp message content.",
         },
       },
       {
-        title: { ar: "سجلات الخادم", en: "Server logs" },
+        title: { ar: "حماية الطلبات وسجلات الاستضافة", en: "Rate limits and hosting logs" },
         body: {
-          ar: "الموقع غير منشور حاليًا. عند النشر، قد تحتفظ شركة الاستضافة بسجلات طلبات قياسية للأمان فقط.",
-          en: "The site is not currently published. If published, the hosting provider may keep standard request logs for security only.",
+          ar: "تُحدّ طلبات الذكاء الاصطناعي لحماية الخدمة من الإساءة، باستخدام معرّفات عميل مجزأة عند توفر إعدادات الخادم. وقد تحتفظ منصة الاستضافة بسجلات طلبات تشغيلية وفق سياستها. لا يتضمن هذا التنفيذ تسجيل محتوى الأسئلة في سجلات التطبيق.",
+          en: "AI requests are rate limited using hashed client identifiers where configured. Hosting providers may retain operational request logs under their policies. This implementation does not log chat message bodies.",
         },
       },
       {
         title: { ar: "الصورة والهوية", en: "Image and identity" },
         body: {
-          ar: "الشعار معتمد من صاحبة العلاقة. الصور السينمائية والبورتريهات تصوّر توضيحي للهوية البصرية فقط. لا نُنشر بطاقات هوية، شهادات، جوازات، أو سير ذاتية خام.",
-          en: "The logo is approved by the subject. Cinematic images and portraits illustrate the visual identity only. We publish no ID scans, certificates, passports, or raw CVs.",
+          ar: "صور الاستوديو والمشاهد السينمائية توضيحية للهوية البصرية، وليست دليلًا على مقر إنتاج فعلي. لا ننشر مسوحات هويات أو جوازات أو شهادات أو ملفات سيرة ذاتية خام.",
+          en: "Studio and cinematic imagery is illustrative, not evidence of real facilities. We do not publish ID scans, passports, certificates or raw CV documents.",
         },
       },
     ],
     contactPractice: {
-      ar: "لأسئلة الخصوصية أو لحذف أي تفضيل محلي، راسل عبر واتساب.",
-      en: "For privacy questions or to clear local preferences, message on WhatsApp.",
+      ar: "لأسئلة الخصوصية، استخدم قناة التواصل المعلنة على الموقع.",
+      en: "For privacy questions, use the contact channel shown on the site.",
     },
     changes: {
-      ar: "تُراجع هذه الصفحة عند أي تغيير في الممارسات.",
-      en: "This page is reviewed whenever practices change.",
+      ar: "تُراجع هذه الصفحة عند أي تغيير في ممارسات المعالجة أو مزوّد الخدمة.",
+      en: "This page is reviewed whenever data practices or the AI provider change.",
     },
-    updated: { ar: "آخر تحديث: 8 نوفمبر 2026", en: "Last updated: 8 November 2026" },
+    updated: { ar: "آخر تحديث: 9 نوفمبر 2026", en: "Last updated: 9 November 2026" },
   },
   en: {
     eyebrow: "Privacy",
     title: "Privacy for Media Universe visitors",
     intro: {
-      ar: "This site is built as a static content platform: it installs no tracking tools, uses no cookies, and contains no submission forms.",
-      en: "This site is built as a static content platform: it installs no tracking tools, uses no cookies, and contains no submission forms.",
+      ar: "تقدم المنصة محتوى إعلاميًا وتجربة استوديو ذكاء اصطناعي اختيارية. عند إرسال رسالة، يُنقل نصها والسياق المطلوب إلى مزوّد الذكاء الاصطناعي المعتمد.",
+      en: "This platform offers editorial content and an optional AI Studio. Submitting a message transmits its content and the necessary recent context to the approved AI provider.",
     },
     sections: [
       {
-        title: { ar: "Analytics and tracking", en: "Analytics and tracking" },
+        title: { ar: "التحليلات والتتبع", en: "Analytics and tracking" },
         body: {
-          ar: "This platform installs no analytics, pixels, or third-party tracking scripts.",
-          en: "This platform installs no analytics, pixels, or third-party tracking scripts.",
+          ar: "لا يثبت هذا الإصدار أدوات تتبع إعلانية.",
+          en: "This release does not install advertising analytics or third-party tracking pixels.",
         },
       },
       {
-        title: { ar: "Local storage only", en: "Local storage only" },
+        title: { ar: "محادثات الذكاء الاصطناعي", en: "AI Studio conversations" },
         body: {
-          ar: "The browser remembers only two choices: whether the intro was shown this session, and the chosen language. Nothing is sent to a server.",
-          en: "The browser remembers only two choices: whether the intro was shown this session, and the chosen language. Nothing is sent to a server.",
+          ar: "تبقى المحادثة في ذاكرة المتصفح حتى تمسحها. قد يعالج المزوّد الرسائل وفق شروطه؛ لا ترسل بيانات سرية.",
+          en: "Current conversation state remains in browser memory and can be cleared with New Conversation. This implementation does not store chat transcripts in a site database; the provider may process or retain submitted content under its own terms. Avoid confidential documents and sensitive data.",
         },
       },
       {
-        title: { ar: "WhatsApp", en: "WhatsApp" },
+        title: { ar: "الإملاء الصوتي", en: "Voice dictation" },
         body: {
-          ar: "The contact button opens an external WhatsApp chat. Messaging is governed by WhatsApp's own policy; this site neither receives nor stores message content.",
-          en: "The contact button opens an external WhatsApp chat. Messaging is governed by WhatsApp's own policy; this site neither receives nor stores message content.",
+          ar: "التعرف الصوتي اختياري وقد يستخدم خدمات المتصفح الخارجية. راجع النص قبل الإرسال.",
+          en: "Microphone access is user-triggered. The browser's Web Speech API may use its own speech service. Transcription is displayed and editable before the AI request is sent.",
         },
       },
       {
-        title: { ar: "Server logs", en: "Server logs" },
+        title: { ar: "اختيارات المتصفح", en: "Browser preferences" },
         body: {
-          ar: "The site is not currently published. If published, the hosting provider may keep standard request logs for security only.",
-          en: "The site is not currently published. If published, the hosting provider may keep standard request logs for security only.",
+          ar: "يُستخدم تخزين الجلسة لمقدمة الهوية فقط؛ لا تُخزن المحادثة في الكوكيز.",
+          en: "Limited session storage remembers the brand intro; AI Studio does not use cookies to persist conversations.",
         },
       },
       {
-        title: { ar: "Image and identity", en: "Image and identity" },
+        title: { ar: "واتساب", en: "WhatsApp" },
         body: {
-          ar: "The logo is approved by the subject. Cinematic images and portraits illustrate the visual identity only. We publish no ID scans, certificates, passports, or raw CVs.",
-          en: "The logo is approved by the subject. Cinematic images and portraits illustrate the visual identity only. We publish no ID scans, certificates, passports, or raw CVs.",
+          ar: "مراسلات واتساب تخضع لسياسة واتساب.",
+          en: "WhatsApp conversations are handled externally under WhatsApp's policy; the site does not receive their content.",
+        },
+      },
+      {
+        title: { ar: "تحديد الطلبات والسجلات", en: "Rate limits and logs" },
+        body: {
+          ar: "تُستخدم معرّفات مجزأة لتحديد الاستهلاك، وقد تحتفظ الاستضافة بسجلات تشغيلية.",
+          en: "AI traffic is rate limited using hashed client identifiers when configured. Hosting providers may retain operational request logs. This implementation does not log chat bodies.",
+        },
+      },
+      {
+        title: { ar: "الصورة والهوية", en: "Image and identity" },
+        body: {
+          ar: "المشاهد السينمائية توضيحية فقط؛ لا ننشر مستندات شخصية خاصة.",
+          en: "Studio and cinematic imagery is illustrative, not proof of facilities. We publish no ID scans, passports, certificates or raw CVs.",
         },
       },
     ],
     contactPractice: {
-      ar: "For privacy questions or to clear local preferences, message on WhatsApp.",
-      en: "For privacy questions or to clear local preferences, message on WhatsApp.",
+      ar: "لأسئلة الخصوصية استخدم قناة التواصل المعلنة.",
+      en: "For privacy questions, use the contact channel listed on the site.",
     },
     changes: {
-      ar: "This page is reviewed whenever practices change.",
-      en: "This page is reviewed whenever practices change.",
+      ar: "تُراجع الصفحة إذا تغيرت ممارسات المعالجة.",
+      en: "This page is reviewed if processing practices change.",
     },
-    updated: { ar: "Last updated: 8 November 2026", en: "Last updated: 8 November 2026" },
+    updated: { ar: "آخر تحديث: 9 نوفمبر 2026", en: "Last updated: 9 November 2026" },
   },
 };

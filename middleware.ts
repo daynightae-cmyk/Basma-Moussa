@@ -22,6 +22,12 @@ function isAssetPath(pathname: string): boolean {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // API endpoints are not locale pages. Never rewrite them to /ar/api/... .
+  // Each API route enforces its own validation and origin policy.
+  if (pathname === "/api" || pathname.startsWith("/api/")) {
+    return NextResponse.next();
+  }
+
   if (isAssetPath(pathname)) {
     return NextResponse.next();
   }

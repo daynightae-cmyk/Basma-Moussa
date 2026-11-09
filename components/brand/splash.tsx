@@ -74,8 +74,8 @@ export function BrandThreadSplash({ locale, dict }: BrandThreadSplashProps) {
       replayRequested = new URLSearchParams(window.location.search).get("replay") === "1";
       if (replayRequested) {
         sessionStorage.removeItem(SPLASH_STORAGE_KEY);
-        // Keep the existing history state: Next stores its router state there,
-        // and nulling it desyncs the router on the next navigation.
+        // Drop only the `?replay` query string; keep the history entry's state so
+        // no state we do not own is discarded.
         window.history.replaceState(window.history.state, "", window.location.pathname);
       }
     } catch {

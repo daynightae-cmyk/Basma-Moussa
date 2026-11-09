@@ -18,6 +18,7 @@ import { PORTAL_WORLDS } from "@/lib/content/worlds";
 import { whatsappHref } from "@/lib/site";
 import { CinematicHeroSlider } from "@/components/cinematic/CinematicHeroSlider";
 import { HorizontalStoryStage } from "@/components/cinematic/HorizontalStoryStage";
+import { ThreadInvitation } from "@/components/cinematic/thread-invitation";
 import { HOME_STORY_PANELS } from "@/lib/experience/scene-data";
 
 export async function generateMetadata({
@@ -135,6 +136,8 @@ export default async function Home({
         panels={HOME_STORY_PANELS}
         ariaLabel={l === "ar" ? "رحلة بصرية عبر عوالم بسمة موسى" : "A cinematic journey through Basma Moussa media worlds"}
       />
+
+      <ThreadInvitation locale={l} dict={dict} />
 
       <section className="chapter chapter--tight worlds" id="worlds">
         <div className="shell">

@@ -1,0 +1,461 @@
+/* ==========================================================================
+   The Golden Thread — brand intro
+   One thread draws a theatre mask, then the scales of justice, then converges
+   into the approved logo before the invitation appears.
+   ========================================================================== */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 8%, #0a1024 0%, #05070f 62%, #03040a 100%);
+  animation: splash-in 320ms ease both;
+}
+
+.splash__aurora {
+  position: absolute;
+  inset: -15%;
+  pointer-events: none;
+  background:
+    radial-gradient(48% 42% at 50% 38%, rgba(215, 171, 98, 0.16), transparent 70%),
+    radial-gradient(38% 46% at 18% 82%, rgba(38, 56, 92, 0.4), transparent 72%),
+    radial-gradient(34% 40% at 84% 74%, rgba(81, 32, 45, 0.24), transparent 72%);
+  filter: blur(6px);
+  animation: aurora-drift 18s ease-in-out infinite alternate;
+}
+
+.splash__controls {
+  position: fixed;
+  top: 1rem;
+  inset-inline: 1rem;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.splash__skip,
+.splash__sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(215, 171, 98, 0.42);
+  background: rgba(7, 11, 24, 0.62);
+  color: #fbf7ef;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color 0.25s ease, background 0.25s ease, color 0.25s ease;
+}
+
+.splash__skip:hover,
+.splash__sound:hover {
+  border-color: rgba(242, 215, 160, 0.9);
+  background: rgba(215, 171, 98, 0.12);
+}
+
+.splash__skip:focus-visible,
+.splash__sound:focus-visible {
+  outline: 2px solid #f2d7a0;
+  outline-offset: 3px;
+}
+
+.splash__sound[aria-pressed="true"] {
+  color: #0b1124;
+  background: linear-gradient(135deg, #f2d7a0, #d7ab62);
+  border-color: #f2d7a0;
+}
+
+.splash__stage {
+  position: relative;
+  width: min(88vw, 560px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.splash__halo {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 46%, rgba(242, 215, 160, 0.14), transparent 62%);
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+.splash[data-stage="2"] .splash__halo,
+.splash[data-stage="3"] .splash__halo,
+.splash[data-stage="4"] .splash__halo,
+.splash[data-stage="5"] .splash__halo {
+  opacity: 1;
+}
+
+.splash__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.splash__aura {
+  opacity: 0;
+  transition: opacity 1.4s ease;
+}
+.splash[data-stage="1"] .splash__aura,
+.splash[data-stage="2"] .splash__aura,
+.splash[data-stage="3"] .splash__aura {
+  opacity: 1;
+}
+
+.splash__thread-base {
+  fill: none;
+  stroke: url(#bm-thread-gradient);
+  stroke-width: 1;
+  opacity: 0.16;
+}
+
+.splash__thread-draw {
+  fill: none;
+  stroke: url(#bm-thread-gradient);
+  stroke-width: 2.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  filter: drop-shadow(0 0 5px rgba(242, 215, 160, 0.6));
+  animation: thread-draw 1500ms cubic-bezier(0.28, 0.62, 0.3, 1) both;
+  animation-play-state: paused;
+}
+
+.splash__thread-draw--fine {
+  stroke-width: 1.5;
+  opacity: 0.92;
+  animation-duration: 950ms;
+}
+
+.splash__thread-draw--motif {
+  stroke-width: 1.1;
+  opacity: 0.7;
+  animation-duration: 700ms;
+}
+
+.splash__layer[data-on="true"] .splash__thread-draw {
+  animation-play-state: running;
+}
+
+.splash__layer--thread,
+.splash__layer--mask,
+.splash__layer--scales {
+  transform-origin: 300px 360px;
+  transition: opacity 1s ease, transform 1.5s cubic-bezier(0.3, 0.7, 0.2, 1);
+}
+
+.splash__svg[data-reveal="true"] .splash__layer--thread,
+.splash__svg[data-reveal="true"] .splash__layer--mask,
+.splash__svg[data-reveal="true"] .splash__layer--scales {
+  opacity: 0;
+  transform: scale(0.72) translateY(18px);
+}
+
+/* The pans settle with a small, believable physical sway once the scales exist. */
+.splash__pan {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+}
+.splash__layer--scales[data-on="true"] .splash__pan--left {
+  animation: pan-settle-left 2600ms cubic-bezier(0.3, 0.8, 0.3, 1) 900ms both;
+}
+.splash__layer--scales[data-on="true"] .splash__pan--right {
+  animation: pan-settle-right 2600ms cubic-bezier(0.3, 0.8, 0.3, 1) 1020ms both;
+}
+
+.splash__burst {
+  fill: rgba(242, 215, 160, 0.85);
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.splash__layer--converge[data-on="true"] .splash__burst {
+  animation: burst 1200ms ease-out 700ms both;
+}
+
+.splash__mark {
+  position: absolute;
+  inset: 0 6% 20% 6%;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 1s ease 180ms, transform 1.5s cubic-bezier(0.2, 0.85, 0.25, 1) 180ms;
+  pointer-events: none;
+}
+.splash__mark[data-on="true"] {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.splash__mark-img {
+  width: min(56vw, 288px);
+  height: auto;
+  filter: drop-shadow(0 22px 44px rgba(0, 0, 0, 0.6))
+    drop-shadow(0 0 26px rgba(215, 171, 98, 0.32));
+}
+
+.splash__sheen {
+  position: absolute;
+  width: min(56vw, 288px);
+  height: min(56vw, 288px);
+  border-radius: 50%;
+  background: linear-gradient(
+    112deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 60%
+  );
+  transform: translateX(-130%);
+  -webkit-mask: radial-gradient(circle at 50% 50%, #000 38%, transparent 72%);
+  mask: radial-gradient(circle at 50% 50%, #000 38%, transparent 72%);
+  pointer-events: none;
+}
+.splash__mark[data-on="true"] .splash__sheen {
+  animation: sheen 1900ms cubic-bezier(0.35, 0.6, 0.2, 1) 520ms 1 both;
+}
+
+.splash__copy {
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  display: grid;
+  justify-items: center;
+  gap: 1rem;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.8s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.25, 1);
+  pointer-events: none;
+}
+.splash__copy[data-on="true"] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.splash__wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(242, 215, 160, 0.82);
+}
+html[lang="ar"] .splash__wordmark {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.95rem;
+}
+.splash__wordmark-sep {
+  opacity: 0.5;
+}
+
+.splash__enter {
+  --mx: 0px;
+  --my: 0px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  min-height: 3.25rem;
+  padding: 0.95rem 2.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 215, 160, 0.55);
+  background: linear-gradient(135deg, rgba(215, 171, 98, 0.2), rgba(11, 17, 36, 0.85));
+  color: #fbf7ef;
+  font: inherit;
+  font-size: 0.98rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 18px 44px -20px rgba(215, 171, 98, 0.75),
+    inset 0 1px 0 rgba(247, 236, 214, 0.28);
+  transform: translate3d(var(--mx), var(--my), 0) scale(1);
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.3, 1), box-shadow 0.35s ease,
+    border-color 0.35s ease, background 0.35s ease;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+html[lang="ar"] .splash__enter {
+  letter-spacing: 0;
+  font-family: var(--font-display-ar);
+}
+.splash__enter::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(120deg, rgba(247, 236, 214, 0.5), transparent 45%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.splash__enter:hover {
+  transform: translate3d(var(--mx), var(--my), 0) scale(1.02);
+  border-color: #f2d7a0;
+  box-shadow: 0 24px 54px -20px rgba(242, 215, 160, 0.9),
+    inset 0 1px 0 rgba(247, 236, 214, 0.4);
+}
+.splash__enter:hover::after {
+  opacity: 1;
+}
+.splash__enter:active {
+  transform: translate3d(var(--mx), var(--my), 0) scale(0.985);
+  box-shadow: 0 10px 26px -16px rgba(215, 171, 98, 0.7);
+}
+.splash__enter:focus-visible {
+  outline: 2px solid #f7ecd6;
+  outline-offset: 4px;
+}
+
+.splash__enter-arrow {
+  width: 1.6rem;
+  height: 0.9rem;
+  fill: none;
+  stroke: #f2d7a0;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.3s ease;
+}
+html[dir="rtl"] .splash__enter-arrow {
+  transform: scaleX(-1);
+}
+.splash__enter:hover .splash__enter-arrow {
+  transform: translateX(4px);
+}
+html[dir="rtl"] .splash__enter:hover .splash__enter-arrow {
+  transform: scaleX(-1) translateX(4px);
+}
+
+@keyframes thread-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes pan-settle-left {
+  0% {
+    transform: rotate(0deg);
+  }
+  38% {
+    transform: rotate(2.6deg);
+  }
+  62% {
+    transform: rotate(-1.1deg);
+  }
+  82% {
+    transform: rotate(0.5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes pan-settle-right {
+  0% {
+    transform: rotate(0deg);
+  }
+  38% {
+    transform: rotate(-2.6deg);
+  }
+  62% {
+    transform: rotate(1.1deg);
+  }
+  82% {
+    transform: rotate(-0.5deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes burst {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.4);
+  }
+  70% {
+    opacity: 0.28;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(7);
+  }
+}
+
+@keyframes sheen {
+  to {
+    transform: translateX(130%);
+  }
+}
+
+@keyframes aurora-drift {
+  from {
+    transform: translate3d(-1.5%, 1%, 0) scale(1);
+  }
+  to {
+    transform: translate3d(1.5%, -1%, 0) scale(1.04);
+  }
+}
+
+@keyframes splash-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .splash__stage {
+    width: min(94vw, 460px);
+  }
+  .splash__mark {
+    inset: 2% 4% 26% 4%;
+  }
+  .splash__mark-img {
+    width: min(62vw, 220px);
+  }
+  .splash__enter {
+    min-height: 3rem;
+    padding: 0.85rem 1.6rem;
+    font-size: 0.92rem;
+  }
+  .splash__sound-text {
+    display: none;
+  }
+  .splash__sound {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash__aurora,
+  .splash__sheen,
+  .splash__burst {
+    animation: none !important;
+  }
+}

@@ -17,6 +17,7 @@ const NAV_ROUTES = [
   { key: "legal", path: "/legal-lens", label: (d: Dictionary) => d.nav.legal },
   { key: "stories", path: "/stories", label: (d: Dictionary) => d.nav.stories },
   { key: "studio", path: "/studio", label: (d: Dictionary) => d.nav.studio },
+  { key: "atelier", path: "/atelier", label: (d: Dictionary) => d.nav.atelier },
   { key: "contact", path: "/contact", label: (d: Dictionary) => d.nav.contact },
 ];
 

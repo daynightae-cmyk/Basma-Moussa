@@ -1,0 +1,578 @@
+From c6f96ee77701120774f016a1bb424a47dba87e47 Mon Sep 17 00:00:00 2001
+From: Base44 <builder@base44.com>
+Date: Mon, 9 Nov 2026 04:55:49 +0000
+Subject: [PATCH] feat(intro): golden-thread phase choreography with an
+ explicit invitation
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The intro auto-dismissed on a timer after a single abstract sketch. It now runs a
+deterministic THREAD -> MASK -> SCALES -> LOGO -> INVITATION sequence, reveals the
+approved logo master, and waits for the visitor with a bilingual
+"Enter Basma's Universe" / "ادخل عالم بسمة" button.
+
+- src/lib/experience/intro-sequence.js: the phase machine (plain JS, unit tested)
+- src/components/brand/GoldenThreadSplash.jsx: mask and justice-scales thread
+  drawing, logo reveal, focus trap, scroll lock, Escape/skip, reduced-motion
+  opens on the static invitation, session replay keeps its public API
+- tests/intro-sequence.test.mjs: chain order, timers, gating
+
+Ported from the Next.js Basma app's splash machine; no Next.js APIs, no new
+dependencies (framer-motion and Tailwind were already here).
+---
+ src/components/brand/GoldenThreadSplash.jsx | 339 ++++++++++++++------
+ src/lib/experience/intro-sequence.js        |  61 ++++
+ tests/intro-sequence.test.mjs               |  47 +++
+ 3 files changed, 349 insertions(+), 98 deletions(-)
+ create mode 100644 src/lib/experience/intro-sequence.js
+ create mode 100644 tests/intro-sequence.test.mjs
+
+diff --git a/src/components/brand/GoldenThreadSplash.jsx b/src/components/brand/GoldenThreadSplash.jsx
+index 5df419a..999082b 100644
+--- a/src/components/brand/GoldenThreadSplash.jsx
++++ b/src/components/brand/GoldenThreadSplash.jsx
+@@ -1,40 +1,70 @@
+ import { useCallback, useEffect, useRef, useState } from "react";
+ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
++
+ import { ASSETS } from "@/lib/experience/assets";
+ import { useI18n } from "@/lib/experience/i18n";
++import {
++  INTRO_SEEN_KEY,
++  INTRO_STAGE,
++  initialIntroPhase,
++  introHoldDelay,
++  nextIntroPhase,
++  shouldPlayIntro,
++} from "@/lib/experience/intro-sequence";
++
++const EASE = [0.16, 1, 0.3, 1];
++const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+ 
+-const SEEN_KEY = "bm-intro-seen";
++const PHASE_ANNOUNCEMENT = {
++  THREAD: { ar: "المقدمة: يبدأ الخيط الذهبي", en: "Intro: the golden thread begins" },
++  MASK: { ar: "المقدمة: قناع المسرح", en: "Intro: the theatre mask" },
++  SCALES: { ar: "المقدمة: ميزان العدل", en: "Intro: the scales of justice" },
++  LOGO: { ar: "المقدمة: شعار بسمة موسى", en: "Intro: the Basma Moussa mark" },
++  INVITATION: { ar: "المقدمة: يمكنك الدخول الآن", en: "Intro: you may now enter" },
++  COMPLETE: { ar: "انتهت المقدمة", en: "Intro finished" },
++};
++
++/** Draw a thread path when its stage is reached; instant under reduced motion. */
++function drawFor(stage, at, duration, reduce) {
++  const reached = stage >= at;
++  return {
++    initial: { pathLength: reduce ? 1 : 0, opacity: reduce ? 1 : 0 },
++    animate: reached
++      ? { pathLength: 1, opacity: 1 }
++      : { pathLength: reduce ? 1 : 0, opacity: reduce ? 1 : 0 },
++    transition: { duration: reduce ? 0 : duration, ease: EASE },
++  };
++}
+ 
+ export function requestIntroReplay() {
+   try {
+-    window.sessionStorage.removeItem(SEEN_KEY);
++    window.sessionStorage.removeItem(INTRO_SEEN_KEY);
+   } catch {
+     /* ignore */
+   }
+   window.dispatchEvent(new Event("bm:replay-intro"));
+ }
+ 
+-const draw = (delay, duration = 1.5) => ({
+-  initial: { pathLength: 0, opacity: 0 },
+-  animate: { pathLength: 1, opacity: 1 },
+-  transition: { pathLength: { delay, duration, ease: [0.16, 1, 0.3, 1] }, opacity: { delay, duration: 0.3 } },
+-});
+-
++/**
++ * One continuous brand film: a single golden thread draws the theatrical mask,
++ * then the scales of justice, then converges into the approved logo before the
++ * bilingual invitation appears and waits for the visitor.
++ *
++ * The approved master PNG is shown untouched at the reveal - the drawn symbols
++ * are a thread sketch used only as a reveal, never a traced logo.
++ */
+ export default function GoldenThreadSplash({ onDone }) {
+   const { t, isAr } = useI18n();
+   const reduce = useReducedMotion();
+-  const [open, setOpen] = useState(() => {
+-    try {
+-      return window.sessionStorage.getItem(SEEN_KEY) !== "1";
+-    } catch {
+-      return true;
+-    }
+-  });
+-  const timer = useRef(null);
++  const [open, setOpen] = useState(true);
++  const [phase, setPhase] = useState("THREAD");
++  const rootRef = useRef(null);
++  const enterRef = useRef(null);
++  const skipRef = useRef(null);
+ 
+   const finish = useCallback(() => {
+     try {
+-      window.sessionStorage.setItem(SEEN_KEY, "1");
++      window.sessionStorage.setItem(INTRO_SEEN_KEY, "1");
+     } catch {
+       /* ignore */
+     }
+@@ -49,53 +79,107 @@ export default function GoldenThreadSplash({ onDone }) {
+     }, 620);
+   }, [onDone]);
+ 
++  // Boot: decide whether this visit gets the intro and which phase it opens on.
++  useEffect(() => {
++    const prefersReduced = window.matchMedia(REDUCED_MOTION_QUERY).matches;
++    let seen = false;
++    try {
++      seen = window.sessionStorage.getItem(INTRO_SEEN_KEY) === "1";
++    } catch {
++      /* private modes can block sessionStorage: play once for this load */
++    }
++    setPhase(initialIntroPhase({ reducedMotion: prefersReduced }));
++    setOpen(shouldPlayIntro({ seen, replayRequested: false }));
++  }, []);
++
++  // One phase at a time. The invitation has no timer, so it waits for a human.
++  useEffect(() => {
++    if (!open) return undefined;
++    const delay = introHoldDelay(phase);
++    if (delay === null) return undefined;
++    const timer = window.setTimeout(() => {
++      setPhase((current) => nextIntroPhase(current) ?? current);
++    }, reduce ? Math.min(delay, 400) : delay);
++    return () => window.clearTimeout(timer);
++  }, [open, phase, reduce]);
++
++  // The intro is a modal surface: lock the page while it plays.
+   useEffect(() => {
+     if (!open) {
+       document.body.style.overflow = "";
+       return undefined;
+     }
+-
+-    timer.current = window.setTimeout(finish, reduce ? 1200 : 4200);
+-
+-    const onKey = (event) => {
+-      if (event.key === "Escape" || event.key === "Enter" || event.key === " ") finish();
+-    };
+-    window.addEventListener("keydown", onKey);
+     document.body.style.overflow = "hidden";
+-
+     return () => {
+-      window.clearTimeout(timer.current);
+-      window.removeEventListener("keydown", onKey);
+       document.body.style.overflow = "";
+     };
+-  }, [open, finish, reduce]);
++  }, [open]);
++
++  // Keep keyboard focus inside the intro: skip while it plays, enter at the invitation.
++  useEffect(() => {
++    if (!open) return;
++    if (phase === "INVITATION") {
++      enterRef.current?.focus({ preventScroll: true });
++      return;
++    }
++    skipRef.current?.focus({ preventScroll: true });
++  }, [open, phase]);
+ 
++  // Replay from anywhere in the page without a reload.
+   useEffect(() => {
+-    const onReplay = () => setOpen(true);
++    const onReplay = () => {
++      const prefersReduced = window.matchMedia(REDUCED_MOTION_QUERY).matches;
++      setPhase(initialIntroPhase({ reducedMotion: prefersReduced }));
++      setOpen(true);
++    };
+     window.addEventListener("bm:replay-intro", onReplay);
+     return () => window.removeEventListener("bm:replay-intro", onReplay);
+   }, []);
+ 
+-  const handleSkip = () => {
+-    window.clearTimeout(timer.current);
+-    finish();
+-  };
++  const onKeyDown = useCallback(
++    (event) => {
++      if (event.key === "Escape") {
++        event.preventDefault();
++        finish();
++        return;
++      }
++      if (event.key !== "Tab" || !rootRef.current) return;
++      const focusable = rootRef.current.querySelectorAll("button:not([disabled])");
++      if (focusable.length === 0) return;
++      const first = focusable[0];
++      const last = focusable[focusable.length - 1];
++      if (event.shiftKey && document.activeElement === first) {
++        event.preventDefault();
++        last.focus();
++      } else if (!event.shiftKey && document.activeElement === last) {
++        event.preventDefault();
++        first.focus();
++      }
++    },
++    [finish],
++  );
++
++  const stage = INTRO_STAGE[phase] ?? 0;
++  const announcement = PHASE_ANNOUNCEMENT[phase] ?? PHASE_ANNOUNCEMENT.THREAD;
+ 
+   return (
+     <AnimatePresence>
+       {open && (
+         <motion.div
+           key="golden-thread"
++          ref={rootRef}
+           role="dialog"
+           aria-modal="true"
+           aria-label={t({ ar: "مقدمة الهوية — بسمة موسى", en: "Brand intro — Basma Moussa" })}
++          data-phase={phase}
+           className="fixed inset-0 z-[120] flex items-center justify-center overflow-hidden bg-[#04060F]"
+           initial={{ opacity: 1 }}
+-          exit={{ opacity: 0, scale: 1.04 }}
+-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+-          onClick={handleSkip}
++          exit={{ opacity: 0, scale: 1.03 }}
++          transition={{ duration: reduce ? 0 : 0.6, ease: EASE }}
++          onKeyDown={onKeyDown}
+         >
+           <div
++            aria-hidden="true"
+             className="pointer-events-none absolute inset-0 opacity-70"
+             style={{
+               background:
+@@ -103,61 +187,107 @@ export default function GoldenThreadSplash({ onDone }) {
+             }}
+           />
+ 
+-          <div className="relative flex flex-col items-center px-6">
+-            <svg
+-              viewBox="0 0 400 400"
+-              className="h-[min(74vw,460px)] w-[min(74vw,460px)]"
+-              aria-hidden="true"
+-              fill="none"
+-              stroke="url(#threadGold)"
+-              strokeWidth="1.1"
+-              strokeLinecap="round"
+-            >
+-              <defs>
+-                <linearGradient id="threadGold" x1="40" y1="360" x2="360" y2="40" gradientUnits="userSpaceOnUse">
+-                  <stop stopColor="#8C6C33" />
+-                  <stop offset="0.45" stopColor="#D7AB62" />
+-                  <stop offset="0.7" stopColor="#F2D7A0" />
+-                  <stop offset="1" stopColor="#B98F49" />
+-                </linearGradient>
+-              </defs>
+-
+-              <motion.circle cx="200" cy="200" r="150" {...draw(0.15, 1.9)} />
+-              <motion.circle cx="200" cy="200" r="128" strokeOpacity="0.5" strokeDasharray="2 9" {...draw(0.55, 1.8)} />
+-              {/* feminine profile suggestion */}
+-              <motion.path
+-                d="M162 318C126 268 124 178 166 126C186 100 214 94 228 108C240 120 238 142 226 156"
+-                {...draw(0.5, 1.7)}
+-              />
+-              {/* Egyptian heritage geometry */}
+-              <motion.path d="M200 50 200 20M170 62 150 38M230 62 250 38" {...draw(1.1, 1.1)} />
+-              <motion.path d="M118 296C150 330 250 330 282 296" strokeOpacity="0.8" {...draw(1.35, 1.2)} />
+-              {/* voice waveform */}
+-              <motion.path
+-                d="M108 214C130 186 148 242 170 214C192 186 210 242 232 214C254 186 272 242 294 214"
+-                {...draw(0.9, 1.6)}
+-              />
+-              <motion.path d="M132 240C158 258 242 258 268 240" strokeOpacity="0.55" {...draw(1.5, 1.3)} />
+-            </svg>
++          <button
++            ref={skipRef}
++            type="button"
++            onClick={finish}
++            className="absolute top-6 start-6 border border-gold/30 px-4 py-2 text-[0.6rem] uppercase tracking-[0.24em] text-ivory/70 transition-colors hover:border-gold hover:text-ivory"
++          >
++            {t({ ar: "تخطّي المقدمة", en: "Skip intro" })}
++          </button>
+ 
+-            <motion.div
+-              className="pointer-events-none absolute inset-0 flex items-center justify-center"
+-              initial={{ opacity: 0, scale: 0.92 }}
+-              animate={{ opacity: 1, scale: 1 }}
+-              transition={{ delay: reduce ? 0.1 : 2.15, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+-            >
+-              <img
+-                src={ASSETS.logo}
+-                alt={t({ ar: "شعار بسمة موسى", en: "Basma Moussa identity mark" })}
+-                className="w-[46%] max-w-[220px] rounded-full"
+-              />
+-            </motion.div>
++          <div className="relative flex w-full max-w-[560px] flex-col items-center px-6">
++            <div className="relative w-[min(78vw,460px)]">
++              <svg
++                viewBox="0 0 600 620"
++                className="w-full"
++                aria-hidden="true"
++                focusable="false"
++                fill="none"
++                stroke="url(#threadGold)"
++                strokeWidth="1.4"
++                strokeLinecap="round"
++              >
++                <defs>
++                  <linearGradient id="threadGold" x1="60" y1="560" x2="540" y2="60" gradientUnits="userSpaceOnUse">
++                    <stop stopColor="#8C6C33" />
++                    <stop offset="0.45" stopColor="#D7AB62" />
++                    <stop offset="0.7" stopColor="#F2D7A0" />
++                    <stop offset="1" stopColor="#B98F49" />
++                  </linearGradient>
++                  <radialGradient id="threadAura" cx="50%" cy="45%" r="55%">
++                    <stop offset="0%" stopColor="rgba(242, 215, 160, 0.22)" />
++                    <stop offset="100%" stopColor="rgba(242, 215, 160, 0)" />
++                  </radialGradient>
++                </defs>
++
++                <circle cx="300" cy="300" r="280" fill="url(#threadAura)" stroke="none" />
++
++                {stage >= 1 && (
++                  <motion.path
++                    d="M 96 118 C 176 150 214 118 236 158 C 258 198 196 236 214 282 C 232 330 300 336 300 372"
++                    {...drawFor(stage, 1, 1.25, reduce)}
++                  />
++                )}
++
++                {stage >= 2 && (
++                  <g>
++                    <motion.path
++                      d="M 236 158 C 268 122 332 122 364 158 C 396 196 392 268 356 314 C 330 348 270 348 244 314 C 208 268 204 196 236 158 Z"
++                      {...drawFor(stage, 2, 1.15, reduce)}
++                    />
++                    <motion.path d="M 250 230 Q 268 214 288 230" {...drawFor(stage, 2, 0.7, reduce)} />
++                    <motion.path d="M 312 230 Q 332 214 350 230" {...drawFor(stage, 2, 0.7, reduce)} />
++                    <motion.path d="M 272 296 Q 300 316 328 296" {...drawFor(stage, 2, 0.7, reduce)} />
++                    <motion.path d="M 208 262 C 182 284 176 312 178 338" {...drawFor(stage, 2, 0.8, reduce)} strokeOpacity="0.8" />
++                    <motion.path d="M 392 262 C 418 284 424 312 422 338" {...drawFor(stage, 2, 0.8, reduce)} strokeOpacity="0.8" />
++                  </g>
++                )}
++
++                {stage >= 3 && (
++                  <g>
++                    <motion.path d="M 300 372 L 300 528" {...drawFor(stage, 3, 0.9, reduce)} />
++                    <motion.path d="M 198 400 L 402 400" {...drawFor(stage, 3, 0.8, reduce)} />
++                    <motion.path d="M 198 400 L 176 452 M 198 400 L 220 452" {...drawFor(stage, 3, 0.7, reduce)} strokeOpacity="0.8" />
++                    <motion.path d="M 402 400 L 380 452 M 402 400 L 424 452" {...drawFor(stage, 3, 0.7, reduce)} strokeOpacity="0.8" />
++                    <motion.path d="M 160 452 Q 198 486 236 452" {...drawFor(stage, 3, 0.9, reduce)} />
++                    <motion.path d="M 364 452 Q 402 486 440 452" {...drawFor(stage, 3, 0.9, reduce)} />
++                    <motion.path d="M 258 542 Q 300 528 342 542" {...drawFor(stage, 3, 0.8, reduce)} strokeOpacity="0.8" />
++                    <motion.path
++                      d="M 268 560 L 284 560 L 284 552 L 300 552 L 300 560 L 316 560 L 316 552 L 332 552"
++                      {...drawFor(stage, 3, 0.9, reduce)}
++                      strokeOpacity="0.55"
++                    />
++                  </g>
++                )}
++
++                {stage >= 4 && (
++                  <motion.path d="M 300 560 C 300 500 300 420 300 344" {...drawFor(stage, 4, 1.1, reduce)} />
++                )}
++              </svg>
++
++              <motion.div
++                className="pointer-events-none absolute inset-0 flex items-center justify-center"
++                initial={false}
++                animate={{
++                  opacity: stage >= 4 ? 1 : 0,
++                  scale: stage >= 4 ? 1 : 0.92,
++                }}
++                transition={{ duration: reduce ? 0 : 0.9, ease: EASE }}
++              >
++                <img
++                  src={ASSETS.logo}
++                  alt={t({ ar: "شعار بسمة موسى", en: "Basma Moussa identity mark" })}
++                  className="w-[52%] max-w-[240px] rounded-full"
++                />
++              </motion.div>
++            </div>
+ 
+             <motion.div
+               className="mt-8 text-center"
+-              initial={{ opacity: 0, y: 12 }}
+-              animate={{ opacity: 1, y: 0 }}
+-              transition={{ delay: reduce ? 0.3 : 2.6, duration: 0.9 }}
++              initial={false}
++              animate={{ opacity: stage >= 5 ? 1 : 0, y: stage >= 5 ? 0 : 12 }}
++              transition={{ duration: reduce ? 0 : 0.7, ease: EASE }}
+             >
+               <p className="font-display text-2xl text-ivory sm:text-3xl">
+                 {isAr ? "بسمة موسى" : "Basma Moussa"}
+@@ -165,21 +295,34 @@ export default function GoldenThreadSplash({ onDone }) {
+               <p className="eyebrow mt-3 text-gold/80">
+                 {t({ ar: "عالم الإعلام", en: "Media Universe" })}
+               </p>
++              {stage >= 5 && (
++                <button
++                  ref={enterRef}
++                  type="button"
++                  onClick={finish}
++                  className="group mt-6 inline-flex items-center gap-3 border border-gold/60 bg-gold/10 px-6 py-3 text-sm tracking-[0.12em] text-ivory transition-colors hover:bg-gold hover:text-ink-900"
++                >
++                  <span>{t({ ar: "ادخل عالم بسمة", en: "Enter Basma's Universe" })}</span>
++                  <svg
++                    viewBox="0 0 32 16"
++                    className="h-3 w-6 rtl:rotate-180"
++                    aria-hidden="true"
++                    fill="none"
++                    stroke="currentColor"
++                    strokeWidth="1.6"
++                  >
++                    <path d="M1 8h28M22 1l7 7-7 7" />
++                  </svg>
++                </button>
++              )}
+             </motion.div>
+           </div>
+ 
+-          <button
+-            type="button"
+-            onClick={(e) => {
+-              e.stopPropagation();
+-              handleSkip();
+-            }}
+-            className="absolute bottom-8 start-6 border border-gold/30 px-4 py-2 text-[0.6rem] uppercase tracking-[0.24em] text-ivory/70 transition-colors hover:border-gold hover:text-ivory sm:start-10"
+-          >
+-            {t({ ar: "تخطّي المقدمة", en: "Skip intro" })}
+-          </button>
++          <p className="sr-only" aria-live="polite">
++            {t(announcement)}
++          </p>
+         </motion.div>
+       )}
+     </AnimatePresence>
+   );
+-}
+\ No newline at end of file
++}
+diff --git a/src/lib/experience/intro-sequence.js b/src/lib/experience/intro-sequence.js
+new file mode 100644
+index 0000000..93eefa2
+--- /dev/null
++++ b/src/lib/experience/intro-sequence.js
+@@ -0,0 +1,61 @@
++/**
++ * Deterministic choreography for the golden-thread brand intro.
++ *
++ * Ported from the Next.js Basma app (its splash state machine) into this app's
++ * plain-JavaScript conventions, so the component only renders a phase while
++ * this module decides what may follow what.
++ *
++ * One continuous story: a single golden thread draws the theatrical mask, then
++ * the scales of justice, then converges into the approved logo before the
++ * bilingual invitation appears and waits for a human.
++ */
++
++export const INTRO_PHASES = ["THREAD", "MASK", "SCALES", "LOGO", "INVITATION", "COMPLETE"];
++
++/** Which drawing stage the SVG shows (monotonic; used for cumulative reveals). */
++export const INTRO_STAGE = {
++  THREAD: 1,
++  MASK: 2,
++  SCALES: 3,
++  LOGO: 4,
++  INVITATION: 5,
++  COMPLETE: 6,
++};
++
++/** How long each automatic phase holds before advancing. */
++export const INTRO_HOLD_MS = {
++  THREAD: 1500,
++  MASK: 1400,
++  SCALES: 1400,
++  LOGO: 1200,
++};
++
++/** The invitation waits for a human, so it has no automatic advance. */
++export const INTRO_AUTO_CHAIN = ["THREAD", "MASK", "SCALES", "LOGO", "INVITATION"];
++
++export const INTRO_SEEN_KEY = "bm-intro-seen";
++
++/** The next automatic phase, or null when the intro waits for the visitor. */
++export function nextIntroPhase(phase) {
++  const index = INTRO_AUTO_CHAIN.indexOf(phase);
++  if (index === -1) return null;
++  return INTRO_AUTO_CHAIN[index + 1] ?? null;
++}
++
++/** Auto-advance delay for a phase, or null when it waits on the visitor. */
++export function introHoldDelay(phase) {
++  return INTRO_HOLD_MS[phase] ?? null;
++}
++
++/**
++ * Reduced motion still gets the brand moment and the invitation - it just does
++ * not animate into them. A returning visitor inside the same session skips it.
++ */
++export function initialIntroPhase({ reducedMotion }) {
++  return reducedMotion ? "INVITATION" : "THREAD";
++}
++
++export function shouldPlayIntro({ seen, replayRequested }) {
++  if (replayRequested) return true;
++  return !seen;
++}
+diff --git a/tests/intro-sequence.test.mjs b/tests/intro-sequence.test.mjs
+new file mode 100644
+index 0000000..0a1459e
+--- /dev/null
++++ b/tests/intro-sequence.test.mjs
+@@ -0,0 +1,47 @@
++import assert from "node:assert/strict";
++import test from "node:test";
++
++import {
++  INTRO_AUTO_CHAIN,
++  INTRO_HOLD_MS,
++  INTRO_PHASES,
++  INTRO_STAGE,
++  initialIntroPhase,
++  introHoldDelay,
++  nextIntroPhase,
++  shouldPlayIntro,
++} from "../src/lib/experience/intro-sequence.js";
++
++test("every phase has a drawing stage and the reveal never goes backwards", () => {
++  assert.deepEqual(Object.keys(INTRO_STAGE), INTRO_PHASES);
++  const stages = INTRO_PHASES.map((phase) => INTRO_STAGE[phase]);
++  assert.deepEqual(stages, [...stages].sort((a, b) => a - b));
++});
++
++test("the automatic chain advances one phase at a time and stops at the invitation", () => {
++  for (let i = 0; i < INTRO_AUTO_CHAIN.length - 1; i += 1) {
++    assert.equal(nextIntroPhase(INTRO_AUTO_CHAIN[i]), INTRO_AUTO_CHAIN[i + 1]);
++  }
++  assert.equal(nextIntroPhase("INVITATION"), null);
++  assert.equal(nextIntroPhase("COMPLETE"), null);
++});
++
++test("only drawing phases hold a timer; the invitation waits for a human", () => {
++  for (const phase of INTRO_AUTO_CHAIN.slice(0, -1)) {
++    assert.ok(INTRO_HOLD_MS[phase] > 0, phase);
++    assert.equal(introHoldDelay(phase), INTRO_HOLD_MS[phase]);
++  }
++  assert.equal(introHoldDelay("INVITATION"), null);
++  assert.equal(introHoldDelay("COMPLETE"), null);
++});
++
++test("reduced motion opens on the invitation instead of the animated thread", () => {
++  assert.equal(initialIntroPhase({ reducedMotion: true }), "INVITATION");
++  assert.equal(initialIntroPhase({ reducedMotion: false }), "THREAD");
++});
++
++test("a returning visitor skips the intro unless a replay was requested", () => {
++  assert.equal(shouldPlayIntro({ seen: true, replayRequested: false }), false);
++  assert.equal(shouldPlayIntro({ seen: true, replayRequested: true }), true);
++  assert.equal(shouldPlayIntro({ seen: false, replayRequested: false }), true);
++});
+-- 
+2.43.0
+

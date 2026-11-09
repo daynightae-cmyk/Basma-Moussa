@@ -10,6 +10,7 @@ import type { Locale } from "@/lib/i18n/config";
 import { BrandThreadSplash } from "@/components/brand/splash";
 import { SectionHeading } from "@/components/editorial/section-heading";
 import { MediaFrame } from "@/components/editorial/media-frame";
+import { StudioExperience } from "@/components/studio/studio-experience";
 
 export async function generateMetadata({
   params,
@@ -63,6 +64,8 @@ export default async function Studio({ params }: StudioPageProps) {
           </div>
         </div>
       </section>
+
+      <StudioExperience dict={dict} locale={l} />
 
       <section className="chapter process">
         <div className="shell strips__grid">

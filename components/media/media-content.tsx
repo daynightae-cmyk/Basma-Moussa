@@ -14,6 +14,7 @@ import { PortalLink } from "@/components/navigation/portal-link";
 import Image from "next/image";
 import { SectionHeading } from "@/components/editorial/section-heading";
 import { WorldDiscoveryStage } from "@/components/media/world-discovery-stage";
+import { MediaGalaxy } from "@/components/media/media-galaxy";
 
 interface MediaContentProps {
   locale: Locale;
@@ -45,6 +46,7 @@ export function MediaContent({ locale }: MediaContentProps) {
     <>
       <BrandThreadSplash locale={locale} dict={dict} />
       <WorldDiscoveryStage locale={locale} />
+      <MediaGalaxy locale={locale} />
       <section className="chapter" id="media-hero">
         <div className="shell">
           <SectionHeading

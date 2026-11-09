@@ -22,7 +22,7 @@ export const LEGAL_OUTLINES: LegalOutline[] = [
       en: "How to read a UAE federal law: a starting guide",
     },
     summary: {
-      ar: "طريقة قراءة النصوص الاتحادية على بوابة التشريعات، معpointer إلى المصدر الرسمي.",
+      ar: "طريقة قراءة النصوص الاتحادية على بوابة التشريعات، مع إشارة إلى المصدر الرسمي.",
       en: "How to read federal legislation on the UAE legislation portal, pointing to the official source.",
     },
     jurisdiction: "UAE-federal",

@@ -1,27 +1,23 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import type { Dictionary } from "@/lib/i18n/dictionary";
+import { SPLASH_REPLAY_EVENT, SPLASH_STORAGE_KEY } from "@/lib/experience/splash-sequence";
 
 /**
- * Replay Intro — re-shows the BrandThreadSplash on demand.
+ * Replay Intro — re-shows the brand intro on demand.
  *
- * Clicking clears the first-session flag and reloads the page with
- * ?replay=1, which the splash already honors (it removes the param itself
- * once the intro is shown). Renders identical HTML on server and client so
- * there is no hydration mismatch.
+ * The splash is already mounted on the page, so a custom event re-opens it in
+ * place. No reload, and the reduced-motion preference is respected by the
+ * splash itself. Renders identical HTML on server and client.
  */
 export function ReplayIntroButton({ dict }: { dict: Dictionary }) {
-  const router = useRouter();
-
   const handleClick = () => {
     try {
-      sessionStorage.removeItem("bm-splash-seen");
+      sessionStorage.removeItem(SPLASH_STORAGE_KEY);
     } catch {
-      // sessionStorage unavailable: the URL param alone still re-shows it.
+      // Storage disabled: the in-page event still re-opens the intro.
     }
-    router.replace(`${window.location.pathname}?replay=1`);
+    window.dispatchEvent(new Event(SPLASH_REPLAY_EVENT));
   };
 
   return (

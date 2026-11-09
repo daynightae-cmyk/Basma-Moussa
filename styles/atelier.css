@@ -1,0 +1,569 @@
+/* ==========================================================================
+   The Story Atelier — concept desk with a golden thread timeline
+   ========================================================================== */
+
+.atelier {
+  padding-block: clamp(3rem, 6vw, 5.5rem);
+  background:
+    radial-gradient(70% 50% at 80% 0%, rgba(81, 32, 45, 0.24), transparent 62%),
+    radial-gradient(60% 50% at 10% 20%, rgba(215, 171, 98, 0.09), transparent 60%),
+    linear-gradient(180deg, #05070f 0%, #060911 100%);
+}
+
+.atelier__head {
+  max-width: 68ch;
+  margin-bottom: clamp(1.75rem, 3vw, 2.75rem);
+}
+.atelier__head .display {
+  margin: 0.4rem 0 0.9rem;
+}
+
+.atelier__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.atelier__bench,
+.atelier__desk {
+  display: grid;
+  gap: 1.1rem;
+  align-content: start;
+}
+
+.atelier-step {
+  display: grid;
+  gap: 0.6rem;
+  padding: 1.05rem 1.15rem 1.15rem;
+  border-radius: 16px;
+  border: 1px solid rgba(242, 215, 160, 0.14);
+  background: linear-gradient(180deg, rgba(14, 20, 36, 0.68), rgba(7, 10, 18, 0.68));
+}
+
+.atelier-step__title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #f2d7a0;
+}
+html[lang="ar"] .atelier-step__title {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.95rem;
+}
+.atelier-step__title span {
+  font-family: var(--font-marcellus), Georgia, serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: rgba(215, 171, 98, 0.65);
+  border: 1px solid rgba(215, 171, 98, 0.3);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+}
+
+.atelier-step__note {
+  margin: 0;
+  font-size: 0.76rem;
+  color: #8a93a8;
+  line-height: 1.6;
+}
+
+.atelier-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.atelier-chip {
+  min-height: 2.6rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 215, 160, 0.2);
+  background: rgba(255, 255, 255, 0.02);
+  color: #dfe3ee;
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s ease;
+}
+.atelier-chip:hover {
+  border-color: rgba(242, 215, 160, 0.6);
+  transform: translateY(-1px);
+}
+.atelier-chip[aria-pressed="true"] {
+  border-color: #d7ab62;
+  background: rgba(215, 171, 98, 0.18);
+  color: #f7ecd6;
+  box-shadow: inset 0 0 0 1px rgba(242, 215, 160, 0.25);
+}
+.atelier-chip--mood[aria-pressed="true"] {
+  box-shadow: inset 0 0 0 1px rgba(247, 236, 214, 0.55), 0 10px 26px -16px rgba(0, 0, 0, 0.9);
+}
+.atelier-chip:focus-visible {
+  outline: 2px solid #f2d7a0;
+  outline-offset: 2px;
+}
+
+.beat-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.beat-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.9rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid rgba(242, 215, 160, 0.12);
+  background: rgba(255, 255, 255, 0.015);
+}
+.beat-card[data-added="true"] {
+  border-color: rgba(215, 171, 98, 0.45);
+  background: rgba(215, 171, 98, 0.07);
+}
+.beat-card__text {
+  display: grid;
+  gap: 0.15rem;
+}
+.beat-card__title {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #f7ecd6;
+}
+.beat-card__beat {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.55;
+  color: #8a93a8;
+}
+.beat-card__add {
+  flex: none;
+  min-height: 2.4rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 215, 160, 0.35);
+  background: transparent;
+  color: #f2d7a0;
+  font: inherit;
+  font-size: 0.72rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.beat-card__add:hover:not(:disabled) {
+  background: rgba(215, 171, 98, 0.16);
+}
+.beat-card__add:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.beat-card__add:focus-visible {
+  outline: 2px solid #f2d7a0;
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------- sequence --- */
+
+.atelier-sequence,
+.atelier-notes {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1.05rem 1.15rem 1.2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(242, 215, 160, 0.18);
+  background:
+    radial-gradient(80% 60% at 100% 0%, rgba(215, 171, 98, 0.07), transparent 60%),
+    linear-gradient(180deg, rgba(13, 19, 34, 0.75), rgba(6, 9, 16, 0.75));
+}
+
+.atelier-sequence__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.atelier-sequence__head h2 {
+  margin: 0;
+  font-size: 0.84rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #d7ab62;
+}
+html[lang="ar"] .atelier-sequence__head h2 {
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.98rem;
+}
+.atelier-sequence__count {
+  font-size: 0.72rem;
+  color: #8a93a8;
+  font-variant-numeric: tabular-nums;
+}
+
+.atelier-sequence__body {
+  position: relative;
+}
+
+.atelier-thread {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.atelier-thread path {
+  fill: none;
+  stroke: url(#atelier-thread-gradient);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 4px rgba(242, 215, 160, 0.55));
+  animation: atelier-thread-draw 1200ms cubic-bezier(0.3, 0.7, 0.2, 1) forwards;
+}
+
+.atelier-sequence__list {
+  list-style: none;
+  margin: 0;
+  /* Leaves a lane for the golden thread beside the scene cards. */
+  padding-block: 0;
+  padding-inline: 1.9rem 0;
+  display: grid;
+  gap: 0.6rem;
+  position: relative;
+  z-index: 1;
+}
+
+.sequence-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 0.7rem;
+  padding: 0.7rem 0.75rem;
+  border-radius: 12px;
+  border: 1px solid rgba(242, 215, 160, 0.18);
+  background: linear-gradient(160deg, rgba(20, 27, 46, 0.92), rgba(8, 11, 20, 0.92));
+  box-shadow: 0 14px 30px -24px rgba(0, 0, 0, 0.95);
+}
+.sequence-card__index {
+  font-family: var(--font-marcellus), Georgia, serif;
+  font-size: 0.78rem;
+  color: rgba(242, 215, 160, 0.8);
+  padding-top: 0.15rem;
+}
+.sequence-card__text {
+  display: grid;
+  gap: 0.15rem;
+}
+.sequence-card__title {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #f7ecd6;
+}
+.sequence-card__beat {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  color: #9aa2b6;
+}
+.sequence-card__actions {
+  display: flex;
+  gap: 0.2rem;
+}
+.sequence-card__actions button {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 8px;
+  border: 1px solid rgba(242, 215, 160, 0.2);
+  background: rgba(255, 255, 255, 0.03);
+  color: #f2d7a0;
+  font: inherit;
+  cursor: pointer;
+}
+.sequence-card__actions button:hover:not(:disabled) {
+  border-color: #d7ab62;
+  background: rgba(215, 171, 98, 0.14);
+}
+.sequence-card__actions button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+.sequence-card__actions button:focus-visible {
+  outline: 2px solid #f2d7a0;
+  outline-offset: 1px;
+}
+
+.atelier-sequence__empty {
+  margin: 0;
+  padding: 1.4rem 0.8rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #8a93a8;
+  border: 1px dashed rgba(242, 215, 160, 0.22);
+  border-radius: 12px;
+}
+
+.atelier-preview-btn {
+  justify-self: start;
+  min-height: 2.9rem;
+  font-size: 0.84rem;
+}
+
+.atelier-notes .field__label {
+  font-size: 0.74rem;
+  color: #8a93a8;
+}
+
+.atelier-notes__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.atelier-notes__local {
+  margin: 0;
+  font-size: 0.72rem;
+  color: #8a93a8;
+  line-height: 1.6;
+}
+.atelier-notes__status {
+  margin: 0;
+  font-size: 0.76rem;
+  color: #9fe0bb;
+}
+.atelier-notes__status[data-kind="hint"] {
+  color: #f2d7a0;
+}
+.atelier-notes__status[data-kind="cleared"] {
+  color: #aab0c2;
+}
+
+/* -------------------------------------------------------------- theatre --- */
+
+.atelier-theatre {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(3, 5, 10, 0.86);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: theatre-in 240ms ease both;
+}
+
+.atelier-theatre__frame {
+  width: min(920px, 100%);
+  display: grid;
+  gap: 0.8rem;
+}
+
+.atelier-theatre__stage {
+  position: relative;
+  display: grid;
+  align-content: end;
+  gap: 0.6rem;
+  min-height: min(58vh, 460px);
+  padding: clamp(1.4rem, 4vw, 3rem);
+  border-radius: 18px;
+  border: 1px solid rgba(247, 236, 214, 0.22);
+  overflow: hidden;
+  box-shadow: 0 40px 100px -40px rgba(0, 0, 0, 0.95);
+}
+.atelier-theatre__stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 60% at 20% 10%, rgba(255, 255, 255, 0.12), transparent 60%),
+    linear-gradient(0deg, rgba(3, 5, 10, 0.72), transparent 62%);
+  pointer-events: none;
+}
+.atelier-theatre__scene {
+  position: absolute;
+  top: clamp(1.1rem, 3vw, 2rem);
+  inset-inline-end: clamp(1.1rem, 3vw, 2rem);
+  font-family: var(--font-marcellus), Georgia, serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  line-height: 1;
+  color: rgba(247, 236, 214, 0.24);
+}
+.atelier-theatre__eyebrow,
+.atelier-theatre__title,
+.atelier-theatre__beat,
+.atelier-theatre__note {
+  position: relative;
+  margin: 0;
+}
+.atelier-theatre__eyebrow {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(247, 236, 214, 0.72);
+}
+html[lang="ar"] .atelier-theatre__eyebrow {
+  letter-spacing: 0;
+  text-transform: none;
+}
+.atelier-theatre__title {
+  font-family: var(--font-display-ar);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  line-height: 1.2;
+}
+html[lang="en"] .atelier-theatre__title {
+  font-family: var(--font-display-en);
+}
+.atelier-theatre__beat {
+  max-width: 56ch;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  opacity: 0.9;
+}
+.atelier-theatre__note {
+  max-width: 56ch;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  opacity: 0.75;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(247, 236, 214, 0.22);
+}
+
+.atelier-theatre__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.atelier-theatre__count {
+  font-size: 0.78rem;
+  color: #c9cfe0;
+}
+.atelier-theatre__dots {
+  display: flex;
+  gap: 0.35rem;
+  justify-content: center;
+}
+.atelier-theatre__dots span {
+  width: 22px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(242, 215, 160, 0.25);
+  transition: background 0.3s ease;
+}
+.atelier-theatre__dots span[data-active="true"] {
+  background: #f2d7a0;
+}
+
+.thread-invite {
+  position: relative;
+  padding-block: clamp(3rem, 6vw, 5rem);
+  border-block: 1px solid rgba(242, 215, 160, 0.1);
+  background:
+    radial-gradient(70% 70% at 50% 0%, rgba(215, 171, 98, 0.09), transparent 65%),
+    #05070f;
+  overflow: hidden;
+}
+
+.thread-invite__inner {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 0.8rem;
+}
+
+.thread-invite__inner .lead {
+  margin: 0;
+  max-width: 62ch;
+}
+
+.thread-invite__thread {
+  position: absolute;
+  inset-inline: 0;
+  top: -2.5rem;
+  width: 100%;
+  height: 7.5rem;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.thread-invite__thread path {
+  fill: none;
+  stroke: url(#thread-invite-gradient);
+  stroke-width: 1.4;
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+  animation: thread-invite-draw 2600ms cubic-bezier(0.3, 0.7, 0.2, 1) forwards;
+}
+
+@keyframes thread-invite-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes atelier-thread-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes theatre-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 980px) {
+  .atelier__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .atelier-step,
+  .atelier-sequence,
+  .atelier-notes {
+    padding-inline: 0.9rem;
+  }
+  .atelier-chip {
+    min-height: 2.75rem;
+  }
+  .beat-card__add {
+    min-height: 2.75rem;
+  }
+  .sequence-card__actions button {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+  .atelier-theatre__stage {
+    min-height: 52vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atelier-thread path,
+  .atelier-theatre {
+    animation: none;
+  }
+  .atelier-thread path {
+    stroke-dashoffset: 0;
+  }
+}

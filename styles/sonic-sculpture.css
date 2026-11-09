@@ -1,0 +1,270 @@
+/* ==========================================================================
+   Sonic Sculpture Studio — audio-reactive glass geometry
+   Three rings of blades ride a tilted 3D plane. The analyser writes --low,
+   --mid and --high on the stage; each ring scales its blades from its own band,
+   and the core breathes with the overall level. With no microphone every
+   variable sits at 0 and the sculpture rests.
+   ========================================================================== */
+
+.sculpture {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: var(--radius-world);
+  border: 1px solid var(--color-outline);
+  background: linear-gradient(180deg, rgba(17, 24, 41, 0.78), rgba(6, 9, 18, 0.9));
+  box-shadow: 0 34px 70px -46px #000, inset 0 1px 0 rgba(242, 215, 160, 0.16);
+}
+
+@media (min-width: 900px) {
+  .sculpture {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    align-items: center;
+  }
+}
+
+/* ------------------------------------------------------------ the object --- */
+
+.sculpture__stage {
+  --low: 0;
+  --mid: 0;
+  --high: 0;
+  --level: 0;
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: clamp(19rem, 32vw, 27rem);
+  perspective: 1100px;
+  overflow: clip;
+  border-radius: calc(var(--radius-world) - 6px);
+  background:
+    radial-gradient(60% 55% at 50% 46%, rgba(215, 171, 98, calc(0.06 + var(--level) * 0.2)), transparent 72%),
+    radial-gradient(80% 70% at 50% 90%, rgba(38, 56, 92, 0.35), transparent 70%);
+  transition: background 400ms linear;
+}
+
+.sculpture__halo {
+  position: absolute;
+  inset: 18%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(242, 215, 160, calc(0.05 + var(--level) * 0.28)),
+    transparent 70%
+  );
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+/* The tilted plane the blades stand on. */
+.sculpture__field {
+  position: relative;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(58deg) rotateZ(0deg);
+  animation: sculpture-turn 60s linear infinite;
+}
+.sculpture[data-status="active"] .sculpture__field {
+  animation-duration: 26s;
+}
+
+.sculpture__ring {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+.sculpture__blade {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: calc(var(--ring-size) * 16rem * 0.24);
+  border-radius: 999px;
+  transform-origin: 50% 50%;
+  background: linear-gradient(180deg, rgba(251, 247, 239, 0.95), rgba(215, 171, 98, 0.35));
+  box-shadow: 0 0 14px rgba(242, 215, 160, 0.5);
+  opacity: calc(0.28 + var(--energy) * 0.72);
+  /* radial placement → grow from the centre ring outward, band by band */
+  transform:
+    rotate(var(--angle))
+    translateY(calc(var(--ring-size) * -16rem * 0.5))
+    scaleY(calc(0.35 + var(--energy) * 3.4));
+  transition: transform 60ms linear, opacity 120ms linear;
+}
+
+.sculpture__ring[data-band="low"] {
+  --energy: var(--low);
+}
+.sculpture__ring[data-band="low"] .sculpture__blade {
+  background: linear-gradient(180deg, rgba(247, 236, 214, 0.95), rgba(215, 171, 98, 0.3));
+}
+.sculpture__ring[data-band="mid"] {
+  --energy: var(--mid);
+}
+.sculpture__ring[data-band="mid"] .sculpture__blade {
+  background: linear-gradient(180deg, rgba(190, 235, 222, 0.9), rgba(111, 191, 163, 0.28));
+  box-shadow: 0 0 14px rgba(111, 191, 163, 0.45);
+}
+.sculpture__ring[data-band="high"] {
+  --energy: var(--high);
+}
+.sculpture__ring[data-band="high"] .sculpture__blade {
+  background: linear-gradient(180deg, rgba(251, 224, 214, 0.9), rgba(217, 135, 127, 0.26));
+  box-shadow: 0 0 14px rgba(217, 135, 127, 0.4);
+}
+
+.sculpture__core {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 62px;
+  height: 62px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #fff9ec, var(--color-gold-500) 52%, #5d4318 100%);
+  box-shadow:
+    0 0 46px rgba(242, 215, 160, calc(0.35 + var(--level) * 0.6)),
+    0 0 110px rgba(215, 171, 98, calc(0.2 + var(--level) * 0.4));
+  transform: scale(calc(0.82 + var(--level) * 0.6));
+  transition: transform 90ms linear, box-shadow 200ms linear;
+}
+
+.sculpture__disc {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(16rem * 0.98);
+  height: calc(16rem * 0.98);
+  translate: -50% -50%;
+  border-radius: 50%;
+  border: 1px solid rgba(215, 171, 98, 0.22);
+  box-shadow: inset 0 0 60px -20px rgba(215, 171, 98, 0.45);
+  pointer-events: none;
+}
+
+@keyframes sculpture-turn {
+  from {
+    transform: rotateX(58deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(58deg) rotateZ(360deg);
+  }
+}
+
+/* --------------------------------------------------------------- the rail --- */
+
+.sculpture__rail {
+  display: grid;
+  gap: 0.8rem;
+  text-align: start;
+}
+
+.sculpture__controls {
+  display: grid;
+  gap: 0.55rem;
+}
+.sculpture__status {
+  font-size: 0.76rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+.sculpture[data-status="active"] .sculpture__status {
+  color: #9fe0bb;
+}
+.sculpture[data-status="denied"] .sculpture__status,
+.sculpture[data-status="error"] .sculpture__status {
+  color: #ffb3b3;
+}
+
+.sculpture__meter {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(242, 215, 160, 0.14);
+}
+.sculpture__meter-fill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #6fbfa3, #d7ab62 62%, #d9877f);
+  transition: width 110ms linear;
+}
+
+.sculpture__bands {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+}
+.sculpture__band {
+  display: grid;
+  grid-template-columns: 4.4rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.7rem;
+  color: var(--color-muted);
+}
+.sculpture__band dt {
+  margin: 0;
+}
+.sculpture__band dd {
+  margin: 0;
+}
+.sculpture__band-track {
+  display: block;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  overflow: hidden;
+}
+.sculpture__band-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 110ms linear;
+}
+.sculpture__band[data-band="low"] .sculpture__band-fill {
+  background: linear-gradient(90deg, rgba(215, 171, 98, 0.45), #f2d7a0);
+}
+.sculpture__band[data-band="mid"] .sculpture__band-fill {
+  background: linear-gradient(90deg, rgba(111, 191, 163, 0.4), #beebde);
+}
+.sculpture__band[data-band="high"] .sculpture__band-fill {
+  background: linear-gradient(90deg, rgba(217, 135, 127, 0.4), #fbe0d6);
+}
+
+.sculpture__privacy {
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.8;
+  color: rgba(170, 176, 194, 0.82);
+}
+
+/* ----------------------------------------------------------- responsive --- */
+
+@media (max-width: 900px) {
+  .sculpture__stage {
+    min-height: 20rem;
+    perspective: 900px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sculpture__field {
+    animation: none;
+  }
+  .sculpture__blade,
+  .sculpture__core,
+  .sculpture__meter-fill,
+  .sculpture__band-fill {
+    transition: none;
+  }
+}

@@ -15,6 +15,7 @@ const STATIC_ROUTES: string[] = [
   "/legal-lens",
   "/stories",
   "/studio",
+  "/atelier",
   "/contact",
   "/privacy",
 ];

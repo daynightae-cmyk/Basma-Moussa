@@ -17,6 +17,7 @@ const NAV_ROUTES = [
   { key: "legal", path: "/legal-lens", label: (d: Dictionary) => d.nav.legal },
   { key: "stories", path: "/stories", label: (d: Dictionary) => d.nav.stories },
   { key: "studio", path: "/studio", label: (d: Dictionary) => d.nav.studio },
+  { key: "atelier", path: "/atelier", label: (d: Dictionary) => d.nav.atelier },
   { key: "contact", path: "/contact", label: (d: Dictionary) => d.nav.contact },
 ];
 
@@ -30,8 +31,17 @@ export function Header({ locale, dict }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+
+  // The home opening runs full-bleed beneath a transparent bar; it turns to glass on scroll.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const closeMenu = useCallback(() => {
     setMenuOpen(false);
@@ -65,9 +75,13 @@ export function Header({ locale, dict }: HeaderProps) {
   }, [locale, pathname, router]);
 
   const brandLink = localizedPath(locale);
+  const isHome = pathname === localizedPath(locale);
+  const headerClass = ["header", isHome && !scrolled ? "is-over" : "", scrolled ? "is-scrolled" : ""]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <header className="header" role="banner">
+    <header className={headerClass} role="banner">
       <div className="header__inner shell">
         <Link
           href={brandLink}

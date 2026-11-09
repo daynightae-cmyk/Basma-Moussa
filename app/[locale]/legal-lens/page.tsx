@@ -11,6 +11,7 @@ import { BrandThreadSplash } from "@/components/brand/splash";
 import { SectionHeading } from "@/components/editorial/section-heading";
 import { StatusBadge } from "@/components/editorial/status-badge";
 import { MediaFrame } from "@/components/editorial/media-frame";
+import { JusticePrism } from "@/components/media/justice-prism";
 import { whatsappHref } from "@/lib/site";
 
 export async function generateMetadata({
@@ -76,6 +77,23 @@ export default async function LegalLens({ params }: LegalLensPageProps) {
             <p className="eyebrow eyebrow-gold">{c.disclaimerTitle}</p>
             <p className="lead">{c.disclaimerBody}</p>
           </div>
+        </div>
+      </section>
+
+      <section className="chapter chapter--tight">
+        <div className="shell">
+          <JusticePrism
+            locale={l}
+            eyebrow={c.prismEyebrow}
+            title={c.prismTitle}
+            lead={c.prismLead}
+            hint={c.prismHint}
+            facetLabel={c.prismFacetLabel}
+            sourceLabel={c.prismSourceLabel}
+            statusLabel={dict.status.outline}
+            externalLinkLabel={dict.common.externalLink}
+            opensInNewTabLabel={dict.common.opensInNewTab}
+          />
         </div>
       </section>
 

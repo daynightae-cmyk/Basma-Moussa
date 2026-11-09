@@ -65,7 +65,12 @@ export default async function LocaleLayout({
     .join(" ");
 
   return (
-    <html lang={htmlLang[locale]} dir={dir} suppressHydrationWarning>
+    <html
+      lang={htmlLang[locale]}
+      dir={dir}
+      data-scroll-behavior="smooth"
+      suppressHydrationWarning
+    >
       <body className={fontVariables}>
         <a href="#main" className="skip-link">
           {dict.common.skipToContent}

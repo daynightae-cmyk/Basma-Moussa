@@ -16,7 +16,7 @@ import { ReplayIntroButton } from "@/components/brand/replay-intro-button";
 import { WorldHero } from "@/components/home/world-hero";
 import { PORTAL_WORLDS } from "@/lib/content/worlds";
 import { whatsappHref } from "@/lib/site";
-import { CinematicHeroSlider } from "@/components/cinematic/CinematicHeroSlider";
+import { ArrivalHero } from "@/components/home/arrival-hero";
 import { HorizontalStoryStage } from "@/components/cinematic/HorizontalStoryStage";
 import { ThreadInvitation } from "@/components/cinematic/thread-invitation";
 import { HOME_STORY_PANELS } from "@/lib/experience/scene-data";
@@ -106,8 +106,21 @@ export default async function Home({
       <ReplayIntroButton dict={dict} />
       {showReplay && <p className="sr-only">{dict.common.replayIntro}</p>}
 
-      {/* Cinematic Hero Slider - replaces static hero */}
-      <CinematicHeroSlider locale={l} dict={dict} />
+      {/* Scene 01 — the arrival: full-bleed cinematic opening. */}
+      <ArrivalHero
+        locale={l}
+        dict={dict}
+        asset={getAsset("bm-14")}
+        content={{
+          eyebrow: c.eyebrow,
+          title: c.title,
+          lead: c.lead,
+          primaryCta: c.primaryCta,
+          secondaryCta: c.secondaryCta,
+          statusLine: c.statusLine,
+          heroCaption: c.heroCaption,
+        }}
+      />
 
       <section className="chapter" id="intro">
         <div className="shell grid-uneven">
@@ -116,7 +129,7 @@ export default async function Home({
               eyebrow={c.introEyebrow}
               title={c.introTitle}
               lead={c.introBody}
-              titleTag="h1"
+              titleTag="h2"
             />
           </div>
           <div className="intro__pillars">

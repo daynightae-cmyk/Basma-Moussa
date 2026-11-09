@@ -25,6 +25,7 @@ import "@/styles/splash.css";
 import "@/styles/studio.css";
 import "@/styles/soundroom.css";
 import "@/styles/atelier.css";
+import "@/styles/arrival.css";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope", weight: ["400", "600", "700"], display: "swap" });
 const plexAr = IBM_Plex_Sans_Arabic({ subsets: ["arabic"], variable: "--font-plex-ar", weight: ["300", "400", "500", "600", "700"], display: "swap" });
@@ -57,11 +58,15 @@ export default async function LocaleLayout({
   const locale: Locale = isLocale(rawLocale) ? rawLocale : defaultLocale;
   const dir = direction[locale];
   const dict = getDictionary(locale);
-  const fontClasses = `${manrope.className} ${plexAr.className} ${alexandria.className} ${marcellus.className}`;
+  // Expose each face as its CSS variable (`--font-manrope`, `--font-plex-ar`, …)
+  // so the design tokens in globals.css resolve to the real typefaces.
+  const fontVariables = [manrope, plexAr, alexandria, marcellus]
+    .map((font) => font.variable)
+    .join(" ");
 
   return (
     <html lang={htmlLang[locale]} dir={dir} suppressHydrationWarning>
-      <body className={fontClasses}>
+      <body className={fontVariables}>
         <a href="#main" className="skip-link">
           {dict.common.skipToContent}
         </a>

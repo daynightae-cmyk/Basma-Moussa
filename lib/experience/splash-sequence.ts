@@ -130,3 +130,6 @@ export const SPLASH_STORAGE_KEY = "bm-splash-seen";
 
 /** In-page replay request, so the intro can be re-shown without a page reload. */
 export const SPLASH_REPLAY_EVENT = "bm-splash:replay";
+
+/** Broadcast once the intro has fully left the screen, so the page beneath can start its entrance. */
+export const SPLASH_COMPLETE_EVENT = "bm-splash:complete";

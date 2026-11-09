@@ -11,6 +11,7 @@ import { BRAND } from "@/lib/site";
 import { playCue } from "@/lib/audio/cue";
 import {
   PHASE_STAGE,
+  SPLASH_COMPLETE_EVENT,
   SPLASH_REPLAY_EVENT,
   SPLASH_STORAGE_KEY,
   initialSplashState,
@@ -106,6 +107,7 @@ export function BrandThreadSplash({ locale, dict }: BrandThreadSplashProps) {
     } catch {
       // ignore
     }
+    window.dispatchEvent(new Event(SPLASH_COMPLETE_EVENT));
     const intent = intentRef.current;
     intentRef.current = null;
     if (intent === "enter" && pathWithoutLocale(pathname) !== "/") {

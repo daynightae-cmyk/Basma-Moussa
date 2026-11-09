@@ -187,7 +187,7 @@ export function StudioExperience({ dict, locale }: { dict: Dictionary; locale: L
 
   return (
     <section className="studio-experience" id="studio-experience" aria-labelledby="studio-experience-title">
-      <div className="shell">
+      <div className="shell shell--wide">
         <header className="studio-experience__head">
           <div>
             <p className="eyebrow eyebrow-gold">{dict.nav.studio}</p>

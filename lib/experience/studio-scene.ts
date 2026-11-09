@@ -310,13 +310,20 @@ export function cameraPreset(id: CameraId): CameraPreset {
   return CAMERA_PRESETS.find((entry) => entry.id === id) ?? CAMERA_PRESETS[0];
 }
 
-/** Shared world transform for the selected camera (CSS transform string). */
+/**
+ * Shared world transform for the selected camera (CSS transform string).
+ *
+ * The trailing scale is the framing zoom. It is a CSS variable so the plate can
+ * size the master shot for the screen it is on (`--studio-zoom` on
+ * `.studio-world`) without the camera model knowing about layout.
+ */
 export function cameraTransform(id: CameraId): string {
   const camera = cameraPreset(id);
   return [
     `translate3d(${camera.trackX}px, ${camera.trackY}px, ${camera.dolly}px)`,
     `rotateX(${camera.pitch}deg)`,
     `rotateY(${camera.yaw}deg)`,
+    "scale3d(var(--studio-zoom, 1), var(--studio-zoom, 1), var(--studio-zoom, 1))",
   ].join(" ");
 }
 

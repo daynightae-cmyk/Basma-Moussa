@@ -46,18 +46,30 @@
   background: #d7ab62;
 }
 
+/* The master shot is the point of this section, so the plate is full-bleed
+   (≈75% of the viewport at desktop) with a slim control rail beside it. */
+.studio-experience .shell--wide {
+  max-width: none;
+  padding-inline: clamp(0.85rem, 2vw, 2rem);
+}
+
 .studio-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 380px;
-  gap: 1.25rem;
+  grid-template-columns: minmax(0, 1fr) clamp(260px, 20vw, 330px);
+  gap: 1rem;
   align-items: start;
+}
+
+.studio-experience__head .lead {
+  max-width: 64ch;
 }
 
 /* ---------------------------------------------------------------- stage --- */
 
 .studio-stage {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
+  min-height: min(70vh, 660px);
   border-radius: 20px;
   overflow: hidden;
   border: 1px solid rgba(242, 215, 160, 0.18);
@@ -81,6 +93,9 @@
   top: 50%;
   width: 0;
   height: 0;
+  /* Framing zoom applied after the camera transform, so the set fills the
+     larger master plate at the same compositional scale. */
+  --studio-zoom: 1.14;
   transform-style: preserve-3d;
   transition: transform 950ms cubic-bezier(0.22, 0.78, 0.24, 1);
 }
@@ -306,11 +321,11 @@ html[lang="ar"] .studio-wall__brand {
   pointer-events: none;
 }
 
-/* Chair */
+/* Chair — a slim lounge silhouette: narrower seat, taller reclined back. */
 .prop-chair {
   position: relative;
-  width: 96px;
-  height: 132px;
+  width: 92px;
+  height: 140px;
   transform-style: preserve-3d;
 }
 .prop-chair span {
@@ -318,74 +333,80 @@ html[lang="ar"] .studio-wall__brand {
   display: block;
 }
 .prop-chair__shadow {
-  left: -22px;
-  bottom: -18px;
-  width: 140px;
-  height: 46px;
+  left: -20px;
+  bottom: -15px;
+  width: 132px;
+  height: 40px;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.7), transparent 68%);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.74), transparent 70%);
   filter: blur(5px);
   transform: rotateX(74deg);
 }
 .prop-chair__seat {
-  left: 8px;
-  bottom: 38px;
-  width: 80px;
-  height: 24px;
-  border-radius: 10px;
-  background: linear-gradient(180deg, #3a4459 0%, #1c2434 55%, #10151f 100%);
-  box-shadow: inset 0 1px 0 rgba(247, 236, 214, 0.18);
+  left: 9px;
+  bottom: 40px;
+  width: 74px;
+  height: 22px;
+  border-radius: 9px;
+  background: linear-gradient(180deg, #3f4a61 0%, #1c2434 58%, #0e131d 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(247, 236, 214, 0.22),
+    0 6px 12px rgba(0, 0, 0, 0.45);
+  transform: translateZ(6px);
 }
 .prop-chair__seat-trim {
-  left: 10px;
-  bottom: 37px;
-  width: 76px;
+  left: 11px;
+  bottom: 39px;
+  width: 70px;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(215, 171, 98, 0.85), transparent);
+  background: linear-gradient(90deg, transparent, rgba(215, 171, 98, 0.9), transparent);
+  transform: translateZ(7px);
 }
 .prop-chair__back {
-  left: 4px;
-  bottom: 56px;
-  width: 88px;
-  height: 76px;
-  border-radius: 28px 28px 12px 12px;
-  background: linear-gradient(160deg, #404b62 0%, #222a3c 52%, #131824 100%);
-  border: 1px solid rgba(242, 215, 160, 0.14);
-  transform: translateZ(-36px) rotateX(-7deg);
-  box-shadow: inset 0 10px 24px rgba(0, 0, 0, 0.35);
+  left: 3px;
+  bottom: 58px;
+  width: 86px;
+  height: 82px;
+  border-radius: 30px 30px 14px 14px;
+  background: linear-gradient(160deg, #46516a 0%, #232b3e 54%, #121722 100%);
+  border: 1px solid rgba(242, 215, 160, 0.16);
+  transform: translateZ(-34px) rotateX(-6deg);
+  box-shadow:
+    inset 0 12px 26px rgba(0, 0, 0, 0.38),
+    inset 0 -18px 26px rgba(0, 0, 0, 0.3);
 }
 .prop-chair__back-trim {
-  left: 12px;
-  bottom: 124px;
-  width: 72px;
+  left: 14px;
+  bottom: 134px;
+  width: 64px;
   height: 2px;
   border-radius: 2px;
-  background: linear-gradient(90deg, transparent, rgba(242, 215, 160, 0.9), transparent);
-  transform: translateZ(-34px);
+  background: linear-gradient(90deg, transparent, rgba(242, 215, 160, 0.92), transparent);
+  transform: translateZ(-32px);
 }
 .prop-chair__arm {
-  bottom: 48px;
-  width: 11px;
-  height: 30px;
-  border-radius: 6px;
-  background: linear-gradient(180deg, #4a5468, #1a2030);
-  border-top: 2px solid rgba(215, 171, 98, 0.55);
+  bottom: 50px;
+  width: 9px;
+  height: 28px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, #4e586e, #171d29);
+  border-top: 2px solid rgba(215, 171, 98, 0.6);
 }
 .prop-chair__arm--l {
-  left: -2px;
-  transform: translateZ(10px);
+  left: -1px;
+  transform: translateZ(12px);
 }
 .prop-chair__arm--r {
-  right: -2px;
-  transform: translateZ(10px);
+  right: -1px;
+  transform: translateZ(12px);
 }
 .prop-chair__base {
-  left: 33px;
+  left: 31px;
   bottom: 4px;
   width: 30px;
-  height: 32px;
+  height: 36px;
   border-radius: 8px;
-  background: linear-gradient(180deg, #202838, #0c1018);
+  background: linear-gradient(180deg, #232b3c, #0b0e16);
 }
 .prop-chair__leg {
   bottom: 0;
@@ -401,11 +422,11 @@ html[lang="ar"] .studio-wall__brand {
   right: 20px;
 }
 
-/* Table */
+/* Table — a lower, narrower interview table so it sits below the seats. */
 .prop-table {
   position: relative;
-  width: 250px;
-  height: 128px;
+  width: 236px;
+  height: 120px;
   transform-style: preserve-3d;
 }
 .prop-table span {
@@ -413,59 +434,59 @@ html[lang="ar"] .studio-wall__brand {
   display: block;
 }
 .prop-table__reflection {
-  left: 6px;
-  bottom: -26px;
-  width: 238px;
-  height: 54px;
+  left: 8px;
+  bottom: -22px;
+  width: 220px;
+  height: 48px;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(215, 171, 98, 0.22), transparent 66%);
+  background: radial-gradient(ellipse at center, rgba(215, 171, 98, 0.24), transparent 68%);
   filter: blur(4px);
   transform: rotateX(74deg);
 }
 .prop-table__top {
   left: 0;
-  bottom: 54px;
-  width: 250px;
-  height: 96px;
-  border-radius: 50% / 30%;
-  background: linear-gradient(170deg, #3a2c3f 0%, #1d1622 42%, #0e0a13 100%);
-  border: 1px solid rgba(242, 215, 160, 0.2);
-  transform: rotateX(62deg);
+  bottom: 44px;
+  width: 236px;
+  height: 88px;
+  border-radius: 50% / 32%;
+  background: linear-gradient(170deg, #3d2f42 0%, #1d1622 44%, #0d0912 100%);
+  border: 1px solid rgba(242, 215, 160, 0.22);
+  transform: rotateX(65deg);
   box-shadow:
-    inset 0 2px 0 rgba(247, 236, 214, 0.22),
-    inset 0 -22px 40px rgba(0, 0, 0, 0.6),
-    0 18px 30px rgba(0, 0, 0, 0.45);
+    inset 0 2px 0 rgba(247, 236, 214, 0.24),
+    inset 0 -20px 36px rgba(0, 0, 0, 0.62),
+    0 16px 28px rgba(0, 0, 0, 0.5);
 }
 .prop-table__rim {
-  left: 4px;
-  bottom: 58px;
-  width: 242px;
-  height: 90px;
-  border-radius: 50% / 30%;
-  border: 1px solid rgba(242, 215, 160, 0.5);
-  transform: rotateX(62deg);
-  opacity: 0.6;
+  left: 3px;
+  bottom: 47px;
+  width: 230px;
+  height: 84px;
+  border-radius: 50% / 32%;
+  border: 1px solid rgba(242, 215, 160, 0.52);
+  transform: rotateX(65deg);
+  opacity: 0.62;
 }
 .prop-table__edge {
-  left: 10px;
-  bottom: 48px;
-  width: 230px;
-  height: 14px;
+  left: 12px;
+  bottom: 38px;
+  width: 212px;
+  height: 12px;
   border-radius: 50%;
-  background: linear-gradient(180deg, #151019, #070509);
+  background: linear-gradient(180deg, #17111c, #06040a);
 }
 .prop-table__leg {
   bottom: 0;
-  width: 12px;
-  height: 52px;
-  border-radius: 6px;
+  width: 10px;
+  height: 44px;
+  border-radius: 5px;
   background: linear-gradient(90deg, #6d5a33, #b2925a, #5d4c2b);
 }
 .prop-table__leg--l {
-  left: 46px;
+  left: 52px;
 }
 .prop-table__leg--r {
-  right: 46px;
+  right: 52px;
 }
 
 /* Microphone */

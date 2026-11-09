@@ -23,6 +23,7 @@ import {
 import {
   broadcastReducer,
   initialBroadcastState,
+  isOnAir,
 } from "@/lib/experience/broadcast-machine";
 import { StudioStage } from "@/components/studio/studio-stage";
 import { SetConsole } from "@/components/studio/set-console";
@@ -211,6 +212,8 @@ export function StudioExperience({ dict, locale }: { dict: Dictionary; locale: L
               prompter={prompter}
               elapsed={formatDuration(seconds)}
               sceneLabel={sceneLabel}
+              onAir={isOnAir(broadcast)}
+              onAirAction={() => dispatchBroadcast({ type: "start" })}
               onSelect={setSelectedId}
               onNudge={onNudge}
               onRotate={onRotate}

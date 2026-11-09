@@ -1,0 +1,420 @@
+/* The Living Media Galaxy — a real 3D orbit: gates stand on golden spokes,
+   the ring turns with a drag, and the selected world surfaces beside it. */
+
+.galaxy {
+  position: relative;
+  padding-block: clamp(2.5rem, 6vw, 5rem);
+  overflow: clip;
+}
+
+.galaxy__head {
+  display: grid;
+  gap: 0.7rem;
+  max-width: 62ch;
+  margin-block-end: clamp(1.5rem, 3vw, 2.5rem);
+}
+.galaxy__head h2 {
+  margin: 0;
+}
+.galaxy__head .lead {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.85;
+}
+
+.galaxy__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 21rem);
+  align-items: center;
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+/* ------------------------------------------------------------- the orbit --- */
+
+.galaxy__scene {
+  --galaxy-radius: clamp(130px, 21vw, 250px);
+  --galaxy-gate-w: clamp(112px, 14vw, 172px);
+  position: relative;
+  min-height: clamp(20rem, 34vw, 28rem);
+  display: grid;
+  place-items: center;
+  perspective: 1500px;
+  perspective-origin: 50% 46%;
+  touch-action: pan-y;
+  cursor: grab;
+  overflow: clip;
+}
+.galaxy__scene:active {
+  cursor: grabbing;
+}
+
+.galaxy__sky {
+  position: absolute;
+  inset: 8% 2% 12%;
+  border-radius: 50%;
+  background:
+    radial-gradient(50% 50% at 50% 50%, rgba(215, 171, 98, 0.22), transparent 68%),
+    radial-gradient(70% 60% at 50% 62%, rgba(38, 56, 92, 0.5), transparent 72%);
+  filter: blur(2px);
+  pointer-events: none;
+}
+
+.galaxy__ring {
+  position: relative;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transition: transform 900ms cubic-bezier(0.22, 0.78, 0.24, 1);
+}
+
+.galaxy__orbit {
+  position: absolute;
+  left: 0;
+  top: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(215, 171, 98, 0.3);
+  translate: -50% -50%;
+  transform: rotateX(74deg);
+  pointer-events: none;
+}
+.galaxy__orbit--outer {
+  width: calc(var(--galaxy-radius) * 2);
+  height: calc(var(--galaxy-radius) * 2);
+  box-shadow: 0 0 70px -22px rgba(215, 171, 98, 0.55);
+}
+.galaxy__orbit--inner {
+  width: calc(var(--galaxy-radius) * 1.16);
+  height: calc(var(--galaxy-radius) * 1.16);
+  border-style: dashed;
+  opacity: 0.42;
+}
+
+.galaxy__slot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+
+.galaxy__thread {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--galaxy-radius);
+  height: 1px;
+  transform-origin: 0 50%;
+  background: linear-gradient(
+    90deg,
+    rgba(215, 171, 98, 0.05),
+    rgba(215, 171, 98, 0.7) 55%,
+    rgba(242, 215, 160, 0.95)
+  );
+  box-shadow: 0 0 14px rgba(215, 171, 98, 0.5);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.galaxy__gate {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  translate: -50% 0;
+  display: grid;
+  gap: 0.2rem;
+  width: var(--galaxy-gate-w);
+  padding: 0.5rem 0.55rem 0.6rem;
+  border-radius: 16px 16px 12px 12px;
+  border: 1px solid rgba(215, 171, 98, 0.34);
+  background: linear-gradient(180deg, rgba(18, 25, 41, 0.94), rgba(7, 11, 24, 0.97));
+  box-shadow:
+    0 26px 46px -28px rgba(0, 0, 0, 0.95),
+    inset 0 1px 0 rgba(242, 215, 160, 0.16);
+  color: var(--color-ivory);
+  text-align: start;
+  cursor: pointer;
+  opacity: 0.8;
+  filter: saturate(0.78);
+  transition:
+    transform 900ms cubic-bezier(0.22, 0.78, 0.24, 1),
+    opacity 300ms,
+    filter 300ms,
+    border-color 300ms,
+    box-shadow 300ms;
+}
+.galaxy__gate.is-active {
+  opacity: 1;
+  filter: none;
+  border-color: rgba(242, 215, 160, 0.85);
+  box-shadow:
+    0 0 0 1px rgba(242, 215, 160, 0.35),
+    0 30px 60px -26px rgba(215, 171, 98, 0.55),
+    inset 0 1px 0 rgba(242, 215, 160, 0.35);
+}
+.galaxy__gate:hover {
+  border-color: rgba(242, 215, 160, 0.7);
+}
+.galaxy__gate:focus-visible {
+  outline: 2px solid var(--color-gold-300);
+  outline-offset: 4px;
+}
+
+.galaxy__gate-frame {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--color-navy-900);
+}
+.galaxy__gate-image {
+  object-fit: cover;
+}
+.galaxy__gate-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 11, 24, 0.05), rgba(7, 11, 24, 0.72));
+}
+.galaxy__gate-index {
+  position: absolute;
+  inset-block-start: 0.62rem;
+  inset-inline-end: 0.75rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--color-gold-300);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.9);
+  z-index: 1;
+}
+.galaxy__gate-kicker {
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  color: var(--color-gold-500);
+  text-transform: uppercase;
+}
+.galaxy__gate-title {
+  font-size: clamp(0.7rem, 1vw, 0.84rem);
+  line-height: 1.45;
+  color: var(--color-ivory);
+}
+
+.galaxy__core {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.galaxy__core-halo {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(var(--galaxy-radius) * 0.86);
+  height: calc(var(--galaxy-radius) * 0.86);
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(247, 236, 214, 0.55),
+    rgba(215, 171, 98, 0.18) 46%,
+    transparent 70%
+  );
+  filter: blur(7px);
+  animation: galaxy-core 7s ease-in-out infinite;
+}
+.galaxy__core-pin {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff6e2, var(--color-gold-500) 60%, #7a5a26);
+  box-shadow: 0 0 22px rgba(242, 215, 160, 0.85);
+}
+
+@keyframes galaxy-core {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+/* ------------------------------------------------------------- world card --- */
+
+.galaxy__card {
+  position: relative;
+  display: grid;
+  gap: 0.45rem;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border-radius: var(--radius-world);
+  border: 1px solid var(--color-outline);
+  background: linear-gradient(180deg, rgba(16, 23, 39, 0.92), rgba(6, 9, 18, 0.96));
+  box-shadow: 0 30px 60px -40px #000, inset 0 1px 0 rgba(242, 215, 160, 0.12);
+}
+.galaxy__card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+.galaxy__card-count {
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--color-gold-500);
+}
+.galaxy__card-kicker {
+  margin: 0.2rem 0 0;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gold-500);
+}
+.galaxy__card-title {
+  margin: 0;
+  font-family: var(--font-display-ar);
+  font-size: clamp(1.25rem, 2vw, 1.8rem);
+  line-height: 1.35;
+  color: var(--color-ivory);
+}
+html[lang="en"] .galaxy__card-title {
+  font-family: var(--font-display-en);
+}
+.galaxy__card-teaser {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.88rem;
+  line-height: 1.8;
+}
+.galaxy__card-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  margin-block-start: 0.3rem;
+  border-block-end: 1px solid var(--color-gold-500);
+  color: var(--color-gold-300);
+  font-size: 0.88rem;
+}
+.galaxy__card-enter:hover {
+  color: var(--color-gold-100);
+}
+
+/* ------------------------------------------------------------------- nav --- */
+
+.galaxy__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-block-start: clamp(1rem, 2vw, 1.5rem);
+}
+.galaxy__gates {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  flex: 1;
+}
+.galaxy__chip {
+  min-height: 56px;
+  padding: 0.6rem 0.85rem;
+  border-block-start: 1px solid var(--color-outline);
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  text-align: start;
+  cursor: pointer;
+  transition: border-color 200ms, color 200ms, background 200ms;
+}
+.galaxy__chip span {
+  display: block;
+  margin-block-end: 0.3rem;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--color-gold-500);
+}
+.galaxy__chip.is-active {
+  border-color: var(--color-gold-300);
+  color: var(--color-ivory);
+  background: linear-gradient(rgba(215, 171, 98, 0.12), transparent);
+}
+.galaxy__chip:focus-visible,
+.galaxy__arrows button:focus-visible {
+  outline: 2px solid var(--color-gold-300);
+  outline-offset: 3px;
+}
+.galaxy__arrows {
+  display: flex;
+  gap: 0.5rem;
+}
+.galaxy__arrows button {
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--color-gold-rim);
+  border-radius: 50%;
+  color: var(--color-gold-300);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.galaxy__arrows button:hover {
+  border-color: var(--color-gold-300);
+}
+.galaxy__hint {
+  margin-block-start: 0.8rem;
+  color: var(--color-muted);
+  font-size: 0.74rem;
+}
+
+/* ----------------------------------------------------------- responsive --- */
+
+@media (max-width: 1024px) {
+  .galaxy__stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .galaxy__scene {
+    --galaxy-radius: clamp(112px, 26vw, 190px);
+    --galaxy-gate-w: clamp(104px, 24vw, 150px);
+    min-height: clamp(19rem, 52vw, 24rem);
+  }
+  .galaxy__card {
+    order: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .galaxy__scene {
+    --galaxy-radius: 104px;
+    --galaxy-gate-w: 96px;
+    min-height: 19rem;
+    perspective: 900px;
+  }
+  .galaxy__gate {
+    padding: 0.4rem 0.45rem 0.45rem;
+  }
+  .galaxy__gate-kicker {
+    display: none;
+  }
+  .galaxy__gates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .galaxy__chip {
+    min-height: 50px;
+    font-size: 0.76rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .galaxy__ring,
+  .galaxy__gate {
+    transition: none;
+  }
+  .galaxy__core-halo {
+    animation: none;
+  }
+}

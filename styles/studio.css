@@ -320,11 +320,12 @@ html[lang="ar"] .studio-wall__brand {
   pointer-events: none;
 }
 
-/* Chair — a slim lounge silhouette: narrower seat, taller reclined back. */
+/* Chair — a wingback lounge silhouette: splayed brass legs, piped cushion,
+   reclined back with angled wings and a headrest roll. */
 .prop-chair {
   position: relative;
-  width: 92px;
-  height: 140px;
+  width: 104px;
+  height: 150px;
   transform-style: preserve-3d;
 }
 .prop-chair span {
@@ -332,100 +333,130 @@ html[lang="ar"] .studio-wall__brand {
   display: block;
 }
 .prop-chair__shadow {
-  left: -20px;
-  bottom: -15px;
-  width: 132px;
-  height: 40px;
+  left: -26px;
+  bottom: -14px;
+  width: 156px;
+  height: 44px;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.74), transparent 70%);
-  filter: blur(5px);
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.78), transparent 72%);
+  filter: blur(6px);
   transform: rotateX(74deg);
-}
-.prop-chair__seat {
-  left: 9px;
-  bottom: 40px;
-  width: 74px;
-  height: 22px;
-  border-radius: 9px;
-  background: linear-gradient(180deg, #3f4a61 0%, #1c2434 58%, #0e131d 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(247, 236, 214, 0.22),
-    0 6px 12px rgba(0, 0, 0, 0.45);
-  transform: translateZ(6px);
-}
-.prop-chair__seat-trim {
-  left: 11px;
-  bottom: 39px;
-  width: 70px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(215, 171, 98, 0.9), transparent);
-  transform: translateZ(7px);
-}
-.prop-chair__back {
-  left: 3px;
-  bottom: 58px;
-  width: 86px;
-  height: 82px;
-  border-radius: 30px 30px 14px 14px;
-  background: linear-gradient(160deg, #46516a 0%, #232b3e 54%, #121722 100%);
-  border: 1px solid rgba(242, 215, 160, 0.16);
-  transform: translateZ(-34px) rotateX(-6deg);
-  box-shadow:
-    inset 0 12px 26px rgba(0, 0, 0, 0.38),
-    inset 0 -18px 26px rgba(0, 0, 0, 0.3);
-}
-.prop-chair__back-trim {
-  left: 14px;
-  bottom: 134px;
-  width: 64px;
-  height: 2px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, transparent, rgba(242, 215, 160, 0.92), transparent);
-  transform: translateZ(-32px);
-}
-.prop-chair__arm {
-  bottom: 50px;
-  width: 9px;
-  height: 28px;
-  border-radius: 5px;
-  background: linear-gradient(180deg, #4e586e, #171d29);
-  border-top: 2px solid rgba(215, 171, 98, 0.6);
-}
-.prop-chair__arm--l {
-  left: -1px;
-  transform: translateZ(12px);
-}
-.prop-chair__arm--r {
-  right: -1px;
-  transform: translateZ(12px);
-}
-.prop-chair__base {
-  left: 31px;
-  bottom: 4px;
-  width: 30px;
-  height: 36px;
-  border-radius: 8px;
-  background: linear-gradient(180deg, #232b3c, #0b0e16);
 }
 .prop-chair__leg {
   bottom: 0;
-  width: 26px;
-  height: 8px;
+  width: 9px;
+  height: 44px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #cfb17a 0%, #7a6338 58%, #382d18 100%);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.55);
+  transform-origin: 50% 100%;
+}
+.prop-chair__leg--fl { left: 22px; transform: translateZ(26px) rotate(-7deg); }
+.prop-chair__leg--fr { right: 22px; transform: translateZ(26px) rotate(7deg); }
+.prop-chair__leg--bl { left: 28px; height: 40px; opacity: 0.78; transform: translateZ(-36px) rotate(6deg); }
+.prop-chair__leg--br { right: 28px; height: 40px; opacity: 0.78; transform: translateZ(-36px) rotate(-6deg); }
+.prop-chair__back {
+  left: 2px;
+  bottom: 60px;
+  width: 100px;
+  height: 86px;
+  border-radius: 34px 34px 16px 16px;
+  background: linear-gradient(158deg, #5c6a86 0%, #2b3448 46%, #131926 100%);
+  border: 1px solid rgba(242, 215, 160, 0.18);
+  transform: translateZ(-38px) rotateX(-5deg);
+  box-shadow:
+    inset 0 14px 28px rgba(0, 0, 0, 0.34),
+    inset 0 -20px 30px rgba(0, 0, 0, 0.42);
+}
+.prop-chair__glint {
+  left: 14px;
+  bottom: 92px;
+  width: 44px;
+  height: 36px;
+  border-radius: 50%;
+  background: radial-gradient(60% 60% at 38% 30%, rgba(242, 215, 160, 0.3), transparent 70%);
+  filter: blur(2px);
+  transform: translateZ(-32px);
+}
+.prop-chair__wing {
+  bottom: 74px;
+  width: 20px;
+  height: 66px;
+  border-radius: 16px 8px 8px 16px;
+  background: linear-gradient(180deg, #4a5570, #1a2130);
+  border: 1px solid rgba(242, 215, 160, 0.14);
+}
+.prop-chair__wing--l { left: -5px; transform: translateZ(-16px) rotateY(26deg); }
+.prop-chair__wing--r { right: -5px; transform: translateZ(-16px) rotateY(-26deg); }
+.prop-chair__headrest {
+  left: 27px;
+  bottom: 128px;
+  width: 50px;
+  height: 15px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #74839f, #2b3346);
+  box-shadow: inset 0 1px 0 rgba(242, 215, 160, 0.55);
+  transform: translateZ(-36px);
+}
+.prop-chair__seat {
+  left: 8px;
+  bottom: 40px;
+  width: 88px;
+  height: 26px;
+  border-radius: 11px 11px 15px 15px;
+  background: linear-gradient(180deg, #5a657f 0%, #2a3347 52%, #141a26 100%);
+  box-shadow:
+    inset 0 2px 0 rgba(247, 236, 214, 0.3),
+    inset 0 -6px 10px rgba(0, 0, 0, 0.5),
+    0 8px 14px rgba(0, 0, 0, 0.45);
+  transform: translateZ(4px);
+}
+.prop-chair__piping {
+  left: 10px;
+  bottom: 41px;
+  width: 84px;
+  height: 15px;
+  border-radius: 11px;
+  border-bottom: 1px solid rgba(215, 171, 98, 0.85);
+  transform: translateZ(6px);
+}
+.prop-chair__seat-lip {
+  left: 10px;
+  bottom: 35px;
+  width: 84px;
+  height: 9px;
+  border-radius: 0 0 9px 9px;
+  background: linear-gradient(180deg, #1b2230, #0b0f18);
+  transform: translateZ(5px);
+}
+.prop-chair__arm {
+  bottom: 52px;
+  width: 11px;
+  height: 26px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #6a5632, #241d10);
+  transform: translateZ(16px);
+}
+.prop-chair__arm--l { left: 0; }
+.prop-chair__arm--r { right: 0; }
+.prop-chair__arm-pad {
+  bottom: 74px;
+  width: 17px;
+  height: 7px;
   border-radius: 4px;
-  background: linear-gradient(180deg, #8a7448, #4a3c22);
+  background: linear-gradient(180deg, #7c6787, #241d2e);
+  box-shadow: 0 0 9px rgba(215, 171, 98, 0.28);
+  transform: translateZ(16px);
 }
-.prop-chair__leg--l {
-  left: 20px;
-}
-.prop-chair__leg--r {
-  right: 20px;
-}
+.prop-chair__arm-pad--l { left: -3px; }
+.prop-chair__arm-pad--r { right: -3px; }
 
-/* Table — a lower, narrower interview table so it sits below the seats. */
+/* Table — oval glass on a brass rim and cross-braced legs, dressed with two
+   cups and a sprig vase so the frame never reads as an empty surface. */
 .prop-table {
   position: relative;
-  width: 236px;
-  height: 120px;
+  width: 252px;
+  height: 124px;
   transform-style: preserve-3d;
 }
 .prop-table span {
@@ -433,60 +464,128 @@ html[lang="ar"] .studio-wall__brand {
   display: block;
 }
 .prop-table__reflection {
-  left: 8px;
-  bottom: -22px;
-  width: 220px;
-  height: 48px;
+  left: 6px;
+  bottom: -26px;
+  width: 240px;
+  height: 54px;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(215, 171, 98, 0.24), transparent 68%);
-  filter: blur(4px);
+  background: radial-gradient(ellipse at center, rgba(215, 171, 98, 0.26), transparent 68%);
+  filter: blur(6px);
   transform: rotateX(74deg);
 }
-.prop-table__top {
-  left: 0;
-  bottom: 44px;
-  width: 236px;
-  height: 88px;
-  border-radius: 50% / 32%;
-  background: linear-gradient(170deg, #3d2f42 0%, #1d1622 44%, #0d0912 100%);
-  border: 1px solid rgba(242, 215, 160, 0.22);
-  transform: rotateX(65deg);
-  box-shadow:
-    inset 0 2px 0 rgba(247, 236, 214, 0.24),
-    inset 0 -20px 36px rgba(0, 0, 0, 0.62),
-    0 16px 28px rgba(0, 0, 0, 0.5);
-}
-.prop-table__rim {
-  left: 3px;
-  bottom: 47px;
-  width: 230px;
-  height: 84px;
-  border-radius: 50% / 32%;
-  border: 1px solid rgba(242, 215, 160, 0.52);
-  transform: rotateX(65deg);
-  opacity: 0.62;
-}
-.prop-table__edge {
-  left: 12px;
-  bottom: 38px;
-  width: 212px;
-  height: 12px;
+.prop-table__apron {
+  left: 16px;
+  bottom: 34px;
+  width: 220px;
+  height: 16px;
   border-radius: 50%;
-  background: linear-gradient(180deg, #17111c, #06040a);
+  background: linear-gradient(180deg, #17111c, #050409);
 }
 .prop-table__leg {
   bottom: 0;
-  width: 10px;
+  width: 9px;
   height: 44px;
-  border-radius: 5px;
-  background: linear-gradient(90deg, #6d5a33, #b2925a, #5d4c2b);
+  border-radius: 4px;
+  background: linear-gradient(90deg, #5d4c2b, #c0a066, #5d4c2b);
+  transform-origin: 50% 100%;
 }
-.prop-table__leg--l {
-  left: 52px;
+.prop-table__leg--l { left: 58px; transform: rotate(4deg); }
+.prop-table__leg--r { right: 58px; transform: rotate(-4deg); }
+.prop-table__brace {
+  left: 60px;
+  bottom: 18px;
+  width: 132px;
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #4a3c22, #a98f5b, #4a3c22);
 }
-.prop-table__leg--r {
-  right: 52px;
+.prop-table__shelf {
+  left: 44px;
+  bottom: 14px;
+  width: 164px;
+  height: 26px;
+  border-radius: 50% / 34%;
+  border: 1px solid rgba(215, 171, 98, 0.32);
+  transform: rotateX(66deg);
 }
+.prop-table__top {
+  left: 0;
+  bottom: 46px;
+  width: 252px;
+  height: 92px;
+  border-radius: 50% / 30%;
+  background: linear-gradient(168deg, #3b2b3f 0%, #1b1522 46%, #0b0810 100%);
+  border: 1px solid rgba(242, 215, 160, 0.26);
+  transform: rotateX(66deg) translateZ(2px);
+  box-shadow:
+    inset 0 2px 0 rgba(247, 236, 214, 0.28),
+    inset 0 -22px 40px rgba(0, 0, 0, 0.66),
+    0 18px 30px rgba(0, 0, 0, 0.52);
+}
+.prop-table__sheen {
+  left: 26px;
+  bottom: 74px;
+  width: 118px;
+  height: 44px;
+  border-radius: 50%;
+  background: radial-gradient(60% 70% at 38% 28%, rgba(247, 236, 214, 0.22), transparent 72%);
+  filter: blur(1px);
+  transform: rotateX(66deg) translateZ(3px);
+}
+.prop-table__rim {
+  left: 4px;
+  bottom: 49px;
+  width: 244px;
+  height: 86px;
+  border-radius: 50% / 30%;
+  border: 1px solid rgba(242, 215, 160, 0.6);
+  opacity: 0.72;
+  transform: rotateX(66deg) translateZ(3px);
+}
+.prop-table__cup {
+  width: 16px;
+  height: 19px;
+  border-radius: 3px 3px 7px 7px;
+  background: linear-gradient(180deg, #f6ecd6, #bcab88 60%, #6d6248);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+.prop-table__cup::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  width: 7px;
+  height: 8px;
+  border: 2px solid #ded0b4;
+  border-radius: 50%;
+}
+.prop-table__cup--l { left: 80px; bottom: 98px; transform: translateZ(4px); }
+.prop-table__cup--l::after { left: -9px; }
+.prop-table__cup--r { right: 84px; bottom: 74px; transform: translateZ(18px); }
+.prop-table__cup--r::after { right: -9px; }
+.prop-table__vase {
+  left: 116px;
+  bottom: 90px;
+  width: 22px;
+  height: 26px;
+  border-radius: 7px 7px 11px 11px;
+  background: linear-gradient(180deg, #33405a, #101622);
+  border: 1px solid rgba(242, 215, 160, 0.32);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.5);
+  transform: translateZ(10px);
+}
+.prop-table__sprig {
+  left: 126px;
+  bottom: 112px;
+  width: 2px;
+  height: 36px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(157, 189, 148, 0.22), #9dbb8e 38%, #b99a63);
+  transform-origin: 50% 100%;
+  transform: translateZ(10px);
+}
+.prop-table__sprig--a { transform: translateZ(10px) rotate(-18deg); }
+.prop-table__sprig--b { height: 44px; transform: translateZ(10px) rotate(5deg); }
+.prop-table__sprig--c { height: 30px; transform: translateZ(10px) rotate(21deg); }
 
 /* Microphone */
 .prop-mic {
@@ -1364,6 +1463,7 @@ html[lang="ar"] .on-air__label {
     font-size: 30px;
   }
   .studio-clock,
+  .studio-onair,
   .studio-prompter {
     display: none;
   }
@@ -1378,6 +1478,172 @@ html[lang="ar"] .on-air__label {
     transition: none;
   }
   .on-air-panel[data-live="true"] .on-air__lamp {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------- set dressing --- */
+
+.studio-plant {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+}
+.studio-plant span {
+  position: absolute;
+  display: block;
+  left: 0;
+  bottom: 0;
+}
+.studio-plant__shadow {
+  width: 92px;
+  height: 20px;
+  margin-left: -46px;
+  margin-bottom: -6px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.7), transparent 70%);
+  filter: blur(5px);
+}
+.studio-plant__pot {
+  width: 54px;
+  height: 48px;
+  margin-left: -27px;
+  border-radius: 6px 6px 15px 15px;
+  background: linear-gradient(180deg, #453630, #150f0c);
+  border: 1px solid rgba(215, 171, 98, 0.26);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.5);
+}
+.studio-plant__rim {
+  width: 62px;
+  height: 12px;
+  margin-left: -31px;
+  margin-bottom: 44px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #7a6338, #3a2e19);
+}
+.studio-plant__stem {
+  width: 3px;
+  height: 92px;
+  margin-left: -1.5px;
+  margin-bottom: 46px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(140, 170, 130, 0.25), #6f8a63);
+}
+.studio-plant__leaf {
+  width: 46px;
+  height: 16px;
+  border-radius: 50% / 60% 60% 40% 40%;
+  background: linear-gradient(120deg, #4f6d4b, #1c2b20);
+  box-shadow: inset 0 1px 0 rgba(157, 189, 148, 0.42);
+  transform-origin: 50% 100%;
+}
+.studio-plant__leaf--a { margin-left: -23px; margin-bottom: 124px; transform: rotate(-34deg); }
+.studio-plant__leaf--b { margin-left: -23px; margin-bottom: 108px; transform: rotate(28deg); }
+.studio-plant__leaf--c { margin-left: -23px; margin-bottom: 136px; transform: rotate(-8deg) scale(0.9); }
+.studio-plant__leaf--d { margin-left: -23px; margin-bottom: 96px; transform: rotate(52deg) scale(0.8); }
+.studio-plant__leaf--e { margin-left: -23px; margin-bottom: 96px; transform: rotate(-56deg) scale(0.8); }
+
+/* ------------------------------------------------------------ on air --- */
+
+.studio-onair {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  transform: translate(-408px, -346px) translateZ(-330px);
+}
+.studio-onair__plate {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 22px 10px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(215, 171, 98, 0.5);
+  background: linear-gradient(180deg, #1a2030, #070a11);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.55),
+    0 18px 30px -14px rgba(0, 0, 0, 0.9),
+    0 0 26px -10px rgba(215, 171, 98, 0.4);
+  transform: translate(-50%, -50%);
+}
+.studio-onair__lamp {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #7c2f2f, #34100f 70%);
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.85);
+}
+.studio-onair__text {
+  font-size: 15px;
+  letter-spacing: 0.3em;
+  color: rgba(247, 236, 214, 0.45);
+}
+.studio-onair[data-live="true"] .studio-onair__lamp {
+  background: radial-gradient(circle at 35% 30%, #ffb3a4, #e02424 60%, #7a0d0d);
+  box-shadow: 0 0 16px rgba(255, 72, 60, 0.85), 0 0 44px rgba(255, 72, 60, 0.4);
+  animation: studio-onair-pulse 2.4s ease-in-out infinite;
+}
+.studio-onair[data-live="true"] .studio-onair__text {
+  color: #ffe6e0;
+  text-shadow: 0 0 18px rgba(255, 84, 66, 0.65);
+}
+@keyframes studio-onair-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* On-set tally: the same ON AIR control the director panel owns, surfaced
+   where the set itself can be operated. It reports the real machine phase. */
+.studio-tally {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid rgba(242, 215, 160, 0.4);
+  background: rgba(9, 12, 20, 0.72);
+  color: #e8dcc6;
+  font: inherit;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+.studio-tally:hover {
+  border-color: rgba(242, 215, 160, 0.75);
+}
+.studio-tally:focus-visible {
+  outline: 2px solid #f2d7a0;
+  outline-offset: 3px;
+}
+.studio-tally__lamp {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(242, 215, 160, 0.45);
+}
+.studio-tally[data-live="true"] {
+  border-color: rgba(255, 96, 80, 0.8);
+  color: #ffe6e0;
+}
+.studio-tally[data-live="true"] .studio-tally__lamp {
+  background: #ff4f3d;
+  box-shadow: 0 0 10px rgba(255, 79, 61, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .studio-onair[data-live="true"] .studio-onair__lamp {
     animation: none;
   }
 }

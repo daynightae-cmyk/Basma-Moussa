@@ -19,6 +19,7 @@ import { rootMetadata } from "@/lib/seo";
 import "/styles/globals.css";
 import "@/styles/portal-transition.css";
 import "@/styles/world-discovery.css";
+import "@/styles/media-galaxy.css";
 import "@/app/cinematics.css";
 import "@/styles/horizontal-story.css";
 import "@/styles/splash.css";

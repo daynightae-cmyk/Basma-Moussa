@@ -13,7 +13,7 @@ import {
   type FurnitureItem,
   type LightingState,
 } from "@/lib/experience/studio-scene";
-import { FurnitureShape } from "@/components/studio/furniture";
+import { FurnitureShape, StudioPlant } from "@/components/studio/furniture";
 
 export interface StudioStageProps {
   dict: Dictionary;
@@ -25,6 +25,9 @@ export interface StudioStageProps {
   prompter: string;
   elapsed: string;
   sceneLabel: string;
+  /** True only while the broadcast machine reports a real live session. */
+  onAir: boolean;
+  onAirAction: () => void;
   onSelect: (id: string | null) => void;
   onNudge: (id: string, dx: number, dz: number) => void;
   onRotate: (id: string, delta: number) => void;
@@ -43,6 +46,8 @@ export function StudioStage({
   prompter,
   elapsed,
   sceneLabel,
+  onAir,
+  onAirAction,
   onSelect,
   onNudge,
   onRotate,
@@ -111,6 +116,13 @@ export function StudioStage({
             </span>
           </div>
 
+          <div className="studio-onair" data-live={onAir} aria-hidden="true">
+            <span className="studio-onair__plate">
+              <span className="studio-onair__lamp" />
+              <span className="studio-onair__text">ON AIR</span>
+            </span>
+          </div>
+
           <div className="studio-truss" aria-hidden="true">
             <span className="studio-truss__bar" />
             <span className="studio-fixture studio-fixture--a" />
@@ -137,6 +149,9 @@ export function StudioStage({
             <span className="studio-clock__label">ON SET</span>
             <span className="studio-clock__time">{elapsed}</span>
           </div>
+
+          <StudioPlant x={-336} z={-118} />
+          <StudioPlant x={352} z={-84} />
 
           {items.map((item) => {
             const selected = item.id === selectedId;
@@ -196,6 +211,15 @@ export function StudioStage({
           <span>{activeCamera.label[locale]}</span>
         </span>
         <span className="studio-hud__scene">{sceneLabel}</span>
+        <button
+          type="button"
+          className="studio-tally"
+          data-live={onAir}
+          onClick={onAirAction}
+        >
+          <span className="studio-tally__lamp" aria-hidden="true" />
+          {dict.studio.onAir}
+        </button>
         <span className="studio-hud__preview">{dict.studio.previewNotice}</span>
       </div>
     </div>

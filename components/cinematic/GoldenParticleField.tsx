@@ -2,6 +2,8 @@
 
 import { useMemo } from "react";
 
+import { useMotionPolicy } from "@/lib/motion/use-motion-policy";
+
 /**
  * GoldenParticleField
  *
@@ -26,9 +28,9 @@ export function GoldenParticleField({
   opacity = 0.06,
   ariaLabel,
 }: GoldenParticleFieldProps) {
-  const reduced =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Resolved after hydration so the server and first client render emit the
+  // same markup (the inline filament positions would otherwise mismatch).
+  const { reducedMotion: reduced } = useMotionPolicy();
 
   const threads = useMemo(
     () => [...Array(Math.max(0, count))].map((_, i) => i),

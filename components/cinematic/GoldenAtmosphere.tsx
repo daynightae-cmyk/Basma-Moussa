@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef } from "react";
-import { resolveMotionPolicy } from "@/lib/motion/policy";
+import { useMotionPolicy } from "@/lib/motion/use-motion-policy";
 
 interface GoldenAtmosphereProps {
   className?: string;
@@ -10,15 +10,11 @@ interface GoldenAtmosphereProps {
 
 export function GoldenAtmosphere({ className = "", enabled = true }: GoldenAtmosphereProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const reduced = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const policy = resolveMotionPolicy({
-    reducedMotion: reduced,
-    hardwareConcurrency: typeof navigator !== "undefined" ? navigator.hardwareConcurrency : undefined,
-    saveData: typeof navigator !== "undefined" ? (navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData : undefined,
-    viewportWidth: typeof window !== "undefined" ? window.innerWidth : 1440,
-  });
+  // Device motion signals apply after hydration, so the server markup and the
+  // first client render always agree (no dropped layer mid-hydration).
+  const { particles } = useMotionPolicy();
 
-  if (!enabled || reduced || !policy.particles) {
+  if (!enabled || !particles) {
     return null;
   }
 

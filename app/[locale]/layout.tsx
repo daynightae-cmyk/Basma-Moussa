@@ -25,6 +25,8 @@ import "@/styles/horizontal-story.css";
 import "@/styles/splash.css";
 import "@/styles/studio.css";
 import "@/styles/soundroom.css";
+import "@/styles/sonic-sculpture.css";
+import "@/styles/justice-prism.css";
 import "@/styles/atelier.css";
 import "@/styles/arrival.css";
 

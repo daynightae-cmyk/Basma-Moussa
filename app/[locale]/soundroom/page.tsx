@@ -10,6 +10,7 @@ import { SectionHeading } from "@/components/editorial/section-heading";
 import { StatusBadge } from "@/components/editorial/status-badge";
 import { MediaFrame } from "@/components/editorial/media-frame";
 import { SoundroomConsole } from "@/components/media/soundroom-console";
+import { SonicSculpture } from "@/components/media/sonic-sculpture";
 
 export async function generateMetadata({
   params,
@@ -82,6 +83,34 @@ export default async function Soundroom({ params }: SoundroomPageProps) {
               <SoundroomConsole dict={dict} />
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="chapter chapter--tight sonic-studio">
+        <div className="shell">
+          <SectionHeading
+            eyebrow={dict.soundroom.sculptureEyebrow}
+            title={dict.soundroom.sculptureTitle}
+            lead={dict.soundroom.sculptureLead}
+          />
+          <SonicSculpture
+            locale={l}
+            copy={{
+              enable: dict.soundroom.sculptureEnable,
+              stop: dict.soundroom.sculptureStop,
+              requesting: dict.soundroom.micRequesting,
+              denied: dict.soundroom.micDenied,
+              unsupported: dict.soundroom.micUnsupported,
+              error: dict.soundroom.micError,
+              idle: dict.soundroom.sculptureIdle,
+              live: dict.soundroom.sculptureLive,
+              meterLabel: dict.soundroom.sculptureMeter,
+              low: dict.soundroom.sculptureLow,
+              mid: dict.soundroom.sculptureMid,
+              high: dict.soundroom.sculptureHigh,
+              privacy: dict.soundroom.sculpturePrivacy,
+            }}
+          />
         </div>
       </section>
 

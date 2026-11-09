@@ -13,6 +13,12 @@ export const LEGAL_CONTENT: Record<"ar" | "en", {
   plannedBody: string;
   noAdvice: string;
   contactNote: string;
+  prismEyebrow: string;
+  prismTitle: string;
+  prismLead: string;
+  prismHint: string;
+  prismFacetLabel: string;
+  prismSourceLabel: string;
 }> = {
   ar: {
     eyebrow: "من زاوية القانون",
@@ -29,6 +35,13 @@ export const LEGAL_CONTENT: Record<"ar" | "en", {
     plannedBody: "مخططات تحريرية أولية، تواريخ ومراجع تُحدد عند المراجعة. لا شيء منشور.",
     noAdvice: "لا نص قانوني فردي",
     contactNote: "للتعاون في المحتوى القانوني التوعوي، راسل بسمة عبر واتساب.",
+    prismEyebrow: "الصالة التفاعلية · منشور العدالة",
+    prismTitle: "وجه واحد للمسألة، ثلاث زوايا للضوء",
+    prismLead:
+      "كل مخطط تحريري وجه من وجوه المنشور: النص من مصدره، والصياغة بلغة الناس، والسياق الذي يقرأ فيه. دوّر المنشور ثم اختر وجهًا — كل ما هنا مخطط غير منشور، وليس استشارة قانونية.",
+    prismHint: "اسحب أفقيًا أو استخدم مفاتيح الأسهم لتدوير المنشور، ثم اختر وجهًا.",
+    prismFacetLabel: "الوجه",
+    prismSourceLabel: "المصدر الرسمي",
   },
   en: {
     eyebrow: "Legal Lens",
@@ -45,5 +58,12 @@ export const LEGAL_CONTENT: Record<"ar" | "en", {
     plannedBody: "Preliminary editorial outlines; dates and references set at review. Nothing published.",
     noAdvice: "No individual legal advice",
     contactNote: "For educational legal-content collaboration, reach Basma on WhatsApp.",
+    prismEyebrow: "The interactive hall · The Justice Prism",
+    prismTitle: "One question, three angles of light",
+    prismLead:
+      "Every editorial outline is a facet of the prism: the text in its source, the wording in people's language, and the context it is read in. Turn the prism, then choose a facet — everything here is an unreleased outline, not legal advice.",
+    prismHint: "Drag sideways or use the arrow keys to turn the prism, then choose a facet.",
+    prismFacetLabel: "Facet",
+    prismSourceLabel: "Official source",
   },
 };

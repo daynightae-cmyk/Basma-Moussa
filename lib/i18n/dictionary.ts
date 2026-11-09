@@ -140,6 +140,20 @@ const ar = {
     micError: "تعذّر تشغيل الميكروفون.",
     levelLabel: "مستوى الإدخال",
     peakLabel: "الذروة",
+    sculptureEyebrow: "العالم التالي · النحت الصوتي",
+    sculptureTitle: "استوديو النحت الصوتي",
+    sculptureLead:
+      "هندسة زجاجية ثلاثية الأبعاد تنبض بترددات صوتك الحقيقي. شغّل الميكروفون وارفع صوتك: حلقة الجهير تتسع، والوسط يفتح أوراقه، والحاد يرسم الحافة.",
+    sculptureEnable: "شغّل الميكروفون للنحت",
+    sculptureStop: "أوقف الميكروفون",
+    sculptureIdle: "النحت ساكن — شغّل الميكروفون لتحريكه.",
+    sculptureLive: "الميكروفون يعمل — النحت يتنفّس بترددك الآن.",
+    sculptureMeter: "طاقة الصوت في النحت",
+    sculptureLow: "الجهير",
+    sculptureMid: "الوسط",
+    sculptureHigh: "الحاد",
+    sculpturePrivacy:
+      "الصوت يُحلَّل داخل متصفحك فقط: لا يُسجَّل، ولا يُخزَّن، ولا يُرسَل إلى أي خادم.",
   },
   splash: {
     enter: "ادخل عالم بسمة",
@@ -394,6 +408,20 @@ const en: Dictionary = {
     micError: "Could not start the microphone.",
     levelLabel: "Input level",
     peakLabel: "Peak",
+    sculptureEyebrow: "The next world · Sonic sculpture",
+    sculptureTitle: "The Sonic Sculpture Studio",
+    sculptureLead:
+      "Glass geometry in three dimensions that breathes with your real voice. Enable the microphone and speak: the low ring widens, the mids open their blades, the highs draw the edge.",
+    sculptureEnable: "Enable microphone for the sculpture",
+    sculptureStop: "Stop microphone",
+    sculptureIdle: "The sculpture rests — enable the microphone to move it.",
+    sculptureLive: "Live input — the sculpture is breathing with your frequency.",
+    sculptureMeter: "Sound energy in the sculpture",
+    sculptureLow: "Low",
+    sculptureMid: "Mid",
+    sculptureHigh: "High",
+    sculpturePrivacy:
+      "Audio is analysed inside your browser only: nothing is recorded, stored, or sent to any server.",
   },
   splash: {
     enter: "ENTER BASMA'S UNIVERSE",

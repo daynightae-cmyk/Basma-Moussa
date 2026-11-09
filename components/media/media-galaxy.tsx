@@ -53,6 +53,13 @@ export function MediaGalaxy({ locale }: { locale: Locale }) {
   const pointerDown = (event: PointerEvent<HTMLDivElement>) => {
     if (!event.isPrimary || event.button !== 0) return;
     drag.current = { x: event.clientX, spin, id: event.pointerId };
+    // Capture on the gesture's own pointerdown: capturing later inside a move
+    // can throw when the pointer is no longer active (e.g. fast flicks).
+    try {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    } catch {
+      /* pointer already released — nothing to capture */
+    }
   };
 
   const pointerMove = (event: PointerEvent<HTMLDivElement>) => {
@@ -60,13 +67,15 @@ export function MediaGalaxy({ locale }: { locale: Locale }) {
     if (!start || start.id !== event.pointerId) return;
     const dx = event.clientX - start.x;
     if (Math.abs(dx) < 6) return;
-    event.currentTarget.setPointerCapture(event.pointerId);
     setSpin(start.spin + dx * 0.55);
   };
 
   const pointerUp = (event: PointerEvent<HTMLDivElement>) => {
     const start = drag.current;
     drag.current = null;
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
     if (!start || start.id !== event.pointerId) return;
     const dx = event.clientX - start.x;
     if (Math.abs(dx) < 40) {
